@@ -27,7 +27,6 @@ if ( $_SERVER ['REQUEST_METHOD' ]== 'GET' ) {
 
 }
  function connexion(string $login,string $password):void{
-
     $arrayError=array();
     validation_login($login,'login',$arrayError);
      validation_password($password,'password',$arrayError);
@@ -40,11 +39,11 @@ if ( $_SERVER ['REQUEST_METHOD' ]== 'GET' ) {
           $_SESSION['arrayError']= $arrayError;
           header('location:'.WEB_ROUTE.'?controllers=security&view=connexion');
         }else{
-            //header('location:'.WEB_ROUTE.'?controllers=responsable&view=creer.professeur');
+
             $_SESSION ['userConnect'] = $user;
                 $test = $user[0]['nom_role'];
             if ($test ='ROLLE_RESPONSABLE_PEDAGOGIQUE') {
-                header('location:'.WEB_ROUTE.'?controllers=responsable&view=creer.professeur');
+              header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.professeur');
             }elseif ($test=='ROLE_ATTACHE') {
                 header('location:'.WEB_ROUTE.'?controllers=attache&view=liste.etudiant.classe');
             }elseif ($test=='ROLE_PROFESSEUR') {

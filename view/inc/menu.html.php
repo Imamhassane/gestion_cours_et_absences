@@ -5,7 +5,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 <div class="area"></div><nav class="main-menu">
             <ul>
                 <li>
-                    <a href="http://justinfarrow.com">
+                    <a href="#">
                         <i class="fa fa-home fa-2x"></i>
                         <span class="nav-text">
                             Dashboard
@@ -56,11 +56,36 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                         </span>
                     </a>
                 </li>
+
                 <li>
                    <a href="#">
-                       <i class="fa fa-table fa-2x"></i>
+                   <i class="fa fa-list fa-2x"></i>
                         <span class="nav-text">
-                            Tables
+                            Liste des classes
+                        </span>
+                    </a>
+                </li>
+                <li>
+                   <a href="#">
+                   <i class="fa fa-list fa-2x"></i>
+                        <span class="nav-text">
+                            Liste des cours
+                        </span>
+                    </a>
+                </li>
+                <li>
+                   <a href="#">
+                   <i class="fa fa-list fa-2x"></i>
+                        <span class="nav-text">
+                            Liste des etudiants
+                        </span>
+                    </a>
+                </li>
+                <li>
+                   <a href="#">
+                       <i class="fa fa-list fa-2x"></i>
+                        <span class="nav-text">
+                            Liste des professeurs
                         </span>
                     </a>
                 </li>

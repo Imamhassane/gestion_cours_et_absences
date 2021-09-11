@@ -3,8 +3,8 @@
  */
 if ( $_SERVER ['REQUEST_METHOD' ]== 'GET' ) {
     if ( isset ( $_GET [ 'view' ])) {
-        if ( $_GET [ 'view' ]== 'creer.professeur' ) {
-        require ( ROUTE_DIR . 'view/responsable/creer.professeur.html.php' );
+        if ( $_GET [ 'view' ]== 'liste.professeur' ) {
+        require ( ROUTE_DIR . 'view/responsable/liste.professeur.html.php' );
        }
     }
     

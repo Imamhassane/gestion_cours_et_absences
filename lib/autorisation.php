@@ -5,7 +5,6 @@ function est_connect():bool{
     return isset($_SESSION['userConnect'][0]);
 }
 
-
 function  est_responsable():bool{
     return est_connect() && $_SESSION['userConnect'][0]['nom_role']=='ROLE_RESPONSABLE_PEDAGOGIQUE';
 }

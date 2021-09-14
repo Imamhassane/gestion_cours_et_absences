@@ -43,7 +43,7 @@ if ( $_SERVER ['REQUEST_METHOD' ]== 'GET' ) {
             $_SESSION ['userConnect'] = $user;
                 $test = $user[0]['nom_role'];
             if ($test ='ROLLE_RESPONSABLE_PEDAGOGIQUE') {
-              header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.professeur');
+              header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours');
             }elseif ($test=='ROLE_ATTACHE') {
                 header('location:'.WEB_ROUTE.'?controllers=attache&view=liste.etudiant.classe');
             }elseif ($test=='ROLE_PROFESSEUR') {

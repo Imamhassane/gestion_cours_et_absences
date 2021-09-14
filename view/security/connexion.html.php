@@ -16,7 +16,7 @@ require ( ROUTE_DIR . 'view/inc/header.html.php' );
             <input type="hidden" name="controllers" value="security">
             <input type="hidden" name="action" value="connexion">
             <div class="form-group">
-                  <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+                  <input type="text" id="login" class="fadeIn second" name="login" placeholder="login*">
                   <small class = "form-text text-danger">
                         <?= isset($arrayError['login']) ? $arrayError['login'] : '' ;?>
                   </small>
@@ -27,9 +27,8 @@ require ( ROUTE_DIR . 'view/inc/header.html.php' );
                         <?= isset($arrayError['password']) ? $arrayError['password'] : '' ;?>
                   </small>
             </div>
-
             <input type="submit" class="fadeIn fourth" value="Log In">
-    </form>
+      </form>
   </div>
 </div>
 <style>

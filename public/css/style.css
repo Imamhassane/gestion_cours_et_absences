@@ -14,6 +14,17 @@
     font-size: 20px;
 }
 
+.down {
+    display: table-cell;
+    width: 60px;
+    height: 36px;
+    text-align: right;
+    vertical-align: middle;
+    font-size: 20px;
+    float: right;
+    margin-left: 75px;
+}
+
 .main-menu:hover,
 nav.main-menu.expanded {
     width: 250px;
@@ -23,10 +34,9 @@ nav.main-menu.expanded {
 .main-menu {
     background: #152032;
     border-right: 1px solid #e5e5e5;
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
-    height: 100%;
     left: 0;
     width: 60px;
     overflow: hidden;
@@ -43,7 +53,7 @@ nav.main-menu.expanded {
 .main-menu li {
     position: relative;
     display: block;
-    width: 250px;
+    width: 249px;
 }
 
 .main-menu li>a {
@@ -52,7 +62,6 @@ nav.main-menu.expanded {
     border-collapse: collapse;
     border-spacing: 0;
     color: #fff;
-    font-family: arial;
     font-size: 14px;
     text-decoration: none;
     transform: translateZ(0) scale(1, 1);
@@ -75,7 +84,6 @@ nav.main-menu.expanded {
     display: table-cell;
     vertical-align: middle;
     width: 190px;
-    font-family: 'Titillium Web', sans-serif;
 }
 
 .main-menu>ul.logout {
@@ -131,13 +139,6 @@ nav.main-menu li.active>a,
     background: #e2e2e2;
     width: 100%;
     height: 100%;
-}
-
-@font-face {
-    font-family: 'Titillium Web';
-    font-style: normal;
-    font-weight: 300;
-    src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
 }
 
 @import url('https://fonts.googleapis.com/css?family=Poppins');
@@ -260,7 +261,11 @@ input[type=reset]:active {
 }
 
 input[type=text],
-input[type=password] {
+input[type=password],
+input[type=date],
+input[type=time],
+input[type=number],
+.select {
     background-color: #f6f6f6;
     border: none;
     color: #0d0d0d;
@@ -361,7 +366,8 @@ input[type=text]:placeholder {
     }
 }
 
-.fadeIn {
+.fadeIn,
+.select {
     opacity: 0;
     -webkit-animation: fadeIn ease-in 1;
     -moz-animation: fadeIn ease-in 1;
@@ -437,11 +443,19 @@ input[type=text]:placeholder {
 
 .text-center h2 {
     color: #000;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .liste-col {
-    margin-left: 60px;
+    margin-left: 90px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border-radius: 10px 10px 10px 10px;
+    background: #fff;
+    position: relative;
+    padding: 0px;
+    -webkit-box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3);
+    text-align: center;
 }
 
 @media screen and (max-width: 767px) {

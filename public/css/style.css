@@ -458,11 +458,22 @@ input[type=text]:placeholder {
     text-align: center;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 765px) {
     .main-menu {
         display: none;
     }
     .liste-col {
         margin-left: 0px;
+        width: 235%;
+        padding: 0px;
+    }
+    .row {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    .container-fluid {
+        width: 100%;
+        padding-right: 0px;
+        padding-left: 0px;
     }
 }

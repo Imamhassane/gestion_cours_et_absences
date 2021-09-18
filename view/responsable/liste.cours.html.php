@@ -1,8 +1,10 @@
-<?php
+ <?php
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 ?>
+
+
 
 <div class="container-fluid">
     <div class="row">
@@ -22,56 +24,73 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                             </div>
                         </div>
                         <button type="submit" name="" class="btn  ml-3 ">OK</button>
-                        <a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=ajout.professeur' ?>" role="button">Ajouter +</a>
-
+                        <div class=" ml-auto mr-3">
+                            <a name="" id="" class="btn btn-primary " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role="button">Voir les cours non planifiés</a>
+                        </div>
                     </form>
    
                 <div class="column">
                 <div class="card">
-                <h2 class=" mb-3">LA LISTE DES PROFESSEURS</h2>
+                <h2 class=" mb-3">LA LISTE DES COURS </h2>
                     <table class="table">
                                 <thead>
                                     <tr>
-                                    <th scope="col">Prénom</th>
-                                    <th scope="col">Nom</th>
-                                    <th scope="col">Grade</th>
-                                    <th scope="col">Spécialité</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Début</th>
+                                    <th scope="col">Fin</th>
+                                    <th scope="col">Professeur</th>
+                                    <th scope="col">Module</th>
+                                    <th scope="col">Classe</th>
+                                    <th scope="col">Semestre</th>
+                                    <th scope="col">Durée</th>
                                     <th scope="col">Action</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     <tr>
+                                        <th>1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <th>1</th>
                                         <td>Mark</td>
                                         <td>Otto</td>
                                         <td>@mdo</td>
-                                        <td>@mdo</td>
+                                        <td>Mark</td>
                                         <td class="action">
                                             <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
                                             <a name="" id="" class="text-danger" href="#" role="button"><i class="fa fa-trash-o"></i></a>
-                                        </td>
-
+                                        </td> 
                                     </tr>
                                     <tr>
+                                        <th>1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <th>1</th>
                                         <td>Mark</td>
                                         <td>Otto</td>
                                         <td>@mdo</td>
-                                        <td>@mdo</td>
+                                        <td>Mark</td>
                                         <td class="action">
                                             <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
                                             <a name="" id="" class="text-danger" href="#" role="button"><i class="fa fa-trash-o"></i></a>
-                                        </td>                                    </tr>
+                                        </td> 
+                                    </tr>
                                     <tr>
+                                        <th>1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <th>1</th>
                                         <td>Mark</td>
                                         <td>Otto</td>
                                         <td>@mdo</td>
-                                        <td>@mdo</td>
+                                        <td>Mark</td>
                                         <td class="action">
                                             <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
                                             <a name="" id="" class="text-danger" href="#" role="button"><i class="fa fa-trash-o"></i></a>
-                                        </td>                                    </tr>
-                            </tbody>
+                                        </td> 
+                                    </tr>
+                                </tbody>
                     </table>
                 </div>
             </div>
@@ -90,7 +109,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
         text-decoration: none;
         font-size: 13px;    
     }
- .action .fa{
+    .action .fa{
     width: 22px;
     height: 26px;
     font-size: 20px;
@@ -101,7 +120,6 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
         color:#152032;
         margin-top: 5px;
     }
-   
 </style>    
 
       

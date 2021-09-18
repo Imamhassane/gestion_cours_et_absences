@@ -16,18 +16,18 @@ require ( ROUTE_DIR . 'view/inc/header.html.php' );
             <input type="hidden" name="controllers" value="security">
             <input type="hidden" name="action" value="connexion">
             <div class="form-group">
-                  <input type="text" id="login" class="fadeIn second" name="login" placeholder="login*">
-                  <small class = "form-text text-danger">
+                  <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+                  <small class = "ml-5 text-left form-text text-danger">
                         <?= isset($arrayError['login']) ? $arrayError['login'] : '' ;?>
                   </small>
             </div>
             <div class="form-group">
                   <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
-                  <small class = "form-text text-danger ">
+                  <small class = "ml-5 text-left form-text text-danger ">
                         <?= isset($arrayError['password']) ? $arrayError['password'] : '' ;?>
                   </small>
             </div>
-            <input type="submit" class="fadeIn fourth" value="Log In">
+            <input type="submit" class="fadeIn fourth" value="Se connecter">
       </form>
   </div>
 </div>

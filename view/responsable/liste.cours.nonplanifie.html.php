@@ -16,10 +16,9 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                             <div class="form-group">
                                 <label for="">Année scolaire</label>
                                 <select class="form-control ml-2" name="test" id="">
-                                    <?php for($i = 2010; $i <= 2021 ;$i++) {
-                                        echo'<option>'. $i.' / '.($i+1).'</option>';
-                                    }
-                                    ?>
+                                <?php foreach ($cours as $cour):?>
+                                    <option><? //$cour['annee_scolaire']?></option>;
+                                <?php endforeach;?>   
                                 </select>
                             </div>
                         </div>
@@ -46,43 +45,27 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php foreach ($cours as $cour):?>
                                     <tr>
-                                        <th>1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>Mark</td>
-                                        <td><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours' ?>" role="button">Planifier</a></td>
+                                        <th><?=$cour['prenom'].' '.$cour['nom']?> </th>
+                                        <td><?=$cour['libelle_module']?></td>
+                                        <td><?=$cour['nom_classe']?></td>
+                                        <td><?=$cour['semestre']?></td>
+                                        <td><?=$cour['duree']?></td>
+                                        <td><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Planifier</a></td>
                                         <td class="action">
-                                            <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
-                                            <a name="" id="" class="text-danger" href="#" role="button"><i class="fa fa-trash-o"></i></a>
+                                            <a name="" id="" class="" href="<?= WEB_ROUTE . '?controllers=responsable&view=modifieCoursPlanifie&id_cours='.$cour['id_cours'] ?>" role="button"><i class="fa fa-edit"></i></a>
+                                            <a name="" id="" class="text-danger" href="<?= WEB_ROUTE . '?controllers=responsable&view=deleteCoursPlanifie&id_cours='.$cour['id_cours'] ?>" role="button"><i class="fa fa-trash-o"></i></a>
                                         </td>                                    
                                     </tr>
-                                    <tr>
-                                        <th>1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>Mark</td>
-                                        <td><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours' ?>" role="button">Planifier</a></td>
-                                        <td class="action">
-                                            <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
-                                            <a name="" id="" class="text-danger" href="#" role="button"><i class="fa fa-trash-o"></i></a>
-                                        </td>                                    
-                                    </tr>
-                                    <tr>
-                                        <th>1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>Mark</td>
-                                        <td><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours' ?>" role="button">Planifier</a></td>
-                                        <td class="action">
-                                            <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
-                                            <a name="" id="" class="text-danger" href="#" role="button"><i class="fa fa-trash-o"></i></a>
-                                        </td>                                    
-                                    </tr>
+                                <?php endforeach; ?>
+                                  
+                                  
                                 </tbody>
+                                <small class = "form-text text-left ml-5 text-danger">
+                                    <?= isset($_SESSION['erreurSuppression']) ? $_SESSION['erreurSuppression'] : '' ;?>
+                                    <?php unset($_SESSION['erreurSuppression'])?>
+                            </small>
                     </table>
                 </div>
             </div>

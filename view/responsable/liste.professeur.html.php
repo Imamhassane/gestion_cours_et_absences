@@ -32,47 +32,33 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                     <table class="table">
                                 <thead>
                                     <tr>
-                                    <th scope="col">Prénom</th>
-                                    <th scope="col">Nom</th>
-                                    <th scope="col">Grade</th>
-                                    <th scope="col">Spécialité</th>
-                                    <th scope="col">Action</th>
-
+                                        <th scope="col">Prénom</th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Grade</th>
+                                        <th scope="col">Spécialité</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
+<?php foreach ($professeurs as $professeur):?>
                                     <tr>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
+                                        <td><?=$professeur['prenom']?></td>
+                                        <td><?=$professeur['nom']?></td>
+                                        <td><?=$professeur['grade']?></td>
+                                        <td><?=$professeur['specialite']?></td>
                                         <td class="action">
                                             <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
-                                            <a name="" id="" class="text-danger" href="#" role="button"><i class="fa fa-trash-o"></i></a>
+                                            <a name="" id="" class="text-danger" href="<?= WEB_ROUTE . '?controllers=responsable&view=deleteUser&id_user='.$professeur['id_user'] ?>" role="button"><i class="fa fa-trash-o"></i></a>
                                         </td>
-
+                                        
                                     </tr>
-                                    <tr>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td class="action">
-                                            <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
-                                            <a name="" id="" class="text-danger" href="#" role="button"><i class="fa fa-trash-o"></i></a>
-                                        </td>                                    </tr>
-                                    <tr>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>@mdo</td>
-                                        <td class="action">
-                                            <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
-                                            <a name="" id="" class="text-danger" href="#" role="button"><i class="fa fa-trash-o"></i></a>
-                                        </td>                                    </tr>
+<?php endforeach ?>
                             </tbody>
-                    </table>
+                            <small class = "form-text text-left ml-5 text-danger">
+                                    <?= isset($_SESSION['erreurSuppression']) ? $_SESSION['erreurSuppression'] : '' ;?>
+                                    <?php unset($_SESSION['erreurSuppression'])?>
+                            </small>
+                    </table> 
                 </div>
             </div>
             </div>

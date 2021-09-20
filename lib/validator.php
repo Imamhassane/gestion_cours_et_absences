@@ -28,6 +28,8 @@ function validation_login( $valeur, string  $key, array &$arrayError){
     }
         
 }
+
+
 function validation_password( $valeur, string $key , array &$arrayError, $min = 6, $max = 10){
     if (est_vide($valeur)) {
         $arrayError[$key] = "le password est obligatoire";
@@ -41,7 +43,11 @@ function validation_champ( $valeur, string  $key,  &$arrayError){
     }   
 }
 
-
+function validation( $valeur, string  $key,  &$arrayError){
+    if (est_vide($valeur)) {
+        $arrayError[$key] = "Ce champ est obligatoire";
+    }   
+}
 
 
 

@@ -30,39 +30,34 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                 <div class="column">
                 <div class="card">
                 <h2 class=" mb-3">LA LISTE DES CLASSES</h2>
-                    <table class="table">
+                    <table class="table" id="classe">
                                 <thead>
-                                    <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
+                                    <tr class="text-left">
+                                        <th scope="col">Nom de la classe</th>
+                                        <th scope="col">Filière</th>
+                                        <th scope="col">Niveau</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
+<?php foreach ($classes as $classe):?>
+                                    <tr class="text-left">
+                                        <td><?=$classe['nom_classe']?></td>
+                                        <td><?=$classe['filiere']?></td>
+                                        <td><?=$classe['niveau']?></td>
+                                        <td class="action">
+                                            <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
+                                            <a name="" id="" class="text-danger" href="#" role="button"><i class="fa fa-trash-o"></i></a>
+                                        </td>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
+<?php endforeach ?>
                             </tbody>
                     </table>
                 </div>
             </div>
-            </div>
+   
+           
+            
         </div>
     </div>
 </div>
@@ -77,7 +72,26 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
         text-decoration: none;
         font-size: 13px;    
     }
-    
-</style>    
+
+ .action .fa{
+    width: 22px;
+    height: 26px;
+    font-size: 20px;
+    display: inline-block;
+
+}
+    .fa-edit{
+        color:#152032;
+        margin-top: 5px;
+    }
+   
 
       
+
+</style>    
+
+<script type="text/javascript">
+                $(document).ready( function () {
+    $('#classe').DataTable();
+} );
+</script>   

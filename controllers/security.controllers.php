@@ -3,8 +3,6 @@ if ( $_SERVER ['REQUEST_METHOD' ]== 'GET' ) {
     if ( isset ( $_GET [ 'view' ])) {
        if ( $_GET [ 'view' ]== 'connexion' ) {
         require ( ROUTE_DIR . 'view/security/connexion.html.php' );
-       }elseif ( $_GET [ 'view' ]== 'inscription' ) {
-        require ( ROUTE_DIR . 'view/security/inscription.html.php' );
        }elseif ( $_GET [ 'view' ]== 'deconnexion' ) {
             deconnexion();
         }
@@ -20,6 +18,9 @@ if ( $_SERVER ['REQUEST_METHOD' ]== 'GET' ) {
     } 
 
 }
+
+
+
  function connexion(string $login,string $password):void{
     $arrayError=array();
     validation_login($login,'login',$arrayError);

@@ -11,8 +11,7 @@ require ( ROUTE_DIR . 'view/inc/header.html.php' );
 <div class="wrapper fadeInDown">
   <div id="formContent">
     <h2 class="active"> Login Form</h2>
-<!--     <h2 class="inactive underlineHover"><a href="<?=WEB_ROUTE.'?controllers=security&view=inscription'?>" >S'inscrire</a> </h2>
- -->    <form method="POST" action="<?=WEB_ROUTE?>">
+  <form method="POST" action="<?=WEB_ROUTE?>">
             <input type="hidden" name="controllers" value="security">
             <input type="hidden" name="action" value="connexion">
             <div class="form-group">

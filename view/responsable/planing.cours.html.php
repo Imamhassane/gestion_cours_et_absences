@@ -1,4 +1,8 @@
 <?php
+if (isset($_SESSION['arrayError'])){
+    $arrayError = $_SESSION['arrayError'];
+    unset($_SESSION['arrayError']);
+}
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
@@ -10,29 +14,31 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
             <div class="column">
                 <div class="card">
                 <form method="post" action="">
-                   <!--  <input type="hidden" name="controllers" value="security">
-                    <input type="hidden" name="action" value="connexion"> -->
+                   <input type="hidden" name="controllers" value="responsable">
+                    <input type="hidden" name="action" value="ajoutPlaning"> 
                         <div class="mt-2 mb-2">
-                        <label for="" class="">Date du cours</label>
-                            <input type="date" id="" class="fadeIn second  " name="" placeholder="">
+                            <label for="" class="">Date du cours</label>
+                            <input type="date" id="" class="fadeIn second  " name="date" placeholder="">
+                            <small class = "form-text text-left ml-5 text-danger">
+                                <?= isset($arrayError['date']) ? $arrayError['date'] : '' ;?>
+                            </small> 
                         </div>
                         <div class="  mb-2">
-                        <label for="" class="">Début du cours</label>
-                            <input type="time" id="" class="fadeIn second  " name="" placeholder="">
+                            <label for="" class="">Début du cours</label>
+                            <input type="time" id="" class="fadeIn second  " name="debut" placeholder="">
+                            <small class = "form-text text-left ml-5 text-danger">
+                                <?= isset($arrayError['debut']) ? $arrayError['debut'] : '' ;?>
+                            </small>
                         </div>
                           
                         <div class="  ">
-                        <label for="" class="">Fin du cours</label>
-                            <input type="time" id="" class="fadeIn second" name="" placeholder="">
+                            <label for="" class="">Fin du cours</label>
+                            <input type="time" id="" class="fadeIn second" name="fin" placeholder="">
+                            <small class = "form-text text-left ml-5 text-danger">
+                                <?= isset($arrayError['fin']) ? $arrayError['fin'] : '' ;?>
+                            </small>
                         </div>
-<!--                     <div class="form-group">
-                        <label for="" class="">Affecté à Mr/Mme</label>
-                            <select class="select " name="" id="">
-                                <option></option>
-                                <option></option>
-                                <option></option>
-                            </select>
-                    </div>  -->
+
                     <input type="submit" class="fadeIn fourth mt-5" value="Creer">
                 </form>
                 </div>

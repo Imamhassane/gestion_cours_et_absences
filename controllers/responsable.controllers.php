@@ -11,8 +11,8 @@
             require ( ROUTE_DIR . 'view/responsable/ajout.professeur.html.php' );
            }elseif ( $_GET [ 'view' ]== 'tableau.bord' ) {
             require ( ROUTE_DIR . 'view/responsable/tableau.bord.html.php' );
-           }elseif ( $_GET [ 'view' ]== 'liste.cours' ) {
-            liste_cours_id();
+           }elseif ( $_GET [ 'view' ]== 'liste.cours.perid' ) {
+           liste_cours_id();
            }elseif ( $_GET [ 'view' ]== 'liste.classe' ) {
             liste_all_classe();
            }elseif ( $_GET [ 'view' ]== 'liste.professeur' ) {
@@ -34,6 +34,8 @@
            }elseif ( $_GET [ 'view' ]== 'updateUser' ) {
             get_prof();
           }
+        }else{
+            header('location:'.WEB_ROUTE.'?controllers=responsable&view=tableau.bord');
         }
     }elseif($_SERVER ['REQUEST_METHOD' ]=='POST'){
         if (isset($_POST['action'])){
@@ -41,6 +43,7 @@
                 unset($_POST['controlluploaders']);
                 unset($_POST['action']);
                 unset($_POST['password_confirm']);
+                $_SESSION['restor'] = $_POST;
                 insert_prof($_POST,$_FILES); 
             }elseif($_POST['action']=='ajoutClasse'){
                 unset($_POST['controllers']);
@@ -149,18 +152,18 @@ function insert_planing_cours(array $datas):void{
        if (form_valid($arrayError)) {
   
              
-                
-                    $cours = find_cours_non_planifie();   
                     $id =  $_GET['id_cours'];
+                    $cours = find_cours_non_planifie_by_id($id);   
                     $reste = $cours[0]['heure_restante'] - $duree;
+                  //  var_dump(  $cours);
                     if ($reste < 0) {
                         $_SESSION['erreurPlaning'] = 'La durée du cours ne peut pas être inférieur à 0';
                         header('location:'.WEB_ROUTE.'?controllers=responsable&view=planing.cours');
         
                     }else {
                         modifie_heure_restante($reste ,$id );
-                    insert_in_planing_cours($datas);   
-                    header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');
+                        insert_in_planing_cours($datas);   
+                        header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');
 
                 
                     }
@@ -223,8 +226,12 @@ function delete_classe(){
 }
 function delete_cours(){
     $id = $_GET ['id_planing'];
+    $idC = $_SESSION['id_cours'];
+    $getcour = find_all_cours_by_id($idC);
+    $reste = $getcour[0]['heure_restante'] + ($getcour[0]['fin'] - $getcour[0]['debut']);
     $delete =  delete_cours_by_id($id);
-    header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');
+    $get =  modifie_heure_restante($reste ,$idC );
+   header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.perid&id_cours='.$idC);
 
 }
 
@@ -291,8 +298,8 @@ function ajout_cours(){
 function liste_cours_no_planified(){
 
     if (isset($_POST['ok'])) {
-        $annee_scolaire = $_POST['annee'];
-        $cours = find_cours_non_planifie($annee_scolaire);
+        $etat_annee_scolaire = $_POST['annee'];
+        $cours = find_cours_non_planifie($etat_annee_scolaire);
     }else{
         $cours = find_cours_non_planifie();   
     }
@@ -300,16 +307,13 @@ function liste_cours_no_planified(){
     require ( ROUTE_DIR . 'view/responsable/liste.cours.nonplanifie.html.php' );
 }
 
-function liste_all_cours(){
-    $all_cours = find_all_cours();
-    require ( ROUTE_DIR . 'view/responsable/liste.cours.html.php' );
-}
+
 function liste_cours_id(){
-    $id = $_GET['id_cours'];
+ 
+     $_SESSION['id_cours']= $_GET['id_cours'];
+     $id =  $_SESSION['id_cours'];
     $all_cours = find_all_cours_by_id($id);
- /*    foreach ($all_cours as $value) {
-      var_dump($value['duree']);
-    } */
+
      require ( ROUTE_DIR . 'view/responsable/liste.cours.html.php' );
 }
 ?>

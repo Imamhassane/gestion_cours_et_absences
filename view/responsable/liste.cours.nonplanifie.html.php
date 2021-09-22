@@ -3,7 +3,9 @@ require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 $annee_scolaire = find_annee_scolaire();
-
+$classes = find_all_classe();
+$modules = find_all_module();
+$professeurs = find_all_professeur();
 ?>
 
 
@@ -14,17 +16,41 @@ $annee_scolaire = find_annee_scolaire();
                     <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
                         <input type="hidden" name="controllers" value="responsable">
                         <input type="hidden" name="action" value="filterCoursNonplanifie">
-                        <div class="form-group ml-1">
+                        <div class="form-group ml-2">
                             <div class="form-group">
                                 <label for="">Année scolaire</label>
                                 <select class="form-control ml-2" name="annee" id="" value="">
                                 <?php foreach ($annee_scolaire as $annee):?>
-                                    <option><?=$annee['annee_scolaire']?></option>;
+                                    <option value="<?=$annee['etat_annee_scolaire']?>"><?=$annee['annee_scolaire']?></option>;
                                 <?php endforeach?>   
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" name="ok" class="btn  ml-3 ">OK</button>
+                       <!--  <div class="form-group ml-4">
+                                <label for="">Professeur</label>
+                                <select class="form-control ml-2" name="professeur" id="" value="">
+                                <?php foreach ($professeurs as $professeur):?>
+                                    <option><?=$professeur['prenom'].' '.$professeur['nom']?></option>;
+                                <?php endforeach?>   
+                                </select>
+                            </div>
+                            <div class="form-group ml-4">
+                                <label for="">Module</label>
+                                <select class="form-control ml-2" name="module" id="" value="">
+                                <?php foreach ($modules as $module):?>
+                                    <option><?=$module['libelle_module']?></option>;
+                                <?php endforeach?>   
+                                </select>
+                            </div>
+                            <div class="form-group ml-4">
+                                <label for="">Classe</label>
+                                <select class="form-control ml-2" name="classe" id="" value="">
+                                <?php foreach ($classes as $classe):?>
+                                    <option><?=$classe['nom_classe']?></option>
+                                <?php endforeach?>   
+                                </select>
+                            </div> -->
+                            <button type="submit" name="ok" class="btn  ml-3 ">OK</button>
 
                     </form>
 
@@ -59,8 +85,7 @@ $annee_scolaire = find_annee_scolaire();
                                         <td><?=$cour['nom_classe']?></td>
                                         <td><?=$cour['semestre']?></td>
                                         <td><?=$cour['heure_total']?></td>
-                                        <td><?=$cour['heure_restante'] ?></td>
-                                        <td>
+                                        <td><?= $cour['heure_restante'] ?></td><td>
                                             <?php if ($cour['heure_restante'] == 0):?>
                                                 <a name="" id="" class="btn btn-primary ml-auto mr-2 disabled" href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Planifier</a>
                                             <?php else:?>
@@ -68,7 +93,7 @@ $annee_scolaire = find_annee_scolaire();
                                             <?php endif?>
                                         </td>
 
-                                        <td><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours&id_cours='.$cour['id_cours']?>" role="button">Voir le cours</a></td>
+                                        <td><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.perid&id_cours='.$cour['id_cours']?>" role="button">Voir le cours</a></td>
                                         <td class="action">
                                             <a name="" id="" class="" href="<?= WEB_ROUTE . '?controllers=responsable&view=modifieCoursPlanifie&id_cours='.$cour['id_cours'] ?>" role="button"><i class="fa fa-edit"></i></a>
                                             <a name="" id="" class="text-danger" href="<?= WEB_ROUTE . '?controllers=responsable&view=deleteCoursPlanifie&id_cours='.$cour['id_cours'] ?>" role="button"><i class="fa fa-trash-o"></i></a>

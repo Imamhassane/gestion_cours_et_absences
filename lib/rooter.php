@@ -1,8 +1,8 @@
 <?php
 if (isset($_REQUEST['controllers'])){
-    /* if ($_REQUEST['controllers']=='security'){
+     if ($_REQUEST['controllers']=='security'){
         require_once(ROUTE_DIR.'controllers/security.controllers.php');
-    }else */if($_REQUEST['controllers']== 'attache'){
+    }else if($_REQUEST['controllers']== 'attache'){
         require_once(ROUTE_DIR.'controllers/attache.controllers.php');
     }elseif($_REQUEST['controllers']=='professeur'){
         require_once(ROUTE_DIR.'controllers/professeur.controllers.php');

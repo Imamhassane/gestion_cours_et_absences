@@ -2,6 +2,8 @@
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
+$annee_scolaire = find_annee_scolaire();
+
 ?>
 
 
@@ -9,30 +11,31 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-11  liste-col">
+                 
                     <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
                         <input type="hidden" name="" value="">
                         <input type="hidden" name="" value="">
                         <div class="form-group ml-1">
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="">Année scolaire</label>
-                                <select class="form-control ml-2" name="test" id="">
-                                    <?php for($i = 2010; $i <= 2021 ;$i++) {
-                                        echo'<option>'. $i.' / '.($i+1).'</option>';
-                                    }
-                                    ?>
+                                <select class="form-control ml-2" name="annee" id="" value="">
+                                <?php foreach ($annee_scolaire as $annee):?>
+                                    <option><?=$annee['annee_scolaire']?></option>;
+                                <?php endforeach?>   
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
-                        <button type="submit" name="" class="btn  ml-3 ">OK</button>
-                        <div class=" ml-auto mr-2">
-                            <a name="" id="" class="btn btn-primary " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role="button">Voir les cours non planifiés</a>
-                            <a name="" id="" class="btn btn-primary ml-auto  " href="<?= WEB_ROUTE . '?controllers=responsable&view=ajout.cours' ?>" role="button">Ajouter +</a>
-                        </div>
+                      <!--   <button type="submit" name="" class="btn  ml-3 disabled">OK</button> -->
+                      
                     </form>
-   
                 <div class="column">
                 <div class="card">
-                <h2 class=" mb-3">LA LISTE DES COURS </h2>
+                <div class="d-inline">
+                        <a name="" id="" class="btn btn-primary ml-auto mr-2 float-right mt-4  " href="<?= WEB_ROUTE . '?controllers=responsable&view=ajout.cours' ?>" role="button">Ajouter +</a>
+                        <a name="" id="" class="btn btn-primary ml-auto mr-2 float-right mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role="button">Voir les cours non planifiés</a>
+                        <h2 class=" mb-3">LA LISTE DES COURS </h2>  
+                </div>
+               
                     <table class="table">
                                 <thead>
                                     <tr>

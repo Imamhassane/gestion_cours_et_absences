@@ -74,16 +74,30 @@ function insert_in_planing_cours( $cours):int{
    return $sth->rowCount();
 } 
 
-function find_cours_non_planifie($annee_scolaire = "2020-2021"){
+function find_cours_non_planifie($etat_annee_scolaire = "en_cours"){
    $pdo = ouvrir_connexion_db();
       $sql = "select * from cours c , user u , module m , classe cl , annee_scolaire an 
       where c.id_user = u.id_user 
       and c.id_module = m.id_module
       and c.id_classe = cl.id_classe
       and c.id_annee_scolaire = an.id_annee_scolaire 
-      and an.annee_scolaire  = ? ";
+      and an.etat_annee_scolaire  = ? ";
       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-      $sth->execute(array($annee_scolaire));
+      $sth->execute(array($etat_annee_scolaire));
+      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+   fermer_connexion_bd($pdo);
+  return  $datas ;
+}
+function find_cours_non_planifie_by_id( $id_cours){
+   $pdo = ouvrir_connexion_db();
+      $sql = "select * from cours c , user u , module m , classe cl , annee_scolaire an 
+      where c.id_user = u.id_user 
+      and c.id_module = m.id_module
+      and c.id_classe = cl.id_classe
+      and c.id_annee_scolaire = an.id_annee_scolaire 
+      and c.id_cours = ?";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute(array($id_cours));
       $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
    fermer_connexion_bd($pdo);
   return  $datas ;

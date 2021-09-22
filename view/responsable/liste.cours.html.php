@@ -43,7 +43,6 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                     <th scope="col">Module</th>
                                     <th scope="col">Classe</th>
                                     <th scope="col">Semestre</th>
-                                    <th scope="col">Durée</th>
                                     <th scope="col">Action</th>
 
                                     </tr>
@@ -58,7 +57,6 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                         <td><?=$all_cour['libelle_module']?></td>
                                         <td><?=$all_cour['nom_classe']?></td>
                                         <td><?=$all_cour['semestre']?></td>
-                                        <td><?=$all_cour['duree']?></td>
                                         <td class="action">
                                             <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
                                             <a name="" id="" class="text-danger" href="<?= WEB_ROUTE . '?controllers=responsable&view=deleteCours&id_planing='.$all_cour['id_planing'] ?>" role="button"><i class="fa fa-trash-o"></i></a>

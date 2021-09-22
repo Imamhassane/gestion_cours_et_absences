@@ -12,6 +12,11 @@ require ( ROUTE_DIR . 'view/inc/header.html.php' );
   <div id="formContent">
     <h2 class="active"> Login Form</h2>
   <form method="POST" action="<?=WEB_ROUTE?>">
+  <?php if (isset($arrayError['erreurConnexion'])):?>
+            <div class="alert alert-danger"  role="alert">
+                 <?= $arrayError['erreurConnexion']; ?>
+            </div>
+    <?php endif ?>
             <input type="hidden" name="controllers" value="security">
             <input type="hidden" name="action" value="connexion">
             <div class="form-group">

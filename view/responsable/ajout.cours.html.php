@@ -25,12 +25,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                     <option>semestre 2</option>
                                 </select>
                             </div>
-                            <div class=" mb-2 col-md-6 ">
-                                <input type="number" name="duree" placeholder="Durée">
-                                <small class = "text-left ml-5 form-text text-danger ">
-                                    <?= isset($arrayError['duree']) ? $arrayError['duree'] : '' ;?>
-                                </small>
-                            </div>
+
                             <div class=" col-md-6 mb-4 mt-2">
                                 <select class=" select" name="id_user" id="">
                                 <?php foreach ($professeurs as $professeur):?>
@@ -65,6 +60,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                         <?= isset($arrayError['classe']) ? $arrayError['classe'] : '' ;?>
                                 </small>
                             </div>
+                            <div class=" col-md-6 mb-4 "></div>
                             
                         <input type="submit" class="fadeIn fourth ml-auto mr-auto mt-4" value="Creer">
                 </form>

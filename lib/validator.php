@@ -43,10 +43,11 @@ function validation_champ( $valeur, string  $key,  &$arrayError){
     }   
 }
 
-function validation( $valeur, string  $key,  &$arrayError){
-    if (est_vide($valeur)) {
-        $arrayError[$key] = "Ce champ est obligatoire";
-    }   
+function validation(  string  $key,  &$arrayError){
+    if ($_FILES['cover_image']['size'] == 0 && $_FILES['cover_image']['error'] == 0)
+{
+    $arrayError[$key] = "Ce champ est obligatoire";
+}  
 }
 
 

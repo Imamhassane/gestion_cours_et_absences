@@ -14,17 +14,6 @@
     font-size: 20px;
 }
 
-.down {
-    display: table-cell;
-    width: 60px;
-    height: 36px;
-    text-align: right;
-    vertical-align: middle;
-    font-size: 20px;
-    float: right;
-    margin-left: 75px;
-}
-
 .main-menu:hover,
 nav.main-menu.expanded {
     width: 250px;
@@ -147,12 +136,12 @@ nav.main-menu li.active>a,
 
 h2 {
     text-align: center;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 600;
     text-transform: uppercase;
     display: inline-block;
     margin: 40px 8px 10px 8px;
-    color: #cccccc;
+    color: #ccc;
 }
 
 
@@ -456,6 +445,41 @@ input[type=text]:placeholder {
     -webkit-box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3);
     box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3);
     text-align: center;
+}
+
+.main-menu img {
+    width: 130px;
+    margin-left: 60px;
+    margin-bottom: 20px;
+    height: 121px;
+    position: fixed;
+}
+
+.main-menu .mt-5,
+.my-5 {
+    margin-top: 11rem!important;
+}
+
+p {
+    color: #fff;
+    margin-left: 60px;
+    font-size: 13px;
+    position: fixed;
+    margin-top: 55%;
+}
+
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0px solid rgba(0, 0, 0, .125);
+    border-radius: .25rem;
 }
 
 @media screen and (max-width: 765px) {

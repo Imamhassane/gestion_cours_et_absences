@@ -32,8 +32,8 @@ function login_exist($login):array {
 function ajout_user(array $user):int{
     $pdo = ouvrir_connexion_db();
     extract($user);
-    $sql = "INSERT INTO `user` ( `nom`, `prenom`, `login`, `password`, `grade`, `specialite`, `id_role`)
-    VALUES (?, ?, ?, ?, ?, ?, ?)"; 
+    $sql = "INSERT INTO `user` ( `nom`, `prenom`, `login`, `password`, `grade`, `specialite`, `id_role` ,`avatar`)
+    VALUES (?, ?, ?, ?, ?, ?, ?,?)"; 
     if (isset($_POST['grade'])) {
       $id_role = 3;
     }else{
@@ -41,7 +41,7 @@ function ajout_user(array $user):int{
 
     }
     $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-    $sth->execute(array($nom , $prenom ,$login, $password, $grade ,$specialite ,  $id_role ));
+    $sth->execute(array($nom , $prenom ,$login, $password, $grade ,$specialite ,  $id_role , $avatar));
         fermer_connexion_bd($pdo);
  
     return $sth->rowCount();

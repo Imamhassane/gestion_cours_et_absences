@@ -2,34 +2,47 @@
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
+$annee_scolaire = find_annee_scolaire();
+
 ?>
 
 <div class="container-fluid">
     <div class="row">
+    <?php
+if ($_SESSION['message']==1) {
+
+
+echo'
+<div class="container-fluid p-0">
+    <div  id = "message"  class ="alert alert-success text-center">Classe créée avec succès</div>
+</div>';
+}
+unset($_SESSION['message']);
+?>
         <div class="col-md-11  liste-col">
         <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
-                        <input type="hidden" name="" value="">
-                        <input type="hidden" name="" value="">
+                        <input type="hidden" name="controllers" value="">
+                        <input type="hidden" name="action" value="">
                         <div class="form-group ml-1">
                             <div class="form-group">
                                 <label for="">Année scolaire</label>
-                                <select class="form-control ml-2" name="test" id="">
-                                    <?php for($i = 2010; $i <= 2021 ;$i++) {
-                                        echo'<option>'. $i.' / '.($i+1).'</option>';
-                                    }
-                                    ?>
+                                <select class="form-control ml-2" name="annee" id="" value="">
+                                <?php foreach ($annee_scolaire as $annee):?>
+                                    <option><?=$annee['annee_scolaire']?></option>;
+                                <?php endforeach?>   
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" name="" class="btn  ml-3 ">OK</button>
-                        <div class=" ml-auto mr-3">
-                            <a name="" id="" class="btn btn-primary " href="<?= WEB_ROUTE . '?controllers=responsable&view=ajout.classe' ?>" role="button">Ajouter +</a>
-                        </div>
+                        <button type="submit" name="ok" class="btn  ml-3 ">OK</button>
+
                     </form>
-   
+            
                 <div class="column">
                 <div class="card">
-                <h2 class=" mb-3">LA LISTE DES CLASSES</h2>
+                    <div class="d-inline">
+                        <h2 class="">LA LISTE DES CLASSES</h2>
+                        <a name="" id="" class="btn btn-primary ml-auto mr-2 float-right mt-4  " href="<?= WEB_ROUTE . '?controllers=responsable&view=ajout.classe' ?>" role="button">Ajouter +</a>
+                    </div>
                     <table class="table" id="classe">
                                 <thead>
                                     <tr class="text-left">
@@ -47,11 +60,15 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                         <td><?=$classe['niveau']?></td>
                                         <td class="action">
                                             <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
-                                            <a name="" id="" class="text-danger" href="#" role="button"><i class="fa fa-trash-o"></i></a>
+                                            <a name="" id="" class="text-danger" href="<?= WEB_ROUTE . '?controllers=responsable&view=deleteClasse&id_classe='.$classe['id_classe'] ?>" role="button"><i class="fa fa-trash-o"></i></a>
                                         </td>
                                     </tr>
 <?php endforeach ?>
                             </tbody>
+                            <small class = "form-text text-left ml-5 text-danger">
+                                    <?= isset($_SESSION['erreurSuppression']) ? $_SESSION['erreurSuppression'] : '' ;?>
+                                    <?php unset($_SESSION['erreurSuppression'])?>
+                            </small>
                     </table>
                 </div>
             </div>
@@ -90,8 +107,14 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
 </style>    
 
+      
 <script type="text/javascript">
-                $(document).ready( function () {
-    $('#classe').DataTable();
-} );
-</script>   
+// $( document ).ready(function() {
+//     console.log( "ready!" );
+//     ;$('.toast').toast("show")
+// })
+
+$(document).ready(function(){
+        $("#message").show().fadeIn(3000).css("color","blue")
+    });
+</script>

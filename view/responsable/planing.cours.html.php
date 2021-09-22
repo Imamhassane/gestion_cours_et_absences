@@ -13,6 +13,9 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
         <div class="text-center mb-3"><h2 >Planifier un cours</h2></div>
             <div class="column">
                 <div class="card">
+                            <small class = "form-text text-left ml-5 text-danger">
+                                <?= isset($_SESSION['erreurPlaning']) ? $_SESSION['erreurPlaning'] : '' ;?>
+                            </small>
                 <form method="post" action="">
                    <input type="hidden" name="controllers" value="responsable">
                     <input type="hidden" name="action" value="ajoutPlaning"> 
@@ -22,7 +25,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                             <small class = "form-text text-left ml-5 text-danger">
                                 <?= isset($arrayError['date']) ? $arrayError['date'] : '' ;?>
                             </small> 
-                        </div>
+                        </div> 
                         <div class="  mb-2">
                             <label for="" class="">Début du cours</label>
                             <input type="time" id="" class="fadeIn second  " name="debut" placeholder="">
@@ -46,6 +49,9 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
         </div>
     </div>
 </div>
+<?php 
+unset($_SESSION['erreurPlaning']);
+?>
 <style>
  input[type="date"],
  input[type="time"],

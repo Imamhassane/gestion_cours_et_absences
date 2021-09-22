@@ -2,35 +2,40 @@
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
+$annee_scolaire = find_annee_scolaire();
+
 ?>
 
 
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-11  liste-col">
+        <div class="col-md-11 liste-col">
                     <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
-                        <input type="hidden" name="" value="">
-                        <input type="hidden" name="" value="">
+                        <input type="hidden" name="controllers" value="responsable">
+                        <input type="hidden" name="action" value="filterCoursNonplanifie">
                         <div class="form-group ml-1">
                             <div class="form-group">
                                 <label for="">Année scolaire</label>
-                                <select class="form-control ml-2" name="test" id="">
-                                <?php foreach ($cours as $cour):?>
-                                    <option><? //$cour['annee_scolaire']?></option>;
-                                <?php endforeach;?>   
+                                <select class="form-control ml-2" name="annee" id="" value="">
+                                <?php foreach ($annee_scolaire as $annee):?>
+                                    <option><?=$annee['annee_scolaire']?></option>;
+                                <?php endforeach?>   
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" name="" class="btn  ml-3 ">OK</button>
-                        <a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=ajout.cours' ?>" role="button">Ajouter +</a>
+                        <button type="submit" name="ok" class="btn  ml-3 ">OK</button>
 
                     </form>
-   
+
                 <div class="column">
                 <div class="card">
-                <h2 class=" mb-3">LA LISTE DES COURS NON PLANIFIÉS</h2>
+                    <div class="d-inline">
+                            <h2 class=" ">LA LISTE DES COURS NON PLANIFIÉS</h2>
+                            <a name="" id="" class="btn btn-primary ml-auto mr-2 float-right mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=ajout.cours' ?>" role="button">Ajouter +</a>
+                    </div>
                     <table class="table">
+
                                 <thead>
                                     <tr>
                                     
@@ -38,8 +43,10 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                         <th scope="col">Module</th>
                                         <th scope="col">Classe</th>
                                         <th scope="col">Semestre</th>
-                                        <th scope="col">Durée</th>
+                                        <th scope="col">Heure total</th>
+                                        <th scope="col">Heure restante</th>
                                         <th scope="col">Planfier</th>
+                                        <th scope="col">Cours</th>
                                         <th scope="col">Action</th>
 
                                     </tr>
@@ -51,8 +58,17 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                         <td><?=$cour['libelle_module']?></td>
                                         <td><?=$cour['nom_classe']?></td>
                                         <td><?=$cour['semestre']?></td>
-                                        <td><?=$cour['duree']?></td>
-                                        <td><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Planifier</a></td>
+                                        <td><?=$cour['heure_total']?></td>
+                                        <td><?=$cour['heure_restante'] ?></td>
+                                        <td>
+                                            <?php if ($cour['heure_restante'] == 0):?>
+                                                <a name="" id="" class="btn btn-primary ml-auto mr-2 disabled" href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Planifier</a>
+                                            <?php else:?>
+                                                <a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Planifier</a>
+                                            <?php endif?>
+                                        </td>
+
+                                        <td><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours&id_cours='.$cour['id_cours']?>" role="button">Voir le cours</a></td>
                                         <td class="action">
                                             <a name="" id="" class="" href="<?= WEB_ROUTE . '?controllers=responsable&view=modifieCoursPlanifie&id_cours='.$cour['id_cours'] ?>" role="button"><i class="fa fa-edit"></i></a>
                                             <a name="" id="" class="text-danger" href="<?= WEB_ROUTE . '?controllers=responsable&view=deleteCoursPlanifie&id_cours='.$cour['id_cours'] ?>" role="button"><i class="fa fa-trash-o"></i></a>
@@ -64,8 +80,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                 </tbody>
                                 <small class = "form-text text-left ml-5 text-danger">
                                     <?= isset($_SESSION['erreurSuppression']) ? $_SESSION['erreurSuppression'] : '' ;?>
-                                    <?php unset($_SESSION['erreurSuppression'])?>
-                            </small>
+                                </small>
                     </table>
                 </div>
             </div>
@@ -73,13 +88,16 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
         </div>
     </div>
 </div>
+<?php 
+unset($_SESSION['erreurSuppression']);
+?>
 
 <style>
     .btn{
         background-color: #152032;
         border: none;
         color: white;
-        padding: 5px 15px;
+        padding: 10px 15px;
         text-align: center;
         text-decoration: none;
         font-size: 13px;    

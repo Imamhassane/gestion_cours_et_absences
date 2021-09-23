@@ -12,13 +12,19 @@ $annee_scolaire = find_annee_scolaire();
 if ($_SESSION['message']==1) {
 
 
-echo'
-<div class="container-fluid p-0">
-    <div  id = "message"  class ="alert alert-success text-center">Professeur créé avec succès</div>
-</div>';
-}
-unset($_SESSION['message']);
-?>
+    echo'
+    <div class="container-fluid p-0">
+        <div  id = "message"  class ="alert alert-success text-center">Professeur créée avec succès</div>
+    </div>';
+    }elseif($_SESSION['message']==2){
+    
+        echo'
+        <div class="container-fluid p-0">
+            <div  id = "message"  class ="alert alert-success text-center">Professeur modifié avec succès</div>
+        </div>';
+    }
+    unset($_SESSION['message']);
+    ?>
         <div class="col-md-11  liste-col">
                     <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
                         <!-- <input type="hidden" name="" value="">

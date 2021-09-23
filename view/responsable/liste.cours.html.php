@@ -11,7 +11,8 @@ $annee_scolaire = find_annee_scolaire();
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-11  liste-col">
-                 
+        <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
+
                     <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
                         <input type="hidden" name="" value="">
                         <input type="hidden" name="" value="">
@@ -96,6 +97,9 @@ $annee_scolaire = find_annee_scolaire();
         color:#152032;
         margin-top: 5px;
     }
-</style>    
 
-      
+   .liste-col .fa-arrow-circle-left{
+        font-size:32px;
+        color:#152032;
+    }
+</style>

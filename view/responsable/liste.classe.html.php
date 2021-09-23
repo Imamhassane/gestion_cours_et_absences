@@ -16,26 +16,32 @@ echo'
 <div class="container-fluid p-0">
     <div  id = "message"  class ="alert alert-success text-center">Classe créée avec succès</div>
 </div>';
+}elseif($_SESSION['message']==2){
+
+    echo'
+    <div class="container-fluid p-0">
+        <div  id = "message"  class ="alert alert-success text-center">Classe modifié avec succès</div>
+    </div>';
 }
 unset($_SESSION['message']);
 ?>
         <div class="col-md-11  liste-col">
-        <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
-                        <input type="hidden" name="controllers" value="">
-                        <input type="hidden" name="action" value="">
-                        <div class="form-group ml-1">
+        <!--  <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
+                       <input type="hidden" name="controllers" value="responsable">
+                        <input type="hidden" name="action" value="filterClasse">
+                        <div class="form-group ml-2">
                             <div class="form-group">
                                 <label for="">Année scolaire</label>
                                 <select class="form-control ml-2" name="annee" id="" value="">
                                 <?php foreach ($annee_scolaire as $annee):?>
-                                    <option><?=$annee['annee_scolaire']?></option>;
+                                    <option value="<?=$annee['etat_annee_scolaire']?>"><?=$annee['annee_scolaire']?></option>;
                                 <?php endforeach?>   
                                 </select>
                             </div>
                         </div>
                         <button type="submit" name="ok" class="btn  ml-3 ">OK</button>
 
-                    </form>
+                    </form> -->
             
                 <div class="column">
                 <div class="card">
@@ -49,7 +55,10 @@ unset($_SESSION['message']);
                                         <th scope="col">Nom de la classe</th>
                                         <th scope="col">Filière</th>
                                         <th scope="col">Niveau</th>
+                                        <!-- <th scope="col">Voir les étudiants<th> -->
+                                        <th scope="col">Lister des étudiants</th>
                                         <th scope="col">Action</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -58,10 +67,12 @@ unset($_SESSION['message']);
                                         <td><?=$classe['nom_classe']?></td>
                                         <td><?=$classe['filiere']?></td>
                                         <td><?=$classe['niveau']?></td>
+                                        <td><a name="" id="" class="btn btn-primary  " href="#" role="button">Voir  les étudiants</a></td>
                                         <td class="action">
-                                            <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
+                                            <a name="" id="" class="" href="<?= WEB_ROUTE . '?controllers=responsable&view=updateClasse&id_classe='.$classe['id_classe'] ?>" role="button"><i class="fa fa-edit"></i></a>
                                             <a name="" id="" class="text-danger" href="<?= WEB_ROUTE . '?controllers=responsable&view=deleteClasse&id_classe='.$classe['id_classe'] ?>" role="button"><i class="fa fa-trash-o"></i></a>
                                         </td>
+                                     
                                     </tr>
 <?php endforeach ?>
                             </tbody>

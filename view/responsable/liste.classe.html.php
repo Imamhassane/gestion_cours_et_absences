@@ -84,7 +84,32 @@ unset($_SESSION['message']);
                 </div>
             </div>
    
-           
+            <div class="pagination mt-2 mb-5">    
+            <?php  
+                
+                $total_pages = $total_records / $per_page_record;   
+         
+                $pagLink = "";                                           
+                if($page>=2){   
+                    echo "<a href='?controllers=responsable&view=liste.classe&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   
+                }       
+                        
+                for ($i=1; $i<=$total_pages; $i++) {   
+                if ($i == $page) {   
+                    $pagLink .= "<a class = 'active' href='?controllers=responsable&view=liste.classe&page="  
+                                                        .$i."'>".$i." </a>";   
+                }               
+                else  {   
+                    $pagLink .= "<a href='?controllers=responsable&view=liste.classe&page=".$i."'>".$i." </a>";     
+                }   
+                };     
+                echo $pagLink;   
+                if($page<$total_pages){   
+                    echo "<a href='?controllers=responsable&view=liste.classe&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span>                    </a>";   
+                }   
+        
+            ?>    
+      </div> 
             
         </div>
     </div>
@@ -116,9 +141,59 @@ unset($_SESSION['message']);
 
       
 
-</style>    
 
-      
+    .btn{
+        background-color: #152032;
+        border: none;
+        color: white;
+        padding: 10px 15px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 13px;    
+    }
+    .action .fa{
+    width: 22px;
+    height: 26px;
+    font-size: 20px;
+    display: inline-block;
+
+}
+    .fa-edit{
+        color:#152032;
+        margin-top: 5px;
+    }
+    .inline{   
+                display: inline-block;   
+                margin: 20px 0px;   
+            }   
+            
+            input, button{   
+                height: 34px;   
+            }   
+    
+        .pagination {   
+            display: inline-block;   
+        }   
+        .pagination a {   
+            font-weight:bold;   
+            font-size:18px;   
+            color: black;   
+            float: left;   
+            padding: 8px 16px;   
+            text-decoration: none;   
+            border:1px solid black;   
+        }   
+        .pagination a.active {   
+            background-color: #152032;   
+            color: #fff;   
+        }   
+        .pagination a:hover:not(.active) {   
+            background-color: #226AD9;   
+            color: #fff;    
+            border: 1px solid #226AD9; 
+        }   
+        </style>     
+
 <script type="text/javascript">
 // $( document ).ready(function() {
 //     console.log( "ready!" );

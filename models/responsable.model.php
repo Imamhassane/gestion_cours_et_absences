@@ -32,15 +32,28 @@ function get_classe_by_id(int $id_classe){
 fermer_connexion_bd($pdo);
 return  $datas ;
 }
-function find_all_classe():array{
-    $pdo = ouvrir_connexion_db();
-       $sql = "select * from classe";
-       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-       $sth->execute();
-       $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
-    fermer_connexion_bd($pdo);
-   return  $datas ;
+function find_all_classe($page=null):array{
+   $pdo = ouvrir_connexion_db();
+   $per_page_record = 15;      
+   $start_from = ($page-1) * $per_page_record;     
+
+      $sql = "SELECT * FROM  classe LIMIT $start_from, $per_page_record";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute();
+      $sql2 =  "SELECT * FROM  classe ";
+      $stn = $pdo->prepare($sql2, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $stn->execute();
+      $datas['data'] = $sth->fetchAll((PDO::FETCH_ASSOC));
+      $datas['row'] =$sth->rowCount();
+      $datas['per_page_record'] =$per_page_record;
+
+      $datas['total_records'] =$stn->rowCount();
+
+
+   fermer_connexion_bd($pdo);
+  return  $datas ;
 }
+
 
 function find_all_module():array{
     $pdo = ouvrir_connexion_db();
@@ -96,16 +109,31 @@ function ajout_planing_cours( $datas):int{
    return $sth->rowCount();
 } 
 
-function find_cours_non_planifie(){
+function find_cours_non_planifie($page=null){
    $pdo = ouvrir_connexion_db();
-      $sql = "select * from cours c , user u , module m , classe cl , annee_scolaire an
+   $per_page_record = 5;      
+    //listing
+
+   $start_from = ($page-1) * $per_page_record;     
+      $sql =  "SELECT * FROM  cours c , user u , module m , classe cl , annee_scolaire an
       where c.id_user = u.id_user 
       and c.id_module = m.id_module
       and c.id_classe = cl.id_classe
-      and c.id_annee_scolaire = an.id_annee_scolaire  ";
+      and c.id_annee_scolaire = an.id_annee_scolaire  LIMIT $start_from, $per_page_record";
       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
       $sth->execute();
-      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+      //listing
+      //pagination
+      $sql1 =  "SELECT * FROM  cours c";
+        $stm = $pdo->prepare($sql1, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $stm->execute();
+        //pagination
+      $datas['data'] = $sth->fetchAll((PDO::FETCH_ASSOC));
+      $datas['row'] =$sth->rowCount();
+      $datas['per_page_record'] =$per_page_record;
+      $datas['total_records'] =$stm->rowCount();
+
+      //var_dump($stm->rowCount());
    fermer_connexion_bd($pdo);
   return  $datas ;
 }

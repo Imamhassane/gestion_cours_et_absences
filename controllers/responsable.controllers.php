@@ -201,14 +201,20 @@ function liste_all_professeur(){
     require ( ROUTE_DIR . 'view/responsable/liste.professeur.html.php' );
 }
 function liste_all_classe() {
-    if (isset($_POST['ok'])) {
-        $etat_annee_scolaire = $_POST['annee'];
-        $classes = filter_classe_by_annee($etat_annee_scolaire ) ;
-//
-    }else{
-        $classes = find_all_classe();
-    }
- require ( ROUTE_DIR . 'view/responsable/liste.classe.html.php' );
+    if (isset($_GET["page"])) {    
+        $page  = $_GET["page"];    
+    }    
+    else {    
+      $page=1;    
+    } 
+    $data =find_all_classe($page);
+    
+    $classes = $data['data'];   
+    $per_page_record = $data['per_page_record'] ;   
+    $total_records= $data['total_records'];
+   // var_dump($total_records);
+
+require ( ROUTE_DIR . 'view/responsable/liste.classe.html.php' );
 }
 function liste_cours_proprieties(){
     $classes = find_all_classe();
@@ -226,7 +232,18 @@ function liste_cours_no_planified(){
         $classe = $_POST['classe'];
         $cours = filter_cours_non_planifie($etat_annee_scolaire , $prof,$module, $classe ) ;
     }else{
-        $cours = find_cours_non_planifie();   
+        if (isset($_GET["page"])) {    
+            $page  = $_GET["page"];    
+        }    
+        else {    
+          $page=1;    
+        } 
+        $data =find_cours_non_planifie($page);
+        
+        $cours = $data['data'];   
+        $per_page_record = $data['per_page_record'] ;   
+        $total_records= $data['total_records'];
+
     }
     require ( ROUTE_DIR . 'view/responsable/liste.cours.nonplanifie.html.php' );
 }

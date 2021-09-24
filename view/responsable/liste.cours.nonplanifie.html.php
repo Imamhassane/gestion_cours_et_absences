@@ -6,8 +6,7 @@ $annee_scolaire = find_annee_scolaire();
 $classes = find_all_classe();
 $modules = find_all_module();
 $professeurs = find_all_professeur();
-?>
-
+?> 
 <?php if ($_SESSION['message']==1) {
 
 
@@ -94,6 +93,7 @@ $professeurs = find_all_professeur();
                                 <tbody>
                                 <?php foreach ($cours as $cour):?>
                                     <tr>
+                                        
                                         <th><?=$cour['prenom'].' '.$cour['nom']?> </th>
                                         <td><?=$cour['libelle_module']?></td>
                                         <td><?=$cour['nom_classe']?></td>
@@ -115,36 +115,45 @@ $professeurs = find_all_professeur();
                                     </tr>
                                 <?php endforeach; ?>
                                   
-                                  
+         
                                 </tbody>
                                 <small class = "form-text text-left ml-5 text-danger">
                                     <?= isset($_SESSION['erreurSuppression']) ? $_SESSION['erreurSuppression'] : '' ;?>
                                 </small>
                                                   
                     </table>
+                
                 </div>
             </div>
+            <div class="pagination mt-2 mb-5">    
+            <?php  
+                
+                $total_pages = $total_records / $per_page_record;     
+                $pagLink = "";                                           
+                if($page>=2){   
+                    echo "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   
+                }       
+                        
+                for ($i=1; $i<=$total_pages; $i++) {   
+                if ($i == $page) {   
+                    $pagLink .= "<a class = 'active' href='?controllers=responsable&view=liste.cours.nonplanifie&page="  
+                                                        .$i."'>".$i." </a>";   
+                }               
+                else  {   
+                    $pagLink .= "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".$i."'>".$i." </a>";     
+                }   
+                };     
+                echo $pagLink;   
+                if($page<$total_pages){   
+                    echo "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span>                    </a>";   
+                }   
+        
+            ?>    
+      </div> 
             </div>
         </div>
-                 <!--                 <nav aria-label="Page navigation ">
-                                   <ul class="pagination justify-content-center">
-                                     <li class="page-item disabled">
-                                       <a class="page-link" href="#" aria-label="Previous">
-                                         <span aria-hidden="true">&laquo;</span>
-                                         <span class="sr-only">Previous</span>
-                                       </a>
-                                     </li>
-                                     <?php for( $i = 0 ; $i < $pages ; $i++):?>
-                                     <li class="page-item active"><a class="page-link" href="<?=WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie&page='.$i?>"><?=$i?></a></li>
-                                     <?php endfor ?>
-                                     <li class="page-item">
-                                       <a class="page-link" href="#" aria-label="Next">
-                                         <span aria-hidden="true">&raquo;</span>
-                                         <span class="sr-only">Next</span>
-                                       </a>
-                                     </li>
-                                   </ul>
-                                 </nav> -->
+             
+
     </div>
 </div>
 <?php 
@@ -181,6 +190,34 @@ $(document).ready(function(){
         color:#152032;
         margin-top: 5px;
     }
-</style>    
-
-      
+    .inline{   
+                display: inline-block;   
+                margin: 20px 0px;   
+            }   
+            
+            input, button{   
+                height: 34px;   
+            }   
+    
+        .pagination {   
+            display: inline-block;   
+        }   
+        .pagination a {   
+            font-weight:bold;   
+            font-size:18px;   
+            color: black;   
+            float: left;   
+            padding: 8px 16px;   
+            text-decoration: none;   
+            border:1px solid black;   
+        }   
+        .pagination a.active {   
+            background-color: #152032;   
+            color: #fff;   
+        }   
+        .pagination a:hover:not(.active) {   
+            background-color: #226AD9;   
+            color: #fff;    
+            border: 1px solid #226AD9; 
+        }   
+        </style>     

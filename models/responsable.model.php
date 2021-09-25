@@ -1,5 +1,5 @@
 <?php
-function find_all_professeur():array{
+function get_all_professeur():array{
     $pdo = ouvrir_connexion_db();
        $sql = "select * from user u , role r 
        where u.id_role = r.id_role 
@@ -10,6 +10,33 @@ function find_all_professeur():array{
        $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
     fermer_connexion_bd($pdo);
    return  $datas ;
+}
+function find_all_professeur($page=null):array{
+   $pdo = ouvrir_connexion_db();
+   $per_page_record = 5;      
+    //listing
+   $start_from = ($page-1) * $per_page_record;     
+      $sql =  "SELECT * FROM  user u , role r 
+      where u.id_role = r.id_role 
+      and r.nom_role like ? LIMIT $start_from, $per_page_record";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute(['ROLE_PROFESSEUR']);
+      //listing
+      //pagination
+      $sql1 =  "SELECT * FROM  user u , role r 
+      where u.id_role = r.id_role 
+      and r.nom_role like ? ";
+      $stm = $pdo->prepare($sql1, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $stm->execute(['ROLE_PROFESSEUR']);
+        //pagination
+      $datas['data'] = $sth->fetchAll((PDO::FETCH_ASSOC));
+      $datas['row'] =$sth->rowCount();
+      $datas['per_page_record'] =$per_page_record;
+      $datas['total_records'] =$stm->rowCount();
+
+      //var_dump($stm->rowCount());
+   fermer_connexion_bd($pdo);
+  return  $datas ;
 }
 
 function get_user_by_id(int $id_user){
@@ -32,9 +59,18 @@ function get_classe_by_id(int $id_classe){
 fermer_connexion_bd($pdo);
 return  $datas ;
 }
+function get_all_classe(){
+   $pdo = ouvrir_connexion_db();
+   $sql = "select * from classe  ";
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute();
+   $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+fermer_connexion_bd($pdo);
+return  $datas ;
+}
 function find_all_classe($page=null):array{
    $pdo = ouvrir_connexion_db();
-   $per_page_record = 15;      
+   $per_page_record = 5;      
    $start_from = ($page-1) * $per_page_record;     
 
       $sql = "SELECT * FROM  classe LIMIT $start_from, $per_page_record";
@@ -46,13 +82,12 @@ function find_all_classe($page=null):array{
       $datas['data'] = $sth->fetchAll((PDO::FETCH_ASSOC));
       $datas['row'] =$sth->rowCount();
       $datas['per_page_record'] =$per_page_record;
-
       $datas['total_records'] =$stn->rowCount();
-
-
    fermer_connexion_bd($pdo);
   return  $datas ;
 }
+
+
 
 
 function find_all_module():array{
@@ -73,7 +108,16 @@ function find_annee_scolaire():array{
    fermer_connexion_bd($pdo);
   return  $datas ;
 }
-
+function find_annee_scolaire_en_cours():array{
+   $pdo = ouvrir_connexion_db();
+   $sql = "select * from annee_scolaire
+   where  etat_annee_scolaire like ?  ";
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute(['en_cours']);
+   $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+fermer_connexion_bd($pdo);
+return  $datas ;
+}
 function ajout_classe(array $datas):int{
     $pdo = ouvrir_connexion_db();
     extract($datas);
@@ -90,12 +134,37 @@ function ajout_classe(array $datas):int{
    extract($datas);
    $sql = "INSERT INTO `cours` ( `id_annee_scolaire`, `id_classe`, `id_module`, `id_user`, `semestre`)
     VALUES ( ?, ?, ?, ?, ?)"; 
-   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
    $sth->execute(array($id_annee_scolaire, $classe ,$id_module,$id_user,$semestre ));
-   fermer_connexion_bd($pdo);
+   $dernier_id = $pdo->lastInsertId();
 
+   fermer_connexion_bd($pdo);
+   return $dernier_id;
+}
+
+function ajout_in_cours_classe($classe,$id_cours){
+   $pdo = ouvrir_connexion_db();
+   extract($datas);
+   $sql = "INSERT INTO `classe_cours` ( `id_classe`, `id_cours`)
+    VALUES ( ?, ?)"; 
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute(array($classe ,$id_cours));
+   fermer_connexion_bd($pdo);
    return $sth->rowCount();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 function ajout_planing_cours( $datas):int{
    $pdo = ouvrir_connexion_db();
    extract($datas);
@@ -113,7 +182,6 @@ function find_cours_non_planifie($page=null){
    $pdo = ouvrir_connexion_db();
    $per_page_record = 5;      
     //listing
-
    $start_from = ($page-1) * $per_page_record;     
       $sql =  "SELECT * FROM  cours c , user u , module m , classe cl , annee_scolaire an
       where c.id_user = u.id_user 
@@ -137,19 +205,19 @@ function find_cours_non_planifie($page=null){
    fermer_connexion_bd($pdo);
   return  $datas ;
 }
-/*  function find_cours_non_planifie_paginate($stat , $npage ){
+function get_cours_non_planifie(){
    $pdo = ouvrir_connexion_db();
-      $sql = "select * from cours c , user u , module m , classe cl , annee_scolaire an
+      $sql =  "SELECT * FROM  cours c , user u , module m , classe cl , annee_scolaire an
       where c.id_user = u.id_user 
       and c.id_module = m.id_module
       and c.id_classe = cl.id_classe
-      and c.id_annee_scolaire = an.id_annee_scolaire LIMIT $stat , $npage ";
+      and c.id_annee_scolaire = an.id_annee_scolaire ";
       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
       $sth->execute();
       $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
    fermer_connexion_bd($pdo);
   return  $datas ;
-}  */
+}
 
 function find_cours_non_planifie_by_id( $id_cours){
    $pdo = ouvrir_connexion_db();
@@ -233,7 +301,7 @@ function filter_classe_by_annee($etat_annee_scolaire = "en_cours" ){
 
 
 
-function delete_cours_planifie( $id_cours) {
+/* function delete_cours_planifie( $id_cours) {
    $pdo = ouvrir_connexion_db();
    $sql = " DELETE FROM `cours` 
       WHERE `id_cours` = ? ";
@@ -242,7 +310,7 @@ function delete_cours_planifie( $id_cours) {
    fermer_connexion_bd($pdo);
 
    return $sth->rowCount();
-}
+} */
 
 
 function delete_cours( $id_planing) {
@@ -277,9 +345,7 @@ function delete_classe( $id_classe) {
    return $sth->rowCount();
 }
 
-
-
- function update_heure_restante(  $id_cours ,  $heure_restante ){
+function update_heure_restante(  $id_cours ,  $heure_restante ){
    $pdo = ouvrir_connexion_db();
    extract($datas);
    $sql = "UPDATE `cours` SET `heure_restante` = ?

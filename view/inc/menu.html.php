@@ -6,7 +6,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 <div class="area"></div>
 <nav class="main-menu ">
 <img class="rounded-circle mt-2" src="<?=$_SESSION['userConnect'][0]['avatar']?>">
-            <p><?=$_SESSION['userConnect'][0]['prenom'].' '.$_SESSION['userConnect'][0]['nom']?></p>
+            <strong><p><?=$_SESSION['userConnect'][0]['prenom'].' '.$_SESSION['userConnect'][0]['nom']?></p></strong>
 
             <ul class="mt-5">
           

@@ -21,8 +21,6 @@
             liste_cours_proprieties();
            } elseif ( $_GET [ 'view' ]== 'liste.cours.nonplanifie' ) {
             liste_cours_no_planified();
-           }  elseif ( $_GET [ 'view' ]== 'deleteCoursPlanifie' ) {
-            delete_cours_nonplanifie();
            } elseif ( $_GET [ 'view' ]== 'updateCours' ) {
             $_SESSION['id_cours'] = $_GET['id_cours'];
             get_cours();
@@ -153,10 +151,18 @@ function insert_cours(array $datas):void{
     
     if (form_valid($arrayError)) {
               
-            ajout_cours($datas);   
-            $_SESSION['message']=1;
-    
-                 header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');
+               
+              $id_cours = ajout_cours($datas);
+             /*  foreach($classe as $value){
+                   $cour_classe=[
+                        $classe,
+                        $id_cours
+                   ];
+                     ajout_in_cours_classe($cour_classe);   
+               } */
+               ajout_in_cours_classe($classe,$id_cours);   
+                $_SESSION['message']=1; 
+                header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');
             }else{
     
                $_SESSION['arrayError']=$arrayError;
@@ -197,9 +203,20 @@ function insert_planing_cours(array $datas):void{
 }
 
 function liste_all_professeur(){
-    $professeurs = find_all_professeur();
+    if (isset($_GET["page"])) {    
+        $page  = $_GET["page"];    
+    }    
+    else {    
+      $page=1;    
+    } 
+    $data =find_all_professeur($page);
+
+    $professeurs = $data['data'];   
+    $per_page_record = $data['per_page_record'] ;   
+    $total_records= $data['total_records'];
     require ( ROUTE_DIR . 'view/responsable/liste.professeur.html.php' );
 }
+
 function liste_all_classe() {
     if (isset($_GET["page"])) {    
         $page  = $_GET["page"];    
@@ -216,11 +233,12 @@ function liste_all_classe() {
 
 require ( ROUTE_DIR . 'view/responsable/liste.classe.html.php' );
 }
+
 function liste_cours_proprieties(){
-    $classes = find_all_classe();
+    $classes = get_all_classe();
     $modules = find_all_module();
-    $professeurs = find_all_professeur();
-    $annee_scolaires=find_annee_scolaire();
+    $professeurs = get_all_professeur();
+    $annee_scolaires=find_annee_scolaire_en_cours();
     require ( ROUTE_DIR . 'view/responsable/ajout.cours.html.php' );
 }
 function liste_cours_no_planified(){
@@ -239,12 +257,15 @@ function liste_cours_no_planified(){
           $page=1;    
         } 
         $data =find_cours_non_planifie($page);
-        
         $cours = $data['data'];   
         $per_page_record = $data['per_page_record'] ;   
         $total_records= $data['total_records'];
 
     }
+    $classes = get_all_classe();
+    $modules = find_all_module();
+    $professeurs = get_all_professeur();
+    $annee_scolaires=find_annee_scolaire();
     require ( ROUTE_DIR . 'view/responsable/liste.cours.nonplanifie.html.php' );
 }
 /* function liste_cours_no_planified($get=null){
@@ -278,8 +299,9 @@ function liste_cours_by_id(){
 
      require ( ROUTE_DIR . 'view/responsable/liste.cours.html.php' );
 }
-function delete_cours_nonplanifie(){
-    $data = find_all_cours();
+/* function delete_cours_nonplanifie(){
+    $data = get_cours_non_planifie();
+    //var_dump($data[0]['id_classe']);
     foreach ($data as $value) {
         if ($value['id_cours'] == $_GET ['id_cours'] ) {
             $_SESSION['erreurSuppression']= 'Ce cours est lié à un cours déjà planifé , Pour le supprimer veuillez supprimer la planificcation compléte dans la liste des cours';
@@ -289,9 +311,9 @@ function delete_cours_nonplanifie(){
     $id = $_GET ['id_cours'];
     $delete =  delete_cours_planifie($id);
     header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');        
-}
+} */
 function delete_a_user(){
-    $data = find_cours_non_planifie();
+    $data = get_cours_non_planifie();
     foreach ($data as  $value) {
         if ($value['id_user'] == $_GET ['id_user'] ) {
             $_SESSION['erreurSuppression']= 'Ce professeur est enregistré dans un cours , Pour le supprimer veuillez supprimer les cours qui lui sont lié ';
@@ -303,7 +325,7 @@ function delete_a_user(){
     header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.professeur');
 }
 function delete_a_classe(){
-    $data = find_cours_non_planifie();
+    $data = get_cours_non_planifie();
     foreach ($data as  $value) {
         if ($value['id_classe'] == $_GET ['id_classe'] ) {
             $_SESSION['erreurSuppression']= 'Cette classe est lié à un cours , Pour le supprimer veuillez supprimer le cours qui lui est lié ';
@@ -311,6 +333,7 @@ function delete_a_classe(){
         }
     }
     $id = $_GET ['id_classe']; 
+   // delete_classe_cours($id);
     $delete =  delete_classe($id); 
     header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.classe');
 
@@ -341,11 +364,15 @@ function get_classe(){
 }
 function get_cours(){
     $id = $_GET ['id_cours'];
-    $cours = find_cours_non_planifie_by_id($id);  
-    $classes = find_all_classe();
+
+    $cours = find_cours_non_planifie_by_id($id); 
+ 
+    $classes = get_all_classe();
     $modules = find_all_module();
-    $professeurs = find_all_professeur();
-    $annee_scolaires=find_annee_scolaire();
+    $professeurs = get_all_professeur();
+    $annee=find_annee_scolaire_en_cours();
+
+   // var_dump($annee_scolaires);
     require ( ROUTE_DIR . 'view/responsable/ajout.cours.html.php' );
     
 }
@@ -390,7 +417,8 @@ function modif_cours(array $datas):void{
        
         update_cours($id_cours ,$semestre ,$id_user,$id_module,$id_annee_scolaire,$classe);   
         $_SESSION['message']=2;
-        header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');
+        
+      header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');
    }else{
            $_SESSION['arrayError']=$arrayError;
            header('location:'.WEB_ROUTE.'?controllers=responsable&view=ajout.cours');

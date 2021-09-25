@@ -15,7 +15,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
             <div class="text-center mb-3"><h2>Planifier un cours</h2></div>
               
-                <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline">
+                <form method="POST" action="<?=WEB_ROUTE?>" class="form-block">
                         <input type="hidden" name="controllers" value="responsable">
                         <input type="hidden" name="action" value="<?=isset($cours[0]['id_cours'])?'editCours':'ajoutCours'?>">
                         <input type="hidden" name="id_cours"      value="<?=isset($cours[0]['id_cours']) ? $cours[0]['id_cours'] : ""; ?>">        
@@ -33,9 +33,9 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                             </div>
 
                             <div class=" col-md-6 mb-4 mt-2">
-                            <label for="" class="ml-5">pprofesseur</label>
+                            <label for="" class="ml-5">professeur</label>
                                 <select class=" select" name="id_user" id="">
-                                <option value="<?=$cours[0]['id_user']?>"><?=$cours[0]['prenom'].' '.$cours[0]['nom'].' , '.$cours[0]['specialite']?></option>
+                                <option value="<?=$cours[0]['id_user']?>"><?=$cours[0]['prenom'].' '.$cours[0]['nom'].'  '.$cours[0]['specialite']?></option>
                                 <?php foreach ($professeurs as $professeur):?>
                                     <option value="<?= $professeur['id_user']?>"><?= $professeur['prenom'].' '.$professeur['nom'].' , '.$professeur['specialite']?></option>
                                 <?php endforeach ?>
@@ -58,25 +58,27 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                 </small>
                             </div>
                             <div class=" col-md-6 mb-4 mt-2">
-                            <label for="" class="ml-5">année scolaire</label>
+                                <label for="" class="ml-5">année scolaire</label>
                                 <select class=" select" name="id_annee_scolaire" id="" >
-                                <option value="<?=$cours[0]['id_annee_scolaire']?>"><?=$cours[0]['annee_scolaire']?></option>
-                                <?php foreach ($annee_scolaires as $annee_scolaire):?>
-                                    <option value="<?= $annee_scolaire['id_annee_scolaire']?>"><?= $annee_scolaire['annee_scolaire']?></option>
-                                <?php endforeach ?>
+                                    <option value="<?=$cours[0]['id_annee_scolaire']?>"><?=$cours[0]['annee_scolaire']?></option>
+                                    <?php foreach ($annee_scolaires as $annee_scolaire):?>
+                                        <option value="<?= $annee_scolaire['id_annee_scolaire']?>"><?= $annee_scolaire['annee_scolaire']?></option>
+                                    <?php endforeach ?>
                                 </select>
                                 <small class = " form-text text-danger text-left ml-5">
                                         <?= isset($arrayError['id_annee_scolaire']) ? $arrayError['id_annee_scolaire'] : '' ;?>
                                 </small>
                             </div>
-                            <div class=" col-md-6 mb-4 ">
-                            <label for="" class="ml-5 mb-3">Choisir les classes</label>
-                            <?php if(isset($cours[0]['id_cours'])):?>
-                                <div class="row p-0 ml-2 ">
-                                    <input type="checkbox" id="" name="classe" value="<?= $cours[0]['id_classe']?>" checked>
-                                    <label for=""><?= $cours[0]['nom_classe']?> </label>
-                                </div>
-                            <?php endif ?>
+                            <div class=" col-md-6 mb-4 display">
+                                    <div class="col-md-12 p-0 ml-2 ">
+                                        <label for="" class="ml-5 mb-5">Choisir les classes</label>
+                                    </div>
+                                <?php if(isset($cours[0]['id_cours'])):?>
+                                    <div class="row p-0  ">
+                                        <input type="checkbox" id="" name="classe" value="<?= $cours[0]['id_classe']?>" checked>
+                                        <label for=""><?= $cours[0]['nom_classe']?> </label>
+                                    </div>
+                                <?php endif ?>
                                 <?php foreach ($classes as $classe):?>
                                 <div class="row p-0 ml-2 ">
                                     <input type="checkbox" id="" name="classe" value="<?= $classe['id_classe']?>">
@@ -88,7 +90,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                 </small>
                             </div>
                             <div class=" col-md-6 mb-4 "></div>
-                            
+                            <div class=" col-md-6 mb-4 "> </div>
                         <input type="submit" class="fadeIn fourth ml-auto mr-auto mt-4" value="<?=isset($cours[0]['id_cours']) ? 'Modifier' : "Creer"; ?>">
                 </form>
             </div>
@@ -115,5 +117,8 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 .liste-col .fa{
         font-size:32px;
         color:#152032;
+    }
+    .display{
+        display: contents;
     }
 </style>

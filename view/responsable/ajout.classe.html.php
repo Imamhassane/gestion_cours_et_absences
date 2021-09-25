@@ -21,13 +21,14 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                         <input type="hidden" name="id_classe"      value="<?=isset($classes[0]['id_classe']) ? $classes[0]['id_classe'] : ""; ?>">        
 
                         <div class="form-group mt-3 ">
-                            <input type="text" id="" class="fadeIn second" name="nom_classe" value="<?=$classes[0]['nom_classe']?>" placeholder="Entrer le nom de la classe">
+                            <label for="" class="ml-5 float-left">Nom de la classe</label>
+                            <input type="text" id="" class="fadeIn second" name="nom_classe" value="<?=$classes[0]['nom_classe']?>" placeholder="">
                             <small class = " form-text text-danger ">
                                 <?= isset($arrayError['nom_classe']) ? $arrayError['nom_classe'] : '' ;?>
                             </small>
                         </div>
                         <div class="mb-4 mt-2">
-                                <label for=""></label>
+                            <label for="" class="ml-5 float-left">Filière</label>
                                 <select class=" select" name="filiere" id="">
                                 <option><?=$classes[0]['filiere']?></option>
                                     <option>Developpement web</option>
@@ -36,7 +37,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                 </select>
                             </div>
                             <div class=" mb-4 mt-2">
-                                <label for=""></label>
+                                <label for="" class="ml-5 float-left">Niveau</label>
                                 <select class=" select" name="niveau" id=""  >
                                 <option><?=$classes[0]['niveau']?></option>
                                     <option>Licence 1</option>
@@ -58,4 +59,24 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
         font-size:32px;
         color:#152032;
     }
+    input[type=text], input[type=password], input[type=date], input[type=time], input[type=number], .select {
+    background-color: #f6f6f6;
+    border: none;
+    color: #0d0d0d;
+    padding: 15px 32px;
+    height: 60px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 5px;
+    width: 95%;
+    border: 2px solid #f6f6f6;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+}
 </style>

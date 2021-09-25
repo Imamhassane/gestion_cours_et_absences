@@ -2,10 +2,10 @@
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
-$annee_scolaire = find_annee_scolaire();
-$classes = find_all_classe();
-$modules = find_all_module();
-$professeurs = find_all_professeur();
+// $annee_scolaire = find_annee_scolaire();
+// //$classes = find_all_classe();
+// $modules = find_all_module();
+// $professeurs = find_all_professeur();
 ?> 
 <?php if ($_SESSION['message']==1) {
 
@@ -34,7 +34,7 @@ $professeurs = find_all_professeur();
                             <div class="form-group">
                                 <label for="">Année scolaire</label>
                                 <select class="form-control ml-2" name="annee" id="" value="">
-                                <?php foreach ($annee_scolaire as $annee):?>
+                                <?php foreach ($annee_scolaires as $annee):?>
                                     <option value="<?=$annee['etat_annee_scolaire']?>"><?=$annee['annee_scolaire']?></option>;
                                 <?php endforeach?>   
                                 </select>
@@ -106,12 +106,8 @@ $professeurs = find_all_professeur();
                                                 <a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Séance</a>
                                             <?php endif?>
                                         </td>
-
                                         <td><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.perid&id_cours='.$cour['id_cours']?>" role="button">Voir le cours</a></td>
-                                        <td class="action">
-                                            <a name="" id="" class="" href="<?= WEB_ROUTE . '?controllers=responsable&view=updateCours&id_cours='.$cour['id_cours'] ?>" role="button"><i class="fa fa-edit"></i></a>
-                                            <a name="" id="" class="text-danger" href="<?= WEB_ROUTE . '?controllers=responsable&view=deleteCoursPlanifie&id_cours='.$cour['id_cours'] ?>" role="button"><i class="fa fa-trash-o"></i></a>
-                                        </td>                                    
+                                        <td class="action"><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=updateCours&id_cours='.$cour['id_cours'] ?>" role="button">modifier <i class="fa fa-edit"></i></a></td>
                                     </tr>
                                 <?php endforeach; ?>
                                   
@@ -131,7 +127,7 @@ $professeurs = find_all_professeur();
                 $total_pages = $total_records / $per_page_record;     
                 $pagLink = "";                                           
                 if($page>=2){   
-                    echo "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   
+                    echo "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span></a>";   
                 }       
                         
                 for ($i=1; $i<=$total_pages; $i++) {   
@@ -145,7 +141,7 @@ $professeurs = find_all_professeur();
                 };     
                 echo $pagLink;   
                 if($page<$total_pages){   
-                    echo "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span>                    </a>";   
+                    echo "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span></a>";   
                 }   
         
             ?>    
@@ -180,15 +176,15 @@ $(document).ready(function(){
         font-size: 13px;    
     }
     .action .fa{
-    width: 22px;
-    height: 26px;
-    font-size: 20px;
+    width: 15px;
+    height: 16px;
+    font-size: 15px;
+    margin-left: 4px;
     display: inline-block;
 
 }
     .fa-edit{
-        color:#152032;
-        margin-top: 5px;
+        color:#fff;
     }
     .inline{   
                 display: inline-block;   

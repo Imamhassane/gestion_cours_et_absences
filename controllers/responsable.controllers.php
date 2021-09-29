@@ -12,7 +12,7 @@
            }elseif ( $_GET [ 'view' ]== 'tableau.bord' ) {
             require ( ROUTE_DIR . 'view/responsable/tableau.bord.html.php' );
            }elseif ( $_GET [ 'view' ]== 'liste.cours.perid' ) {
-           liste_cours_by_id();
+            liste_cours_by_id();
            }elseif ( $_GET [ 'view' ]== 'liste.classe' ) {
             liste_all_classe();
            }elseif ( $_GET [ 'view' ]== 'liste.professeur' ) {
@@ -36,19 +36,15 @@
           }elseif ( $_GET [ 'view' ]== 'updateClasse' ) {
             $_SESSION['id_classe'] = $_GET['id_classe'];
             get_classe();
+          }elseif ( $_GET [ 'view' ]== 'user.page' ) {
+             user_page();
           }
         }else{
             header('location:'.WEB_ROUTE.'?controllers=responsable&view=tableau.bord');
         }
     }elseif($_SERVER ['REQUEST_METHOD' ]=='POST'){
         if (isset($_POST['action'])){
-            if($_POST['action']=='ajoutProf'){
-                unset($_POST['controlluploaders']);
-                unset($_POST['action']);
-                unset($_POST['password_confirm']);
-                $_SESSION['restor'] = $_POST;
-                insert_prof($_POST,$_FILES); 
-            }elseif($_POST['action']=='ajoutClasse'){
+            if($_POST['action']=='ajoutClasse'){
                 unset($_POST['controllers']);
                 unset($_POST['action']);
                 insert_classe($_POST); 
@@ -90,41 +86,13 @@
 
 
 
- function insert_prof(array $datas, array $files):void{
 
-    $arrayError=array();
-    extract($datas);
-       validation_login($login,'login',$arrayError);  
-       validation_password($password,'password',$arrayError);
-       validation_champ($prenom,'prenom',$arrayError);
-       validation_champ($nom,'nom',$arrayError);  
-       validation_champ($grade,'grade',$arrayError); 
-       validation_champ($specialite,'specialite',$arrayError);   
-       // valide_image($_FILES, $arrayError, 'avatar', $target_file);
-     
-       if(login_exist($login)){
-        $arrayError['login'] = 'Ce login existe déjà';
-        $_SESSION['arrayError']=$arrayError;
-        header('location:'.WEB_ROUTE.'?controllers=responsable&view=ajout.professeur');
-    }
-       if (form_valid($arrayError)) {
-           $target_dir = "upload/";
-           $target_file = $target_dir . basename($_FILES['avatar']['name']);
-           $datas['avatar'] = $target_file;
-                upload_image($_FILES, $target_file);
-                ajout_user($datas);       
-                $_SESSION['message']=1;
-
-               header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.professeur');
-       }else{
-               $_SESSION['arrayError']=$arrayError;
-               header('location:'.WEB_ROUTE.'?controllers=responsable&view=ajout.professeur');
-           }      
-}
 function insert_classe(array $datas):void{
     $arrayError=array();
     extract($datas);
         validation_champ($nom_classe,'nom_classe',$arrayError);  
+        validation_champ($nom_classe,'niveau',$arrayError);  
+        validation_champ($nom_classe,'filiere',$arrayError);  
 
        if (form_valid($arrayError)) {
 
@@ -148,23 +116,21 @@ function insert_cours(array $datas):void{
     validation_champ($semestre,'semestre',$arrayError);
     validation_champ($id_user,'id_user',$arrayError);  
     validation_champ($id_module,'id_module',$arrayError);  
-    
+    validation_champ($classe,'classe',$arrayError);  
+
     if (form_valid($arrayError)) {
-              
-               
-              $id_cours = ajout_cours($datas);
-             /*  foreach($classe as $value){
+   
+             $id_cours = ajout_cours($datas);
+              foreach($classe as $value){
                    $cour_classe=[
-                        $classe,
-                        $id_cours
+                        $value,
+                        $id_cours 
                    ];
                      ajout_in_cours_classe($cour_classe);   
-               } */
-               ajout_in_cours_classe($classe,$id_cours);   
-                $_SESSION['message']=1; 
-                header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');
+               }
+            $_SESSION['message']=1; 
+            header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');
             }else{
-    
                $_SESSION['arrayError']=$arrayError;
                header('location:'.WEB_ROUTE.'?controllers=responsable&view=ajout.cours');
            }
@@ -248,7 +214,8 @@ function liste_cours_no_planified(){
         $prof = $_POST['professeur'];
         $module = $_POST['module'];
         $classe = $_POST['classe'];
-        $cours = filter_cours_non_planifie($etat_annee_scolaire , $prof,$module, $classe ) ;
+        $cours = filter_cours_non_planifie($etat_annee_scolaire , $prof,$module ,$classe) ;
+        
     }else{
         if (isset($_GET["page"])) {    
             $page  = $_GET["page"];    
@@ -268,29 +235,6 @@ function liste_cours_no_planified(){
     $annee_scolaires=find_annee_scolaire();
     require ( ROUTE_DIR . 'view/responsable/liste.cours.nonplanifie.html.php' );
 }
-/* function liste_cours_no_planified($get=null){
-
-    if (isset($_POST['ok'])) {
-        $etat_annee_scolaire = $_POST['annee'];
-        $prof = $_POST['professeur'];
-        $module = $_POST['module'];
-        $classe = $_POST['classe'];
-        $cours = filter_cours_non_planifie($etat_annee_scolaire , $prof,$module, $classe ) ;
-    }else{
-        $nbrpage = 10;
-        $cours = find_cours_non_planifie();   
-        $totalpage = count($cours);
-        $pages = ceil( $totalpage / $nbrpage );
-        if(isset($get)){
-            $page = $get;
-        }else{
-            $page = 1;
-        }
-        $start = ($pages-1) * ($nbrpage);
-        $cours = find_cours_non_planifie_paginate( $start , $nbrpage);
-    }
-    require ( ROUTE_DIR . 'view/responsable/liste.cours.nonplanifie.html.php' );
-} */
 function liste_cours_by_id(){
 
      $_SESSION['id_cours']= $_GET['id_cours'];
@@ -316,7 +260,7 @@ function delete_a_user(){
     $data = get_cours_non_planifie();
     foreach ($data as  $value) {
         if ($value['id_user'] == $_GET ['id_user'] ) {
-            $_SESSION['erreurSuppression']= 'Ce professeur est enregistré dans un cours , Pour le supprimer veuillez supprimer les cours qui lui sont lié ';
+            $_SESSION['erreurSuppression']= 'Ce professeur est lié à un cours , Pour le supprimer veuillez le modifier dans les cours qui lui sont liés ';
             header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.professeur');
         }
     }
@@ -333,7 +277,6 @@ function delete_a_classe(){
         }
     }
     $id = $_GET ['id_classe']; 
-   // delete_classe_cours($id);
     $delete =  delete_classe($id); 
     header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.classe');
 
@@ -366,13 +309,11 @@ function get_cours(){
     $id = $_GET ['id_cours'];
 
     $cours = find_cours_non_planifie_by_id($id); 
- 
+
     $classes = get_all_classe();
     $modules = find_all_module();
     $professeurs = get_all_professeur();
     $annee=find_annee_scolaire_en_cours();
-
-   // var_dump($annee_scolaires);
     require ( ROUTE_DIR . 'view/responsable/ajout.cours.html.php' );
     
 }
@@ -391,7 +332,7 @@ function modif_prof(array $datas):void{
             header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.professeur');
        }else{
                $_SESSION['arrayError']=$arrayError;
-               header('location:'.WEB_ROUTE.'?controllers=responsable&view=ajout.professeur');
+               header('location:'.WEB_ROUTE.'?controllers=responsable&view=updateUser&id_user='.$id_user);
            }      
 }
 function modif_classe(array $datas):void{
@@ -405,28 +346,36 @@ function modif_classe(array $datas):void{
             header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.classe');
        }else{
                $_SESSION['arrayError']=$arrayError;
-               header('location:'.WEB_ROUTE.'?controllers=responsable&view=ajout.classe');
+               header('location:'.WEB_ROUTE.'?controllers=responsable&view=updateClasse&id_classe='.$id_classe);
            }      
 }
 function modif_cours(array $datas):void{
     $arrayError=array();
     extract($datas);
-  //  validation_champ($nom_classe,'nom_classe',$arrayError);  
-   if (form_valid($arrayError)) {
-
+    validation_champ($classe,'classe',$arrayError);
+    validation_champ($id_annee_scolaire,'id_annee_scolaire',$arrayError);  
+    validation_champ($semestre,'semestre',$arrayError);
+    validation_champ($id_user,'id_user',$arrayError);  
+    validation_champ($id_module,'id_module',$arrayError);  
+    validation_champ($classe,'classe',$arrayError);  
+    if (form_valid($arrayError)) {
        
         update_cours($id_cours ,$semestre ,$id_user,$id_module,$id_annee_scolaire,$classe);   
         $_SESSION['message']=2;
         
       header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');
    }else{
-           $_SESSION['arrayError']=$arrayError;
-           header('location:'.WEB_ROUTE.'?controllers=responsable&view=ajout.cours');
+            $_SESSION['arrayError']=$arrayError;
+          header('location:'.WEB_ROUTE.'?controllers=responsable&view=updateCours&id_cours='.$id_cours);
        }      
 }
 
 
+function user_page(){
+    $user = $_SESSION['userConnect'][0];
+   require ( ROUTE_DIR . 'view/responsable/user.page.html.php' );
 
+}
 
 
 

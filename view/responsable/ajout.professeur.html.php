@@ -8,18 +8,24 @@ require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 $modules = find_all_module();
+$classes = get_all_classe();
+
 ?>
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-11  liste-col">
-            <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.professeur' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
-
-            <div class="text-center mb-3"><h2 >Ajouter un professeur</h2></div>
+            <div class="col-md-10 liste-col">
+            <?php if(est_responsable()):?>
+                <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.professeur' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
+            <?php endif?>
+            <?php if(est_attache()):?>
+                <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=attache&view=liste.etudiant' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
+            <?php endif?>
+            <div class="text-center mb-3"><h2 ><?=est_responsable()?'Ajouter un professeur':'Inscrire un étudiant'?></h2></div>
            
                 <form method="POST" action="<?=WEB_ROUTE?>"enctype="multipart/form-data" >
                     <div class="form-inline">
-                        <input type="hidden" name="controllers" value="responsable" >
+                        <input type="hidden" name="controllers" value="security">
                         <input type="hidden" name="action" value="<?=isset($users[0]['id_user']) ? 'editProf':'ajoutProf'?>">
                         <input type="hidden" name="id_user"      value="<?=isset($users[0]['id_user']) ? $users[0]['id_user'] : ""; ?>">        
                       
@@ -66,45 +72,74 @@ $modules = find_all_module();
                                     <?= isset($arrayError['login']) ? $arrayError['login'] : '' ;?>
                                 </small>
                             </div> 
-                            <div class="col-md-6 mb-3 mt-2">
-                                <label for="" class = "ml-5 ">spécialité</label>
-                                <select class=" select" name="specialite" id="" >
-                                <option><?=$users[0]['specialite']?></option>
-                                <?php foreach ($modules as $module):?>
-                                    <option><?=$module['libelle_module']?></option>;
-                                <?php endforeach?>  
-                                </select>
-                                <small class = "ml-5 text-left form-text text-danger ">
-                                    <?= isset($arrayError['specialite']) ? $arrayError['specialite'] : '' ;?>
-                                </small>
-                            </div>                   
-                            <div class=" col-md-6 mb-4 mt-2">
-                                <label for="" class = "ml-5">grade</label>
-                                <select class=" select" name="grade" id="" >
-                                    <option><?=$users[0]['grade']?></option>
-                                    <option>Licence</option>
-                                    <option>Master</option>
-                                    <option>Doctorat</option>
+                            <?php if(est_responsable()):?>
 
-                                </select>
-                                <small class = "ml-5 text-left form-text text-danger ">
-                                    <?= isset($arrayError['grade']) ? $arrayError['grade'] : '' ;?>
-                                </small>
-                            </div>
-                            <?php if(!isset($users[0]['id_user']) ):?> 
+                                <div class="col-md-6 mb-3 mt-2">
+                                    <label for="" class = "ml-5 ">spécialité</label>
+                                    <select class=" select" name="specialite" id="" >
+                                    <option><?=$users[0]['specialite']?></option>
+                                    <?php foreach ($modules as $module):?>
+                                        <option><?=$module['libelle_module']?></option>;
+                                    <?php endforeach?>  
+                                    </select>
+                                    <small class = "ml-5 text-left form-text text-danger ">
+                                        <?= isset($arrayError['specialite']) ? $arrayError['specialite'] : '' ;?>
+                                    </small>
+                                </div>   
 
-                            <div class=" mb-2 col-md-4 ml-3">
-                            <label for="" class = "ml-5">avatar</label>
+                                <div class=" col-md-6 mb-4 mt-2">
+                                    <label for="" class = "ml-5">grade</label>
+                                    <select class=" select" name="grade" id="" >
+                                        <option><?=$users[0]['grade']?></option>
+                                        <option>Licence</option>
+                                        <option>Master</option>
+                                        <option>Doctorat</option>
 
-                                <input type="file" name="avatar"   placeholder="" value="<?=isset($_SESSION['restor'])?$_SESSION['restor']['avatar']:''?>">
-                                <small class = "ml-5 text-left form-text text-danger ">
-                                    <?= isset($arrayError['avatar']) ? $arrayError['avatar'] : '' ;?>
-                                </small>
-                            </div>
+                                    </select>
+                                    <small class = "ml-5 text-left form-text text-danger ">
+                                        <?= isset($arrayError['grade']) ? $arrayError['grade'] : '' ;?>
+                                    </small>
+                                </div>
+
                             <?php endif ?>
 
+                            <?php if(est_attache()):?>
+
+                                <div class=" mb-2 col-md-6">
+                                    <label for="" class="ml-5">Adresse</label>
+                                    <input type="text" name="adresse" placeholder="" value="<?=isset($_SESSION['restor'])?$_SESSION['restor']['adresse']:''?>">
+                                    <small class = "ml-5 text-left form-text text-danger ">
+                                        <?= isset($arrayError['adresse']) ? $arrayError['adresse'] : '' ;?>
+                                    </small>
+                                </div> 
+
+                                <div class=" col-md-6 mb-4 mt-2">
+                                    <label for="" class = "ml-5">classe</label>
+                                    <select class=" select" name="classe" id="" >
+                                    <?php foreach ($classes as $classe):?>
+                                        <option value="<?=$classe['id_classe']?>"><?=$classe['nom_classe']?></option>
+                                    <?php endforeach ?>
+                                    </select>
+                                    <small class = " form-text text-danger text-left ml-5">
+                                        <?= isset($arrayError['classe']) ? $arrayError['classe'] : '' ;?>
+                                    </small>
+                                </div>
+
+                            <?php endif ?>
+
+                            <?php if(!isset($users[0]['id_user']) ):?> 
+                                <div class=" mb-2 col-md-4 ml-">
+                                <label for="" class = "ml-5 mb-1">avatar</label>
+                                    <input type="file" name="avatar" class="ml-5"   placeholder="" value="<?=isset($_SESSION['restor'])?$_SESSION['restor']['avatar']:''?>">
+                                    <small class = "ml-5 text-left form-text text-danger ">
+                                        <?= isset($arrayError['avatar']) ? $arrayError['avatar'] : '' ;?>
+                                    </small>
+                                </div>
+                            <?php endif ?>
+
+
                     </div> 
-                        <input type="submit" class="fadeIn fourth ml-auto mr-auto mt-4" value="<?=isset($users[0]['id_user']) ? 'Modifier' :'Creer'?>">
+                        <input type="submit" class="fadeIn fourth ml-auto mr-auto mt-4" value="<?=isset($users[0]['id_user']) ? 'Modifier' : (est_attache()?'Inscrire':'Ajouter')?>">
                 </form>   
             </div>
         </div>
@@ -123,10 +158,11 @@ unset($_SESSION['restor']);
 }
 </script>
 <style>
-   .liste-col .fa{
-        font-size:32px;
-        color:#152032;
-    }
+ .liste-col .fa {
+    font-size: 32px;
+    color: #152032;
+    margin-left: 13px;
+}
     .form-inline label {
     display: flex;
     align-items: center;

@@ -10,12 +10,12 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
     <div class="container-fluid">
         <div class="row p-0">
-            <div class="col-md-11 liste-col">
+            <div class="col-md-10 liste-col">
             <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
 
             <div class="text-center mb-3"><h2>Planifier un cours</h2></div>
               
-                <form method="POST" action="<?=WEB_ROUTE?>" class="form-block">
+                <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline">
                         <input type="hidden" name="controllers" value="responsable">
                         <input type="hidden" name="action" value="<?=isset($cours[0]['id_cours'])?'editCours':'ajoutCours'?>">
                         <input type="hidden" name="id_cours"      value="<?=isset($cours[0]['id_cours']) ? $cours[0]['id_cours'] : ""; ?>">        
@@ -70,8 +70,8 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                 </small>
                             </div>
                             <div class=" col-md-6 mb-4 display">
-                                    <div class="col-md-12 p-0 ml-2 ">
-                                        <label for="" class="ml-5 mb-5">Choisir les classes</label>
+                                    <div class="col-md-12 p-0 ml-3 ">
+                                        <label for="" class="ml-5 mb-4">Choisir les classes</label>
                                     </div>
                                 <?php if(isset($cours[0]['id_cours'])):?>
                                     <div class="row p-0  ">
@@ -80,17 +80,17 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                     </div>
                                 <?php endif ?>
                                 <?php foreach ($classes as $classe):?>
-                                <div class="row p-0 ml-2 ">
-                                    <input type="checkbox" id="" name="classe" value="<?= $classe['id_classe']?>">
-                                    <label for=""><?= $classe['nom_classe']?> </label>
-                                </div>
+                                    <div class="row p-0 ml-2 ">
+                                        <input type="checkbox" id="" name="classe[]" value="<?= $classe['id_classe']?>">
+                                        <label for=""><?= $classe['nom_classe']?> </label>
+                                    </div>
                                 <?php endforeach ?>
                                 <small class = " form-text text-danger text-left ml-5">
                                         <?= isset($arrayError['classe']) ? $arrayError['classe'] : '' ;?>
                                 </small>
                             </div>
-                            <div class=" col-md-6 mb-4 "></div>
-                            <div class=" col-md-6 mb-4 "> </div>
+                            <div class=" col-md-12  "></div>
+                            <div class=" col-md-12 "></div>
                         <input type="submit" class="fadeIn fourth ml-auto mr-auto mt-4" value="<?=isset($cours[0]['id_cours']) ? 'Modifier' : "Creer"; ?>">
                 </form>
             </div>
@@ -100,9 +100,9 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
     input[type="checkbox"]{
 
 
-    margin-top: 6px;
-    margin-left: 50px;
-    margin-right: 5px;
+    margin-top: 5px;
+    margin-left: 60px;
+    margin-right: 3px;
 
     }
     .form-inline label {
@@ -114,10 +114,11 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
     justify-content: left;
     margin-bottom: 0;
 }
-.liste-col .fa{
-        font-size:32px;
-        color:#152032;
-    }
+.liste-col .fa {
+    font-size: 32px;
+    color: #152032;
+    margin-left: 13px;
+}
     .display{
         display: contents;
     }

@@ -2,6 +2,7 @@
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
+
 // $annee_scolaire = find_annee_scolaire();
 // //$classes = find_all_classe();
 // $modules = find_all_module();
@@ -26,11 +27,11 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-11 liste-col mb-5">
+        <div class="col-md-10 liste-col mb-5">
                     <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
                         <input type="hidden" name="controllers" value="responsable">
                         <input type="hidden" name="action" value="filterCoursNonplanifie">
-                        <div class="form-group ml-2">
+                        <div class="form-group ml-2 top">
                             <div class="form-group">
                                 <label for="">Année scolaire</label>
                                 <select class="form-control ml-2" name="annee" id="" value="">
@@ -64,7 +65,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                 <?php endforeach?>   
                                 </select>
                             </div>
-                            <button type="submit" name="ok" class="btn  ml-3 ">OK</button>
+                            <button type="submit" name="ok" class="btn  ml-3 ok-btn">OK</button>
                     </form>
 
                 <div class="column">
@@ -101,7 +102,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                         <td><?=$cour['heure_total']?></td>
                                         <td><?= $cour['heure_restante'] ?></td><td>
                                             <?php if ($cour['heure_restante'] == 0):?>
-                                                <a name="" id="" class="btn btn-primary ml-auto mr-2 disabled" href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Planifier</a>
+                                                <a name="" id="" class="btn btn-primary ml-auto mr-2 disabled" href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Séance</a>
                                             <?php else:?>
                                                 <a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Séance</a>
                                             <?php endif?>
@@ -113,9 +114,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                   
          
                                 </tbody>
-                                <small class = "form-text text-left ml-5 text-danger">
-                                    <?= isset($_SESSION['erreurSuppression']) ? $_SESSION['erreurSuppression'] : '' ;?>
-                                </small>
+
                                                   
                     </table>
                 
@@ -145,11 +144,9 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                 }   
         
             ?>    
-      </div> 
+                </div> 
             </div>
         </div>
-             
-
     </div>
 </div>
 <?php 
@@ -175,6 +172,7 @@ $(document).ready(function(){
         text-decoration: none;
         font-size: 13px;    
     }
+   
     .action .fa{
     width: 15px;
     height: 16px;
@@ -186,34 +184,14 @@ $(document).ready(function(){
     .fa-edit{
         color:#fff;
     }
-    .inline{   
-                display: inline-block;   
-                margin: 20px 0px;   
+    .inline{ 
+            display: inline-block;   
+            margin: 20px 0px;   
             }   
             
             input, button{   
                 height: 34px;   
             }   
     
-        .pagination {   
-            display: inline-block;   
-        }   
-        .pagination a {   
-            font-weight:bold;   
-            font-size:18px;   
-            color: black;   
-            float: left;   
-            padding: 8px 16px;   
-            text-decoration: none;   
-            border:1px solid black;   
-        }   
-        .pagination a.active {   
-            background-color: #152032;   
-            color: #fff;   
-        }   
-        .pagination a:hover:not(.active) {   
-            background-color: #226AD9;   
-            color: #fff;    
-            border: 1px solid #226AD9; 
-        }   
+        
         </style>     

@@ -28,23 +28,28 @@ function login_exist($login):array {
    return  $user ;
 }
 
-
+function generateRandomString($length = 3) {
+   return substr(str_shuffle(str_repeat($x='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+}
 function ajout_user(array $user):int{
     $pdo = ouvrir_connexion_db();
     extract($user);
-    $sql = "INSERT INTO `user` ( `nom`, `prenom`, `login`, `password`, `grade`, `specialite`, `id_role` ,`avatar`)
-    VALUES (?, ?, ?, ?, ?, ?, ?,?)"; 
+    $sql = "INSERT INTO `user` ( `nom`, `prenom`, `login`, `password`, `grade`, `specialite`, `adresse`, `id_role` ,`avatar`,`matricule`)
+    VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?)"; 
     if (isset($_POST['grade'])) {
       $id_role = 3;
+    }elseif(isset($_POST['adresse'])){
+      $id_role = 4;
     }else{
       $id_role = 2;
-
     }
+    $matricule = '2021'.'-'.$_POST['nom'].'-'.generateRandomString()  ;
     $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-    $sth->execute(array($nom , $prenom ,$login, $password, $grade ,$specialite ,  $id_role , $avatar));
-        fermer_connexion_bd($pdo);
- 
-    return $sth->rowCount();
+    $sth->execute(array($nom , $prenom ,$login, $password, $grade ,$specialite ,$adresse,  $id_role , $avatar , $matricule));
+    $dernier_id = $pdo->lastInsertId();
+
+    fermer_connexion_bd($pdo);
+    return $dernier_id;
  }
 
 

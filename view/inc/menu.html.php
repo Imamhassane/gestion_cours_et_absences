@@ -3,67 +3,166 @@ require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 ?>
 
-<div class="area"></div>
-<nav class="main-menu ">
-<img class="rounded-circle mt-2" src="<?=$_SESSION['userConnect'][0]['avatar']?>">
-            <strong><p><?=$_SESSION['userConnect'][0]['prenom'].' '.$_SESSION['userConnect'][0]['nom']?></p></strong>
 
-            <ul class="mt-5">
+<!--  -->
+
+  <div class="sidebar">
+
+    <div class="logo">   
+      <li>
+          <a href="<?= WEB_ROUTE . '?controllers=responsable&view=user.page' ?>" class="name">
+          <span class="links_name"><strong><p><?=$_SESSION['userConnect'][0]['prenom'].' '.$_SESSION['userConnect'][0]['nom']?></p></strong></span>
+          </a>
+      </li> 
+      <li>
+          <a href="<?= WEB_ROUTE . '?controllers=responsable&view=user.page' ?>" class="img">
           
-                <li class="">
-                   <a href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.professeur' ?>">
-                   <i class="fa fa-users fa-2x"></i>                                        
-                        <span class="nav-text">
-                            Liste des professeurs
-                        </span>
-                    </a>
-                </li>
-                <li class="mt-3">
-                   <a href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.classe' ?>">
-                   <i class="fa fa-list fa-2x"></i>
-                        <span class="nav-text">
-                            Liste des classes
-                        </span>
-                    </a>
-                </li>                
-                <li class="mt-3">
-                   <a href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>">
-                   <i class="fa fa-calendar fa-2x"></i>
-                        <span class="nav-text">
-                            Liste des cours
-                        </span>
-                    </a>
-                </li>
+            <span class="links_name "><img class="rounded-circle  float-right" src="<?=$_SESSION['userConnect'][0]['avatar']?>"></span>
+          </a>
+          <span class="tooltip"><strong><p><?=$_SESSION['userConnect'][0]['prenom'].' '.$_SESSION['userConnect'][0]['nom']?></p></strong></span>
+      </li>
+     <li>
+     <li>
+          <a href="#">
+            <i class='bx bx-menu' id="btn" ></i>
+          </a>
+          <span class="tooltip">Menus</strong></span>
+      </li>
+     <li>
+    </div>
+    <ul class="nav-list mt-2">
+    <?php if (est_responsable()):?>
+      <li>
+          <a href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.professeur' ?>">
+          <i class='bx bx-list-ul' ></i>
+            <span class="links_name">Liste des professeur</span>
+          </a>
+          <span class="tooltip">Liste des professeur</span>
+     </li>
+     <li>
+          <a href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.classe' ?>">
+          <i class='bx bx-list-ul' ></i>         
+          <span class="links_name">Liste des classes</span>
+          </a>
+          <span class="tooltip">Liste des classes</span>
+     </li>
+     <li>
+        <a href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>">
+          <i class='bx bx-list-ul' ></i>
+          <span class="links_name">Liste des cours</span>
+        </a>
+        <span class="tooltip">Liste des cours</span>
+     </li>
+     <li>
+        <a href="<?= WEB_ROUTE . '?controllers=responsable&view=tableau.bord' ?>">
+        <i class='bx bx-grid-alt'></i>
+          <span class="links_name">Tableau de bord</span>
+        </a>
+        <span class="tooltip">Tableau de bord</span>
+     </li>
+     <?php endif ?>
+
+     <?php if (est_attache()):?>
+
+     <li>
+          <a href="<?= WEB_ROUTE.'?controllers=attache&view=liste.etudiant' ?>">
+          <i class='bx bx-list-ul' ></i>
+         <span class="links_name">Liste des étudiants</span>
+          </a>
+          <span class="tooltip">Liste des étudiants</span>
+     </li>
+
+     <li>
+        <a href="<?= WEB_ROUTE . '?controllers=attache&view=liste.cours' ?>">
+          <i class='bx bx-list-ul' ></i>
+          <span class="links_name">Liste des cours</span>
+        </a>
+        <span class="tooltip">Liste des cours</span>
+     </li>
+
+     <li>
+        <a href="<?= WEB_ROUTE . '?controllers=attache&view=liste.classe' ?>">
+          <i class='bx bx-list-ul' ></i>
+          <span class="links_name">Liste des classes</span>
+        </a>
+        <span class="tooltip">Liste des classes</span>
+     </li>
+     <li>
+        <a href="<?= WEB_ROUTE . '?controllers=attache&view=liste.justification' ?>">
+          <i class='bx bx-list-ul' ></i>
+          <span class="links_name">Liste des justifications</span>
+        </a>
+        <span class="tooltip">Liste des justifications</span>
+     </li>
+
+     <?php endif ?>
+     <?php if (est_etudiant()):?>
+
+<li>
+     <a href="<?= WEB_ROUTE.'?controllers=etudiant&view=liste.etudiant.cours' ?>">
+     <i class='bx bx-list-ul' ></i>
+    <span class="links_name">Voir mes cours</span>
+     </a>
+     <span class="tooltip">Voir mes cours</span>
+</li>
+
+<li>
+   <a href="<?=WEB_ROUTE.'?controllers=attache&view=liste.absence.etudiant&id_user='.$_SESSION['userConnect'][0]['id_user']?>">
+     <i class='bx bx-list-ul' ></i>
+     <span class="links_name">Voir mes absences</span>
+   </a>
+   <span class="tooltip">Voir mes absences</span>
+</li>
+
+<li>
+   <a href="#">
+     <i class='bx bx-list-ul' ></i>
+     <span class="links_name">******</span>
+     </a>
+   <span class="tooltip">********</span>
+</li>
+<li>
+   <a href="#">
+     <i class='bx bx-list-ul' ></i>
+     <span class="links_name">******</span>
+   </a>
+   <span class="tooltip">********</span>
+</li>
+
+<?php endif ?>
+
+     <li class="profile">
+       <a href="<?=WEB_ROUTE.'?controllers=security&view=deconnexion'?>">
+       <i class='bx bx-log-out' id="log_out" ></i>
+         <span class="links_name deconnect">Se deconnecter</span>
+       </a>
+     </li>
 
 
+    </ul>
+  </div>
 
+  <script>
+  let sidebar = document.querySelector(".sidebar");
+  let closeBtn = document.querySelector("#btn");
+  let searchBtn = document.querySelector(".bx-search");
 
-                <li class="mt-3">
-                    <a href="<?= WEB_ROUTE . '?controllers=responsable&view=tableau.bord' ?>">
-                        <i class="fa fa-bar-chart-o fa-2x"></i>
-                        <span class="nav-text">
-                            Tableau de bord
-                        </span>
-                    </a>
-                </li>
-            
+  closeBtn.addEventListener("click", ()=>{
+    sidebar.classList.toggle("open");
+    menuBtnChange();//calling the function(optional)
+  });
 
-            </ul>
+  searchBtn.addEventListener("click", ()=>{ // Sidebar open when you click on the search iocn
+    sidebar.classList.toggle("open");
+    menuBtnChange(); //calling the function(optional)
+  });
 
-            <ul class="logout">
-                <li>
-                   <a href="<?=WEB_ROUTE.'?controllers=security&view=deconnexion'?>">
-                         <i class="fa fa-power-off fa-2x"></i>
-                        <span class="nav-text">
-                            Se deconnecter
-                        </span>
-                    </a>
-                </li>  
-            </ul>
-        </nav>
-
-
-
-
-
-
+  // following are the code to change sidebar button(optional)
+  function menuBtnChange() {
+   if(sidebar.classList.contains("open")){
+     closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+   }else {
+     closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
+   }
+  }
+  </script>

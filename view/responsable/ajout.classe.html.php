@@ -10,7 +10,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-11 mt-3 liste-col">
+            <div class="col-md-10 mt-3 liste-col">
             <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.classe' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
             <div class="text-center mb-3"><h2 >Ajouter une classe</h2></div>
                 <div class="column">
@@ -20,10 +20,10 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                         <input type="hidden" name="action" value="<?=isset($classes[0]['id_classe']) ? 'editClasse' : 'ajoutClasse'?>">
                         <input type="hidden" name="id_classe"      value="<?=isset($classes[0]['id_classe']) ? $classes[0]['id_classe'] : ""; ?>">        
 
-                        <div class="form-group mt-3 ">
+                        <div class="form-group mt-3 mb-4">
                             <label for="" class="ml-5 float-left">Nom de la classe</label>
                             <input type="text" id="" class="fadeIn second" name="nom_classe" value="<?=$classes[0]['nom_classe']?>" placeholder="">
-                            <small class = " form-text text-danger ">
+                            <small class = "form-text text-danger float-left ml-5">
                                 <?= isset($arrayError['nom_classe']) ? $arrayError['nom_classe'] : '' ;?>
                             </small>
                         </div>
@@ -31,21 +31,27 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                             <label for="" class="ml-5 float-left">Filière</label>
                                 <select class=" select" name="filiere" id="">
                                 <option><?=$classes[0]['filiere']?></option>
-                                    <option>Developpement web</option>
-                                    <option>Design numérique</option>
-                                    <option>Marketing et communication</option>
+                                    <option>devWeb</option>
+                                    <option>design</option>
+                                    <option>marketing</option>
                                 </select>
+                            <small class = "form-text text-danger float-left ml-5">
+                                <?= isset($arrayError['filiere']) ? $arrayError['filiere'] : '' ;?>
+                            </small>
                             </div>
                             <div class=" mb-4 mt-2">
                                 <label for="" class="ml-5 float-left">Niveau</label>
                                 <select class=" select" name="niveau" id=""  >
                                 <option><?=$classes[0]['niveau']?></option>
-                                    <option>Licence 1</option>
-                                    <option>Licence 2</option>
-                                    <option>Licence 3</option>
-                                    <option>Master 1</option>
-                                    <option>Master 2</option>
+                                    <option>L1</option>
+                                    <option>L2</option>
+                                    <option>L3</option>
+                                    <option>M1</option>
+                                    <option>M2</option>
                                 </select>
+                            <small class = "form-text text-danger float-left ml-5">
+                                <?= isset($arrayError['niveau']) ? $arrayError['niveau'] : '' ;?>
+                            </small>
                             </div>
                         <input type="submit" class="fadeIn fourth" value="Creer">
                 </form>
@@ -56,8 +62,10 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
     </div>
     <style>
    .liste-col .fa{
-        font-size:32px;
-        color:#152032;
+    font-size: 32px;
+    color: #152032;
+    margin-left: 13px;
+
     }
     input[type=text], input[type=password], input[type=date], input[type=time], input[type=number], .select {
     background-color: #f6f6f6;

@@ -2,7 +2,6 @@
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
-$annee_scolaire = find_annee_scolaire();
 
 ?>
 
@@ -10,30 +9,56 @@ $annee_scolaire = find_annee_scolaire();
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-11  liste-col">
-        <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
-
-                    <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
-                        <input type="hidden" name="" value="">
-                        <input type="hidden" name="" value="">
-                        <div class="form-group ml-1">
-                            <!-- <div class="form-group">
+        <div class="col-md-10 liste-col">
+        <?php if (est_responsable()):?>
+            <a name="" id="" class=" mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
+        <?php endif ?>
+        <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
+                        <input type="hidden" name="controllers" value="attache">
+                        <input type="hidden" name="action" value="filterCours">
+                        <div class="form-group ml-2 top">
+                            <div class="form-group">
                                 <label for="">Année scolaire</label>
                                 <select class="form-control ml-2" name="annee" id="" value="">
                                 <?php foreach ($annee_scolaire as $annee):?>
-                                    <option><?=$annee['annee_scolaire']?></option>;
+                                    <option value="<?=$annee['etat_annee_scolaire']?>"><?=$annee['annee_scolaire']?></option>;
                                 <?php endforeach?>   
                                 </select>
-                            </div> -->
+                            </div>
                         </div>
-                      <!--   <button type="submit" name="" class="btn  ml-3 disabled">OK</button> -->
-                      
-                    </form>
+                         <div class="form-group ml-4">
+                                <label for="">Professeur</label>
+                                <select class="form-control ml-2" name="professeur" id="" value="">
+                                <?php foreach ($professeurs as $professeur):?>
+                                    <option><?=$professeur['prenom']?></option>;
+                                <?php endforeach?>   
+                                </select>
+                            </div>
+                         <div class="form-group ml-4">
+                                <label for="">Module</label>
+                                <select class="form-control ml-2" name="module" id="" value="">
+                                <?php foreach ($modules as $module):?>
+                                    <option><?=$module['libelle_module']?></option>;
+                                <?php endforeach?>   
+                                </select>
+                            </div>
+                            <div class="form-group ml-4">
+                                <label for="">Classe</label>
+                                <select class="form-control ml-2" name="classe" id="" value="">
+                                <?php foreach ($classes as $classe):?>
+                                    <option><?=$classe['nom_classe']?></option>
+                                <?php endforeach?>   
+                                </select>
+                            </div>
+                            <button type="submit" name="ok" class="btn  ml-3 ok-btn">OK</button>
+                    </form> 
                 <div class="column">
                 <div class="card">
                 <div class="d-inline">
+                    <?php if (est_responsable()):?>
                         <a name="" id="" class="btn btn-primary ml-auto mr-2 float-right mt-4  " href="<?= WEB_ROUTE . '?controllers=responsable&view=ajout.cours' ?>" role="button">Ajouter +</a>
                         <a name="" id="" class="btn btn-primary ml-auto mr-2 float-right mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role="button">Voir les cours non planifiés</a>
+                    <?php endif ?>   
                         <h2 class=" mb-3">LA LISTE DES COURS </h2>  
                 </div>
                
@@ -52,6 +77,7 @@ $annee_scolaire = find_annee_scolaire();
                                     </tr>
                                 </thead>
                                 <tbody>
+                            <?php if (est_responsable()):?>
                                 <?php foreach ($all_cours as $all_cour):?>
                                     <tr>
                                         <th><?=date_format(date_create($all_cour['date_cours']), 'd-m-Y')?></th>
@@ -67,6 +93,25 @@ $annee_scolaire = find_annee_scolaire();
                                         </td> 
                                     </tr>    
                                 <?php endforeach ?>
+                            <?php  endif ?>
+
+
+                            <?php if (est_attache()):?>
+                                <?php foreach ($coursAttaches as $coursAttache):?>
+                                    <tr>
+                                        <th><?=date_format(date_create($coursAttache['date_cours']), 'd-m-Y')?></th>
+                                        <td><?=$coursAttache['debut']?></td>
+                                        <td><?=$coursAttache['fin']?></td>
+                                        <th><?=$coursAttache['prenom'].' '.$coursAttache['nom']?></th>
+                                        <td><?=$coursAttache['libelle_module']?></td>
+                                        <td><?=$coursAttache['nom_classe']?></td>
+                                        <td><?=$coursAttache['semestre']?></td>
+                                        <td class="action">
+                                        <a name="" id="" class="btn btn-primary ml-auto " href="<?=WEB_ROUTE.'?controllers=attache&view=liste.absence.cours&id_cours='.$coursAttache['id_cours']?>"ole="button">Voir les absences </a>
+                                        </td> 
+                                    </tr>    
+                                <?php endforeach ?>
+                            <?php  endif ?>
                                 </tbody>
                     </table>
                 </div>

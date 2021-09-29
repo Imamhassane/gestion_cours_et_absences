@@ -9,7 +9,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 ?>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-11 mt-2 liste-col">
+        <div class="col-md-10 mt-2 liste-col">
         <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
 
         <div class="text-center mb-3"><h2 >Planifier un cours</h2></div>
@@ -68,8 +68,9 @@ text-align:left;
 display: block;
 margin-left: 2% ;
 }
-   .liste-col .fa{
-        font-size:32px;
-        color:#152032;
-    }
+.liste-col .fa {
+    font-size: 32px;
+    color: #152032;
+    margin-left: 13px;
+}
 </style>

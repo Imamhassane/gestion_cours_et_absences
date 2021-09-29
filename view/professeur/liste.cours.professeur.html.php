@@ -6,7 +6,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-md-11 mt-3 liste-col">
+        <div class="col-md-10 mt-3 liste-col">
         <div class="text-center mb-3"><h2 >LA LISTE DES PROFESSEURS</h2></div>
             <div class="column">
                 <div class="card">

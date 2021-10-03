@@ -83,7 +83,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                         <th scope="col">Heure restante</th>
                                         <th scope="col">Séance</th>
                                         <th scope="col">Cours</th>
-                                        <th scope="col">Classes concernées</th>
+                                        <th scope="col">Classes </th>
                                         <th scope="col">Action</th>
 
                                     </tr>

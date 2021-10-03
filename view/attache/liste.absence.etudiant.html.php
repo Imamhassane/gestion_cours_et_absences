@@ -59,10 +59,13 @@ unset($_SESSION['message']);
                         <?php if (est_etudiant()):?>
                             <h2 class=" "> <?=isset($absences[0])?'mes ABSENCES ':'Vous n\'avez pas d\'absence'?></h2>
                         <?php endif ?>
-                        <div class="float-right mt-4 mr-3">
-                            <h6 class=" mt-3"><strong>Vous avez <?=$nombreAbsence[0]["sum(p.duree)"]?> heures d'absences</strong> <h6>
-                        </div>
-                    </div>
+                        <?php if ($nombreAbsence[0]["sum(p.duree)"]!=0):?>
+                            <div class="float-right mt-4 mr-3">
+                                <h6 class=" mt-3"><strong><?=est_etudiant()? 'Vous avez '.$nombreAbsence[0]["sum(p.duree)"]:'Cet étudiant a '.$nombreAbsence[0]["sum(p.duree)"]?> heures d'absences</strong> <h6>
+                            </div>
+                        <?php endif ?>
+
+                    </div>  
                     <table class="table">
                                 <thead>
                                     <tr>
@@ -91,7 +94,11 @@ unset($_SESSION['message']);
                                         <td><?=$absence['fin']?></td>
                                         <td><?=$absence['semestre']?></td>
                                         <?php if (est_etudiant()):?>
-                                            <td><a name="" id="" class="btn btn-primary ml-auto " href="<?=WEB_ROUTE.'?controllers=etudiant&view=justification&id_absence='.$absence['id_absence']?>"ole="button"> Justifier <i class='bx bx-edit-alt ' ></i></a></td>
+                                            <?php if ($absence['etat_absence']=='justifiee'):?>
+                                                <td><a name="" id="" class="btn btn-primary ml-auto disabled" href="<?=WEB_ROUTE.'?controllers=etudiant&view=justification&id_absence='.$absence['id_absence']?>"ole="button"> Justifier <i class='bx bx-edit-alt ' ></i></a></td>
+                                            <?php else: ?>
+                                                <td><a name="" id="" class="btn btn-primary ml-auto " href="<?=WEB_ROUTE.'?controllers=etudiant&view=justification&id_absence='.$absence['id_absence']?>"ole="button"> Justifier <i class='bx bx-edit-alt ' ></i></a></td>
+                                            <?php endif ?>
                                         <?php endif ?>
                                     </tr>
 <?php endforeach ?>

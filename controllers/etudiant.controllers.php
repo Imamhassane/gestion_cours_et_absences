@@ -5,9 +5,9 @@ if(est_connect()){
         if ( isset ( $_GET [ 'view' ])) {
                 if ( $_GET [ 'view' ]== 'liste.etudiant.cours' ) {
                 get_my_cours();
-            }elseif ( $_GET [ 'view' ]== 'liste.etudiant.absence' ) {
+            }/* elseif ( $_GET [ 'view' ]== 'liste.etudiant.absence' ) {
                 get_my_absence();
-            }elseif ( $_GET [ 'view' ]== 'justification' ) {
+            } */elseif ( $_GET [ 'view' ]== 'justification' ) {
                 $_SESSION['id_absence'] = $_GET['id_absence'];
                 require(ROUTE_DIR . 'view/etudiant/justification.html.php');
             }elseif ( $_GET [ 'view' ]== 'liste.justification' ) {
@@ -65,10 +65,10 @@ function get_my_cours(){
 }
 
 
-function get_my_absence(){
+/* function get_my_absence(){
     $id =$_GET['id_user'];
     if (isset($_POST['ok'])) {
-        $absences = filter_absence_by_etudiant($id , $_POST['annee'] , $_POST['semestre']) ;
+            $absences = filter_absence_by_etudiant($id , $_POST['annee'] , $_POST['semestre']) ;
     }else{
             $test = get_absence_etudiant($id);
             $absences = get_absence_by_etudiant($id , $test[0]['id_planing']);
@@ -76,7 +76,7 @@ function get_my_absence(){
     }
     $annee_scolaires=find_annee_scolaire();
    require(ROUTE_DIR . 'view/attache/liste.absence.etudiant.html.php');
-}
+} */
 
 
 
@@ -101,6 +101,8 @@ function insert_justification(array $datas):void{
                     $datas['fiche'] = $target_file;
                     upload_fiche($_FILES, $target_file);
                     insert_in_justification($datas);  
+                    $id_absence =  $_SESSION['id_absence'];
+                    update_absence('justifiee',$id_absence);
                     $_SESSION['message']=1;
                     header('location:'.WEB_ROUTE.'?controllers=attache&view=liste.absence.etudiant&id_user='.$_SESSION['userConnect'][0]['id_user']);
             }

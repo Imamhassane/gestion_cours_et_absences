@@ -26,9 +26,8 @@
             $_SESSION['id_cours'] = $_GET['id_cours'];
             get_cours();
            } elseif ( $_GET [ 'view' ]== 'deleteCours' ) {
-                $_SESSION['t']=$_GET['id_planing'];
-               
-            delete_a_cours();
+                $_SESSION['t'] = $_GET['id_planing'];
+                delete_a_cours();
            }  elseif ( $_GET [ 'view' ]== 'deleteUser' ) {
             delete_a_user();
            } elseif ( $_GET [ 'view' ]== 'deleteClasse' ) {
@@ -299,13 +298,12 @@ function delete_a_classe(){
 }
 function delete_a_cours(){
     $id = $_SESSION['t'];
-    $idC = $_SESSION['id_cours'];
-    $getcour = find_cours_by_id_cours($idC);
+    $getcour = find_cours_by_id_cours($id);
     $reste = $getcour[0]['heure_restante'] + ($getcour[0]['fin'] - $getcour[0]['debut']);
     $delete =  delete_cours($id);
-    $get =  update_heure_restante($reste ,$idC );
-   header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.perid&id_classe='.$_SESSION['id_classe']);
-unset( $_SESSION['t']);
+    $get =  update_heure_restante($reste ,$getcour[0]['id_cours'] );
+    header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.perid&id_classe='.$_SESSION['id_classe']);
+    unset( $_SESSION['t']);
 }
 
 function get_user(){

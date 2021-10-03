@@ -203,13 +203,12 @@ function get_absence_for_etudiant() {
             $absences = filter_absence_by_etudiant( $_POST['annee'] , $_POST['semestre']) ;
 
     }else{
-            $test = get_absence_etudiant($id);
-            $absences = get_absence_by_etudiant($id , $test[0]['id_planing']);
+            $absences = get_absence__etudiant($id );
 
     }
     $annee_scolaires=find_annee_scolaire();
     $nombreAbsence = get_my_number_absence($id);
-   
+    $justifications = all_justification();
     require(ROUTE_DIR . 'view/attache/liste.absence.etudiant.html.php');
 }
 
@@ -254,6 +253,10 @@ function change_etat_justification(){
         $etat = 'refusee';
     }elseif($_GET[ 'view']=='accepterJustification'){
         $etat = 'acceptee';
+        $palning = get_the_planing_id($id_justification);
+        $id_planing = $palning[0]['id_planing'];
+        $duree = 0; 
+        //var_dump($nombreAbsence[0]["sum(p.duree)"]);
     }
     $change = update_justification($etat , $id_justification);
     header('location:'.WEB_ROUTE.'?controllers=attache&view=liste.justification');

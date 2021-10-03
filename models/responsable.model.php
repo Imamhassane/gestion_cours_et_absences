@@ -221,7 +221,7 @@ function find_cours_by_id_cours( $id_cours){
       and c.id_module = m.id_module
       and c.id_annee_scolaire = an.id_annee_scolaire  
       and c.id_cours = p.id_cours 
-      and c.id_cours = ?";
+      and p.id_planing= ?";
       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
       $sth->execute(array($id_cours));
       $datas = $sth->fetchAll((PDO::FETCH_ASSOC));

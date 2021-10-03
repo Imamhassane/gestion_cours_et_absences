@@ -49,22 +49,17 @@ require(ROUTE_DIR . 'view/professeur/liste.cours.professeur.html.php');
  function insert_in_absence(array $datas):void{
     $arrayError=array();
     extract($datas);
-   /*      validation_champ($date,'date',$arrayError);  
-        validation_champ($debut,'debut',$arrayError);  
-        validation_champ($fin,'fin',$arrayError);  
-            $duree = $fin - $debut;
-            if($debut > $fin ){
-                $arrayError['debut'] = 'L\'heure de début doit être inférieur à l\'heure de fin';
-                $_SESSION['arrayError']=$arrayError;
-                header('location:'.WEB_ROUTE.'?controllers=responsable&view=planing.cours');
-            } */
+     validation_champ($absent,'absent',$arrayError);  
+      
        if (form_valid($arrayError)) {
                     ajout_absence( $datas);
+                    $_SESSION['message']=4; 
                     header('location:'.WEB_ROUTE.'?controllers=professeur&view=liste.cours.professeur');
             }else{
-    
-               $_SESSION['arrayError']=$arrayError;
-               header('location:'.WEB_ROUTE.'?controllers=attache&view=liste.etudiant.classe&id_planing='.$_GET['id_planing']);
+                $_SESSION['message']=5; 
+                $_SESSION['arrayError']=$arrayError;
+                header('location:'.WEB_ROUTE.'?controllers=professeur&view=liste.cours.professeur');
+
            } 
 }
 

@@ -189,6 +189,16 @@ return  $datas ;
 
 
 
-
+function update_absence($etat , $id_absence){
+   $pdo = ouvrir_connexion_db();
+   extract($datas);
+   $sql = " UPDATE `absence` 
+   SET `etat_absence` = ? 
+   WHERE `absence`.`id_absence` = ? ";
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute(array($etat , $id_absence));
+   fermer_connexion_bd($pdo);
+   return $sth->rowCount();
+}
 
 ?>

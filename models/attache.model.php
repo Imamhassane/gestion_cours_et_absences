@@ -218,7 +218,7 @@ function get_absence_etudiant($id_user):array{
         and c.id_cours = cc.id_cours 
         and c.id_cours = p.id_cours
         and cl.id_classe = cc.id_classe 
-        and a.id_user =? ";
+        and a.id_user = ? ";
         $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute([$id_user]);
         $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
@@ -242,7 +242,22 @@ function get_absence_by_etudiant($id_user , $planing):array{
     fermer_connexion_bd($pdo);
     return  $datas ;
 }
-
+function get_absence__etudiant($id_user ):array{
+    $pdo = ouvrir_connexion_db();
+        $sql = "SELECT * FROM  absence a ,user u , cours c ,module m , classe_cours cc , classe cl , planing_cours p
+        where u.id_user = a.id_user 
+        and p.id_planing = a.id_planing
+        and m.id_module = c.id_module 
+        and c.id_cours = cc.id_cours 
+        and c.id_cours = p.id_cours
+        and cl.id_classe = cc.id_classe 
+        and a.id_user = ? ";
+        $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute([$id_user ]);
+        $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+    fermer_connexion_bd($pdo);
+    return  $datas ;
+}
 
 
 
@@ -388,5 +403,19 @@ function justification_by_etuiant($id_absence){
      
 } */
 
+
+function get_the_planing_id($justification){
+
+    $pdo = ouvrir_connexion_db();
+         $sql = "SELECT * FROM justification j , absence a ,planing_cours p 
+         WHERE a.id_absence = j.id_absence 
+         and p.id_planing = a.id_planing 
+         and j.id_justification = ?";
+         $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+         $sth->execute([$justification]);
+         $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+     fermer_connexion_bd($pdo);
+     return  $datas ;
+ }
 
 ?>

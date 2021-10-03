@@ -9,7 +9,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 ?>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-10 mt-2 liste-col">
+        <div class="col-md-10 mt-2 liste-col ">
         <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
 
         <div class="text-center mb-3"><h2 >Planifier un cours</h2></div>
@@ -21,7 +21,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                 <form method="post" action="">
                    <input type="hidden" name="controllers" value="responsable">
                     <input type="hidden" name="action" value="ajoutPlaning"> 
-                        <div class="mt-2 mb-2">
+                        <div class="mt-2 mb-2 ">
                             <label for="" class="">Date du cours</label>
                             <input type="date" id="" class="fadeIn second  " name="date" placeholder="">
                             <small class = "form-text text-left ml-5 text-danger">
@@ -73,4 +73,25 @@ margin-left: 2% ;
     color: #152032;
     margin-left: 13px;
 }
+input[type=date]
+{
+                background-color: #E8EAED;
+                border: none;
+                color: #0d0d0d;
+                padding: 15px 32px;
+                height: 60px;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 5px;
+                width: 97%;
+                border: 2px solid #E8EAED;
+                -webkit-transition: all 0.5s ease-in-out;
+                -moz-transition: all 0.5s ease-in-out;
+                -ms-transition: all 0.5s ease-in-out;
+                -o-transition: all 0.5s ease-in-out;
+                transition: all 0.5s ease-in-out;
+                -webkit-border-radius: 5px 5px 5px 5px;
+                border-radius: 5px 5px 5px 5px;
+            }
 </style>

@@ -10,7 +10,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
         <?php if(est_attache()):?>
                 <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=attache&view=liste.cours' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
             <?php endif?>
-        <div class="text-center mb-3"><h2 >LA LISTE DES PROFESSEURS</h2></div>
+        <div class="text-center mb-3"><h2 > <?=isset($absences[0]['nom_classe'])?'LA LISTE DES ABSENCES DE la classe '.$absences[0]['nom_classe']:'Ce cours n\'a aucune absence'?></h2></div>
             <div class="column">
                 <div class="card">
                     <table class="table">

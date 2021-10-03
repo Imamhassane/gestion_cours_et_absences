@@ -12,6 +12,7 @@
            }elseif ( $_GET [ 'view' ]== 'tableau.bord' ) {
             require ( ROUTE_DIR . 'view/responsable/tableau.bord.html.php' );
            }elseif ( $_GET [ 'view' ]== 'liste.cours.perid' ) {
+            $_SESSION['id_classe'] = $_GET['id_classe'];
             liste_cours_by_id();
            }elseif ( $_GET [ 'view' ]== 'liste.classe' ) {
             liste_all_classe();
@@ -25,6 +26,8 @@
             $_SESSION['id_cours'] = $_GET['id_cours'];
             get_cours();
            } elseif ( $_GET [ 'view' ]== 'deleteCours' ) {
+                $_SESSION['t']=$_GET['id_planing'];
+               
             delete_a_cours();
            }  elseif ( $_GET [ 'view' ]== 'deleteUser' ) {
             delete_a_user();
@@ -38,7 +41,10 @@
             get_classe();
           }elseif ( $_GET [ 'view' ]== 'user.page' ) {
              user_page();
-          }
+          }elseif ( $_GET [ 'view' ]== 'classe.concernees' ) {
+            cours_partage_by_classe();
+
+         }
         }else{
             header('location:'.WEB_ROUTE.'?controllers=responsable&view=tableau.bord');
         }
@@ -76,6 +82,10 @@
                 unset($_POST['controllers']);
                 unset($_POST['action']);
                 liste_all_classe($_POST);
+            }elseif($_POST['action']=='filterCours'){
+                unset($_POST['controllers']);
+                unset($_POST['action']);
+                liste_cours_by_id($_POST);
             }
 
         }
@@ -164,7 +174,7 @@ function insert_planing_cours(array $datas):void{
             }else{
     
                $_SESSION['arrayError']=$arrayError;
-               header('location:'.WEB_ROUTE.'?controllers=responsable&view=planing.cours');
+               header('location:'.WEB_ROUTE.'?controllers=responsable&view=planing.cours&id_cours='.$_GET['id_cours']);
            } 
 }
 
@@ -237,11 +247,16 @@ function liste_cours_no_planified(){
 }
 function liste_cours_by_id(){
 
-     $_SESSION['id_cours']= $_GET['id_cours'];
-     $id =  $_SESSION['id_cours'];
-    $all_cours = find_cours_by_id($id);
+    $id =  $_SESSION['id_classe'];    
+    if (isset($_POST['ok'])) {
+        $all_cours = filterCours ($_POST['debut'] , $_POST['fin']) ;
+    }else{
+        $all_cours = find_cours_by_id($id );
+    }
 
-     require ( ROUTE_DIR . 'view/responsable/liste.cours.html.php' );
+    $classes = get_all_classe();
+    $planings = getplaning();
+    require ( ROUTE_DIR . 'view/responsable/liste.cours.html.php' );
 }
 /* function delete_cours_nonplanifie(){
     $data = get_cours_non_planifie();
@@ -283,14 +298,14 @@ function delete_a_classe(){
 
 }
 function delete_a_cours(){
-    $id = $_GET ['id_planing'];
+    $id = $_SESSION['t'];
     $idC = $_SESSION['id_cours'];
-    $getcour = find_cours_by_id($idC);
+    $getcour = find_cours_by_id_cours($idC);
     $reste = $getcour[0]['heure_restante'] + ($getcour[0]['fin'] - $getcour[0]['debut']);
     $delete =  delete_cours($id);
     $get =  update_heure_restante($reste ,$idC );
-   header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.perid&id_cours='.$idC);
-
+   header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.perid&id_classe='.$_SESSION['id_classe']);
+unset( $_SESSION['t']);
 }
 
 function get_user(){
@@ -324,12 +339,21 @@ function modif_prof(array $datas):void{
        validation_password($password,'password',$arrayError);
        validation_champ($prenom,'prenom',$arrayError);
        validation_champ($nom,'nom',$arrayError);    
-
+       $annee_scolaires=find_annee_scolaire();
        if (form_valid($arrayError)) {
-            $id =$_SESSION['id_user']   ;
-            update_user_prof($id,$nom ,$prenom,$login,$password,$grade,$specialite);  
-            $_SESSION['message']=2;                  
-            header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.professeur');
+            $id = $_SESSION['id_user'];
+            if(est_responsable()){
+                update_user_prof($id,$nom ,$prenom,$login,$password,$grade,$specialite);  
+                $_SESSION['message'] = 2;                  
+                header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.professeur');
+            }elseif(est_attache()){               
+                $inscription = get_inscription_student($id_user);
+                $id_inscription = $inscription[0]['id_inscription'];
+                update_classe_etudiant($id_inscription , $classe); 
+                update_user_etudiant($id_user ,$nom ,$prenom,$login,$password,$adresse); 
+                $_SESSION['message']=3;                  
+                header('location:'.WEB_ROUTE.'?controllers=attache&view=liste.etudiant');
+            }
        }else{
                $_SESSION['arrayError']=$arrayError;
                header('location:'.WEB_ROUTE.'?controllers=responsable&view=updateUser&id_user='.$id_user);
@@ -380,6 +404,11 @@ function user_page(){
 
 
 
+function cours_partage_by_classe(){
+    $id = $_GET['id_cours'];
+    $coursPartage = find_classe_suivant_mm_cours($id);
+    require ( ROUTE_DIR . 'view/responsable/classe.concernee.html.php' );
 
+}
 
 ?>

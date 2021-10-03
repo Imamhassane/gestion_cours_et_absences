@@ -9,14 +9,41 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-10 liste-col">
+        <div class="col-md-10 liste-cole">
         <?php if (est_responsable()):?>
             <a name="" id="" class=" mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
         <?php endif ?>
-        <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
-                        <input type="hidden" name="controllers" value="attache">
+                <?php if (est_responsable()):?>
+                    <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
+                        <input type="hidden" name="controllers" value="<?=est_attache()?'attache':'responsable'?>">
                         <input type="hidden" name="action" value="filterCours">
                         <div class="form-group ml-2 top">
+                            <div class="form-group">
+                                <label for="">Heure de début</label>
+                                <select class="form-control ml-2" name="debut" id="" value="">
+                                <?php foreach ($planings as $planing):?>
+                                    <option ><?=$planing['debut']?></option>;
+                                <?php endforeach?>   
+                                </select>
+                            </div>
+                        </div>
+                         <div class="form-group ml-4">
+                                <label for="">Heure de fin</label>
+                                <select class="form-control ml-2" name="fin" id="" value="">
+                                <?php foreach ($planings as $planing):?>
+                                    <option><?=$planing['fin']?></option>;
+                                <?php endforeach?>   
+                                </select>
+                        </div>
+                        
+                            <button type="submit" name="ok" class="btn  ml-3 ok-btn">OK</button>
+                    </form>
+                <?php endif ?>
+                <?php if(est_attache()):?>
+                    <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
+                       <input type="hidden" name="controllers" value="attache">
+                        <input type="hidden" name="action" value="filterCoursAttache">
+                        <div class="form-group ml-2">
                             <div class="form-group">
                                 <label for="">Année scolaire</label>
                                 <select class="form-control ml-2" name="annee" id="" value="">
@@ -26,39 +53,13 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                 </select>
                             </div>
                         </div>
-                         <div class="form-group ml-4">
-                                <label for="">Professeur</label>
-                                <select class="form-control ml-2" name="professeur" id="" value="">
-                                <?php foreach ($professeurs as $professeur):?>
-                                    <option><?=$professeur['prenom']?></option>;
-                                <?php endforeach?>   
-                                </select>
-                            </div>
-                         <div class="form-group ml-4">
-                                <label for="">Module</label>
-                                <select class="form-control ml-2" name="module" id="" value="">
-                                <?php foreach ($modules as $module):?>
-                                    <option><?=$module['libelle_module']?></option>;
-                                <?php endforeach?>   
-                                </select>
-                            </div>
-                            <div class="form-group ml-4">
-                                <label for="">Classe</label>
-                                <select class="form-control ml-2" name="classe" id="" value="">
-                                <?php foreach ($classes as $classe):?>
-                                    <option><?=$classe['nom_classe']?></option>
-                                <?php endforeach?>   
-                                </select>
-                            </div>
-                            <button type="submit" name="ok" class="btn  ml-3 ok-btn">OK</button>
-                    </form> 
+                        <button type="submit" name="ok" class="btn  ml-3 ">OK</button>
+                    </form>
+                <?php endif ?>
                 <div class="column">
                 <div class="card">
                 <div class="d-inline">
-                    <?php if (est_responsable()):?>
-                        <a name="" id="" class="btn btn-primary ml-auto mr-2 float-right mt-4  " href="<?= WEB_ROUTE . '?controllers=responsable&view=ajout.cours' ?>" role="button">Ajouter +</a>
-                        <a name="" id="" class="btn btn-primary ml-auto mr-2 float-right mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role="button">Voir les cours non planifiés</a>
-                    <?php endif ?>   
+ 
                         <h2 class=" mb-3">LA LISTE DES COURS </h2>  
                 </div>
                
@@ -83,12 +84,11 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                         <th><?=date_format(date_create($all_cour['date_cours']), 'd-m-Y')?></th>
                                         <td><?=$all_cour['debut']?></td>
                                         <td><?=$all_cour['fin']?></td>
-                                        <th><?=$all_cour['prenom'].' '.$all_cours['nom']?></th>
+                                        <th><?=$all_cour['prenom'].' '.$all_cour['nom']?></th>
                                         <td><?=$all_cour['libelle_module']?></td>
                                         <td><?=$all_cour['nom_classe']?></td>
                                         <td><?=$all_cour['semestre']?></td>
                                         <td class="action">
-                                            <a name="" id="" class="" href="#" role="button"><i class="fa fa-edit"></i></a>
                                             <a name="" id="" class="text-danger" href="<?= WEB_ROUTE . '?controllers=responsable&view=deleteCours&id_planing='.$all_cour['id_planing'] ?>" role="button"><i class="fa fa-trash-o"></i></a>
                                         </td> 
                                     </tr>    
@@ -116,6 +116,32 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                     </table>
                 </div>
             </div>
+            <div class="pagination mt-2 mb-5">    
+            <?php  
+                if (est_attache()) {
+               
+                    $total_pages = $total_records / $per_page_record;     
+                    $pagLink = "";                                                           
+                    if($page>=2){   
+                        echo "<a href='?controllers=attache&view=liste.cours&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   
+                    }       
+                            
+                    for ($i=1; $i<=$total_pages; $i++) {   
+                    if ($i == $page) {   
+                        $pagLink .= "<a class = 'active' href='?controllers=attache&view=liste.cours&page="  
+                                                            .$i."'>".$i." </a>";   
+                    }               
+                    else  {   
+                        $pagLink .= "<a href='?controllers=attache&view=liste.cours&page=".$i."'>".$i." </a>";     
+                    }   
+                    };     
+                    echo $pagLink;   
+                    if($page<$total_pages){   
+                        echo "<a href='?controllers=attache&view=liste.cours&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span>                    </a>";   
+                    } 
+                }
+            ?>  
+              </div>      
             </div>
         </div>
     </div>
@@ -126,7 +152,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
         background-color: #152032;
         border: none;
         color: white;
-        padding: 10px 20px;
+        padding: 7px 9px;
         text-align: center;
         text-decoration: none;
         font-size: 13px;    

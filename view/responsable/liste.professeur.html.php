@@ -10,19 +10,19 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
     <?php
 if ($_SESSION['message']==1) {
 
-if(est_responsable()){
-    echo'
-    <div class="container-fluid p-0">
-        <div  id = "message"  class ="alert alert-success text-center">Professeur créée avec succès</div>
-    </div>';
-}elseif(est_attache()){
-    echo'
-    <div class="container-fluid p-0">
-        <div  id = "message"  class ="alert alert-success text-center">Etudiant inscrit avec succès</div>
-    </div>';
-}
+            if(est_responsable()){
+                echo'
+                <div class="container-fluid p-0">
+                    <div  id = "message"  class ="alert alert-success text-center">Professeur créée avec succès</div>
+                </div>';
+            }elseif(est_attache()){
+                echo'
+                <div class="container-fluid p-0">
+                    <div  id = "message"  class ="alert alert-success text-center">Etudiant inscrit avec succès</div>
+                </div>';
+            }
     
-    }elseif($_SESSION['message']==2){
+}elseif($_SESSION['message']==2){
     
         if(est_responsable()){
             echo'
@@ -35,15 +35,23 @@ if(est_responsable()){
                 <div  id = "message"  class ="alert alert-success text-center">Etudiant modifié avec succès</div>
             </div>';
         }
-    }
+}elseif($_SESSION['message']==3){
+    
+        echo'
+        <div class="container-fluid p-0">
+            <div  id = "message"  class ="alert alert-success text-center">Etudiant réinscrit avec succès</div>
+        </div>';
+    
+}
     unset($_SESSION['message']);
     ?>
-        <div class="col-md-10 liste-col">
+        <div class="col-md-10 liste-cole">
             <?php if(est_attache()):?>
+                <div class="row">
                     <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
                     <input type="hidden" name="controllers" value="attache">
                         <input type="hidden" name="action" value="filterEtudiant">
-                        <div class="form-group ml-1">
+                        <div class="form-group ml-4  row">
                             <div class="form-group">
                                 <label for="">Année scolaire</label>
                                 <select class="form-control ml-2" name="annee" id="">
@@ -52,7 +60,7 @@ if(est_responsable()){
                                 <?php endforeach;?>
                                 </select>
                             </div>
-                            <div class="form-group ml-3">
+                            <div class="form-group ml-3 mr-2">
                                 <label for="">Classe</label>
                                 <select class="form-control ml-2" name="classe" id="">
                                 <?php foreach ($rooms as $room):?>
@@ -60,9 +68,18 @@ if(est_responsable()){
                                 <?php endforeach;?>
                                 </select>
                             </div>
-                        </div>
-                        <button type="submit" name="ok" class="btn  ml-3 ">OK</button>
+                            </div>
+                        <button type="submit" name="ok" class="btn  ml-4 ">OK</button>
                     </form>
+                    <form method="POST" action="<?=WEB_ROUTE?>" class="d-flex mt-4 ml-5">
+
+                        <input type="hidden" name="controllers" value="attache">
+                        <input type="hidden" name="action" value="cherchematricule">
+
+                        <input class="form-control me-2" type="search" name="matricule" placeholder="Saisir le matricule" aria-label="Search">
+                        <button class="btn  btnn " name="search" type="submit">Search</button>
+                    </form>
+                </div>    
             <?php endif ?>
                 <div class="column">
                 <div class="card">
@@ -85,8 +102,11 @@ if(est_responsable()){
                                             <th scope="col">Spécialité</th>
                                         <?php endif ?>
                                         <?php if (est_attache()):?>
-                                            <th scope="col">Matricule</th>
-                                            <th scope="col">Classe</th>
+                                                <th scope="col">Matricule</th>
+                                                <th scope="col">Classe</th>
+                                                <?php if (isset($_POST['search'])):?>
+                                                    <th scope="col">Réinscrire</th>
+                                                <?php endif ?>
                                         <?php endif ?>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -101,7 +121,7 @@ if(est_responsable()){
                                         <td><?=$professeur['grade']?></td>
                                         <td><?=$professeur['specialite']?></td>
                                         <td class="action">
-                                            <a name="" id="" class="" href="<?= WEB_ROUTE . '?controllers=responsable&view=updateUser&id_user='.$professeur['id_user'] ?>" role="button"><i class="fa fa-edit"></i></a>
+                                            <a name="" id="" class="" href="<?= WEB_ROUTE . '?controllers=responsable&view=updateUser&id_user='.$professeur['id_user'] ?>" role="button"><i class="fa fa-edit "></i></a>
                                             <a name="" id="" class="text-danger" href="<?= WEB_ROUTE . '?controllers=responsable&view=deleteUser&id_user='.$professeur['id_user'] ?>" role="button"><i class="fa fa-trash-o"></i></a>
                                         </td>
                                         
@@ -115,10 +135,15 @@ if(est_responsable()){
                                         <td><?=$etudiant['nom']?></td>
                                         <td><?=$etudiant['matricule']?></td>
                                         <td><?=$etudiant['nom_classe']?></td>
+                                        <?php if (isset($_POST['search'])):?>
+                                            <td class="action">
+                                                <a name="" id="" class="btn btn-primary ml-auto " href="<?=WEB_ROUTE.'?controllers=responsable&view=updateUser&id_user='.$etudiant['id_user']?>"ole="button">Réinscrire </a>
+                                            </td>
+                                        <?php endif ?>
                                         <td class="action">
                                             <a name="" id="" class="btn btn-primary ml-auto " href="<?=WEB_ROUTE.'?controllers=attache&view=liste.absence.etudiant&id_user='.$etudiant['id_user']?>"ole="button">Voir les absences </a>
                                         </td>
-                                        
+                                  
                                     </tr>
 <?php endforeach ?>
 <?php endif ?>
@@ -132,46 +157,48 @@ if(est_responsable()){
             </div>
             <div class="pagination mt-2 mb-5">    
             <?php  
-                /* $total_pages = $total_records / $per_page_record;     
-                $pagLink = "";  */
-                if (est_responsable()) {
+                $total_pages = $total_records / $per_page_record;     
+                $pagLink = ""; 
+            if (est_responsable()) {
                                                           
-                if($page>=2){   
-                    echo "<a href='?controllers=responsable&view=liste.professeur&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   
-                }       
-                        
-                for ($i=1; $i<=$total_pages; $i++) {   
-                if ($i == $page) {   
-                    $pagLink .= "<a class = 'active' href='?controllers=responsable&view=liste.professeur&page="  
-                                                        .$i."'>".$i." </a>";   
-                }               
-                else  {   
-                    $pagLink .= "<a href='?controllers=responsable&view=liste.professeur&page=".$i."'>".$i." </a>";     
-                }   
-                };     
-                echo $pagLink;   
-                if($page<$total_pages){   
-                    echo "<a href='?controllers=responsable&view=liste.professeur&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span>                    </a>";   
-                } 
-                }elseif(est_attache()){ 
-    /*                 if($page>=2){   
-                        echo "<a href='?controllers=responsable&view=liste.etudiant.classe&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   
+                    if($page>=2){   
+                        echo "<a href='?controllers=responsable&view=liste.professeur&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   
                     }       
                             
                     for ($i=1; $i<=$total_pages; $i++) {   
                     if ($i == $page) {   
-                        $pagLink .= "<a class = 'active' href='?controllers=responsable&view=liste.etudiant.classee="  
+                        $pagLink .= "<a class = 'active' href='?controllers=responsable&view=liste.professeur&page="  
                                                             .$i."'>".$i." </a>";   
                     }               
                     else  {   
-                        $pagLink .= "<a href='?controllers=responsable&view=liste.etudiant.classe&page=".$i."'>".$i." </a>";     
+                        $pagLink .= "<a href='?controllers=responsable&view=liste.professeur&page=".$i."'>".$i." </a>";     
                     }   
                     };     
                     echo $pagLink;   
                     if($page<$total_pages){   
-                        echo "<a href='?controllers=responsable&view=liste.etudiant.classe&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span>                    </a>";   
-                    }  */
-                }
+                        echo "<a href='?controllers=responsable&view=liste.professeur&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span>                    </a>";   
+                    } 
+                    
+            }elseif(est_attache()){ 
+
+                   if($page>=2){   
+                        echo "<a href='?controllers=attache&view=liste.etudiant&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   
+                    }       
+                            
+                    for ($i=1; $i<=$total_pages; $i++) {   
+                    if ($i == $page) {   
+                        $pagLink .= "<a class = 'active' href='?controllers=attache&view=liste.etudiant&page="  
+                                                            .$i."'>".$i." </a>";   
+                    }               
+                    else  {   
+                        $pagLink .= "<a href='?controllers=attache&view=liste.etudiant&page=".$i."'>".$i." </a>";     
+                    }   
+                    };     
+                    echo $pagLink;   
+                    if($page<$total_pages){   
+                        echo "<a href='?controllers=attache&view=liste.etudiant&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span>                    </a>";   
+                    } 
+            }
                  
         
             ?>    
@@ -186,10 +213,11 @@ if(est_responsable()){
         background-color: #152032;
         border: none;
         color: white;
-        padding: 10px 20px;
+        padding: 7px 9px;
         text-align: center;
         text-decoration: none;
         font-size: 13px;    
+        margin-top: 2px;
     }
  .action .fa{
     width: 22px;

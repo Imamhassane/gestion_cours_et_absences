@@ -3,10 +3,6 @@ require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
-// $annee_scolaire = find_annee_scolaire();
-// //$classes = find_all_classe();
-// $modules = find_all_module();
-// $professeurs = find_all_professeur();
 ?> 
 <?php if ($_SESSION['message']==1) {
 
@@ -26,8 +22,8 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
     ?>
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-10 liste-col mb-5">
+    <div class="row cousplan">
+        <div class="col-md-11 liste-cole mb-5 ">
                     <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
                         <input type="hidden" name="controllers" value="responsable">
                         <input type="hidden" name="action" value="filterCoursNonplanifie">
@@ -87,12 +83,14 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                         <th scope="col">Heure restante</th>
                                         <th scope="col">Séance</th>
                                         <th scope="col">Cours</th>
+                                        <th scope="col">Classes concernées</th>
                                         <th scope="col">Action</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                 <?php foreach ($cours as $cour):?>
+
                                     <tr>
                                         
                                         <th><?=$cour['prenom'].' '.$cour['nom']?> </th>
@@ -102,13 +100,20 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                         <td><?=$cour['heure_total']?></td>
                                         <td><?= $cour['heure_restante'] ?></td><td>
                                             <?php if ($cour['heure_restante'] == 0):?>
-                                                <a name="" id="" class="btn btn-primary ml-auto mr-2 disabled" href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Séance</a>
+                                                    <a name="" id="" class="btn btn-primary float-right mr-2 disabled" href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Séance</a>
                                             <?php else:?>
-                                                <a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Séance</a>
+                                                    <a name="" id="" class="btn btn-primary  mr-2 float-right" href="<?= WEB_ROUTE . '?controllers=responsable&view=planing.cours&id_cours='.$cour['id_cours'] ?>" role="button">Séance</a>
                                             <?php endif?>
                                         </td>
-                                        <td><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.perid&id_cours='.$cour['id_cours']?>" role="button">Voir le cours</a></td>
-                                        <td class="action"><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=updateCours&id_cours='.$cour['id_cours'] ?>" role="button">modifier <i class="fa fa-edit"></i></a></td>
+                                        <td>
+                                            <a name="" id="" class="btn btn-primary float-right mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.perid&id_classe='.$cour['id_classe']?>" role="button">Voir le cours</a>
+                                        </td>
+                                        <td>
+                                            <a name="" id="" class="btn btn-primary float-center mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=classe.concernees&id_cours='.$cour['id_cours']?>" role="button">Voir les classes</a>
+                                        </td>
+                                        <td class="action">
+                                            <a name="" id="" class="btn btn-primary float-right mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=updateCours&id_cours='.$cour['id_cours'] ?>" role="button">modifier <i class="fa fa-edit"></i></a>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                                   
@@ -153,11 +158,6 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 unset($_SESSION['erreurSuppression']);
 ?>
 <script type="text/javascript">
-// $( document ).ready(function() {
-//     console.log( "ready!" );
-//     ;$('.toast').toast("show")
-// })
-
 $(document).ready(function(){
         $("#message").show().fadeIn(3000).css("color","blue")
     });
@@ -167,7 +167,7 @@ $(document).ready(function(){
         background-color: #152032;
         border: none;
         color: white;
-        padding: 10px 15px;
+        padding: 7px 9px;
         text-align: center;
         text-decoration: none;
         font-size: 13px;    

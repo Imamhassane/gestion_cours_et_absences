@@ -40,10 +40,11 @@ function ajout_user(array $user):int{
       $id_role = 3;
     }elseif(isset($_POST['adresse'])){
       $id_role = 4;
+      $matricule = '2021'.'-'.$_POST['nom'].'-'.generateRandomString()  ;
+
     }else{
       $id_role = 2;
     }
-    $matricule = '2021'.'-'.$_POST['nom'].'-'.generateRandomString()  ;
     $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $sth->execute(array($nom , $prenom ,$login, $password, $grade ,$specialite ,$adresse,  $id_role , $avatar , $matricule));
     $dernier_id = $pdo->lastInsertId();

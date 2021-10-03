@@ -13,4 +13,7 @@ function valide_image(array $files, array &$arrayError, string $key, $target_fil
 function upload_image($files, $target_file): bool {
     return move_uploaded_file($files["avatar"]["tmp_name"], $target_file);
 }
+function upload_fiche($files, $target_file): bool {
+    return move_uploaded_file($files["fiche"]["tmp_name"], $target_file);
+}
 ?>

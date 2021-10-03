@@ -4,56 +4,41 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
 ?>
-
+<?php 
+if ($_SESSION['message']==1) {
+echo'
+<div class="container-fluid p-0">
+    <div  id = "message"  class ="alert alert-success text-center">Absence justifiée avec succès</div>
+</div>';
+}if ($_SESSION['message']==2) {
+    echo'
+    <div class="container-fluid p-0">
+        <div  id = "message"  class ="alert alert-danger text-center">Erreur ! Absence déjà justifiée </div>
+    </div>';
+    }
+unset($_SESSION['message']);
+?>
 <div class="container-fluid">
 <div class="row">
-    <?php
-if ($_SESSION['message']==1) {
-
-if(est_responsable()){
-    echo'
-    <div class="container-fluid p-0">
-        <div  id = "message"  class ="alert alert-success text-center">Professeur créée avec succès</div>
-    </div>';
-}elseif(est_attache()){
-    echo'
-    <div class="container-fluid p-0">
-        <div  id = "message"  class ="alert alert-success text-center">Etudiant inscrit avec succès</div>
-    </div>';
-}
-    
-    }elseif($_SESSION['message']==2){
-    
-        if(est_responsable()){
-            echo'
-            <div class="container-fluid p-0">
-                <div  id = "message"  class ="alert alert-success text-center">Professeur modifié avec succès</div>
-            </div>';
-        }elseif(est_attache()){
-            echo'
-            <div class="container-fluid p-0">
-                <div  id = "message"  class ="alert alert-success text-center">Etudiant modifié avec succès</div>
-            </div>';
-        }
-    }
-    unset($_SESSION['message']);
-    ?>
-        <div class="col-md-10 liste-col">
-        <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=attache&view=liste.etudiant' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
-
+        <div class="col-md-10 liste-cole">
+            <?php if(est_attache()):?>
+                <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=attache&view=liste.etudiant' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
+            <?php endif ?>
+           
+                    
                     <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-5">
                         <input type="hidden" name="controllers" value="attache">
                         <input type="hidden" name="action" value="filterAbsence">
-                        <div class="form-group ml-1">
+                        <div class="form-group ml-1 row">
                             <div class="form-group">
                                 <label for="">Année scolaire</label>
                                 <select class="form-control ml-2" name="annee" id="">
                                 <?php foreach ($annee_scolaires as $annee):?>
-                                    <option value="<?=$annee['id_annee_scolaire']?>"><?=$annee['annee_scolaire']?></option>;
+                                    <option value="<?=$annee['etat_annee_scolaire']?>"><?=$annee['annee_scolaire']?></option>;
                                 <?php endforeach;?>
                                 </select>
                             </div>
-                            <div class="form-group ml-3">
+                            <div class="form-group ml-3 mr-2">
                                 <label for="">Semestre</label>
                                 <select class="form-control ml-2" name="semestre" id="">
                                     <option value="semestre 1">Semestre 1</option>
@@ -61,14 +46,23 @@ if(est_responsable()){
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" name="ok" class="btn  ml-3 ok-btn">OK</button>
+                        <button type="submit" name="ok" class="btn  ml-4 ok-btn">OK</button>
                     </form>
                 <div class="column">
                 <div class="card">
                     <div class="d-inline">
+                        
+                        <?php if (est_attache()):?>
                             <h2 class=" "> <?=isset($absences[0])?'LES ABSENCES DE '.$absences[0]['prenom'].' '.$absences[0]['nom']:'Cet étudiant n\'a pas d\'absence'?></h2>
-                       
+                        <?php endif ?>
+
+                        <?php if (est_etudiant()):?>
+                            <h2 class=" "> <?=isset($absences[0])?'mes ABSENCES ':'Vous n\'avez pas d\'absence'?></h2>
+                        <?php endif ?>
+                        <div class="float-right mt-4 mr-3">
+                            <h6 class=" mt-3"><strong>Vous avez <?=$nombreAbsence[0]["sum(p.duree)"]?> heures d'absences</strong> <h6>
                         </div>
+                    </div>
                     <table class="table">
                                 <thead>
                                     <tr>
@@ -78,10 +72,10 @@ if(est_responsable()){
                                         <th >Cours</th>
                                         <th >Heure de début </th>
                                         <th >Heure de fin </th>
-                                        <th >Durée</th>
                                         <th >Semestre</th>
-
-
+                                        <?php if (est_etudiant()):?>
+                                            <th >Action</th>
+                                        <?php endif ?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -95,8 +89,10 @@ if(est_responsable()){
                                         <td><?=$absence['libelle_module']?></td>
                                         <td><?=$absence['debut']?></td>
                                         <td><?=$absence['fin']?></td>
-                                        <td><?=($absence['fin'] - $absence['debut'])?></td>
                                         <td><?=$absence['semestre']?></td>
+                                        <?php if (est_etudiant()):?>
+                                            <td><a name="" id="" class="btn btn-primary ml-auto " href="<?=WEB_ROUTE.'?controllers=etudiant&view=justification&id_absence='.$absence['id_absence']?>"ole="button"> Justifier <i class='bx bx-edit-alt ' ></i></a></td>
+                                        <?php endif ?>
                                     </tr>
 <?php endforeach ?>
 
@@ -140,7 +136,7 @@ if(est_responsable()){
         background-color: #152032;
         border: none;
         color: white;
-        padding: 10px 20px;
+        padding: 7px 9px;
         text-align: center;
         text-decoration: none;
         font-size: 13px;    

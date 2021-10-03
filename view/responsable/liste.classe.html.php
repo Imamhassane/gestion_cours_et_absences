@@ -25,23 +25,8 @@ echo'
 }
 unset($_SESSION['message']);
 ?>
-        <div class="col-md-10 liste-col">
-        <!--  <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
-                       <input type="hidden" name="controllers" value="responsable">
-                        <input type="hidden" name="action" value="filterClasse">
-                        <div class="form-group ml-2">
-                            <div class="form-group">
-                                <label for="">Année scolaire</label>
-                                <select class="form-control ml-2" name="annee" id="" value="">
-                                <?php foreach ($annee_scolaire as $annee):?>
-                                    <option value="<?=$annee['etat_annee_scolaire']?>"><?=$annee['annee_scolaire']?></option>;
-                                <?php endforeach?>   
-                                </select>
-                            </div>
-                        </div>
-                        <button type="submit" name="ok" class="btn  ml-3 ">OK</button>
-
-                    </form> -->
+        <div class="col-md-10 liste-cole">
+             
             
                 <div class="column">
                 <div class="card">
@@ -57,12 +42,10 @@ unset($_SESSION['message']);
                                         <th scope="col">Nom </th>
                                         <th scope="col">Filière</th>
                                         <th scope="col">Niveau</th>
-                                        <?php if(est_attache()):?>
-                                            <th scope="col">Etudiants</th>
-                                        <?php endif;?>
+                                        <th scope="col">Etudiants</th>
                                         <?php if(est_responsable()):?>
                                             <th scope="col">Action</th>
-                                        <?php endif ?>
+                                        <?php endif;?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -71,9 +54,7 @@ unset($_SESSION['message']);
                                         <td><?=$classe['nom_classe']?></td>
                                         <td><?=$classe['filiere']?></td>
                                         <td><?=$classe['niveau']?></td>
-                                        <?php if(est_attache()):?>
-                                            <td><a name="" id="" class="btn btn-primary" href="<?= WEB_ROUTE.'?controllers=attache&view=liste.etudiant.classe&id_classe='.$classe['id_classe'] ?>" role="button">liste des étudiants</a></td>
-                                        <?php endif ?>
+                                        <td><a name="" id="" class="btn btn-primary" href="<?= WEB_ROUTE.'?controllers=attache&view=liste.etudiant.of.classe&id_classe='.$classe['id_classe'] ?>" role="button">liste des étudiants</a></td>
                                         <?php if(est_responsable()):?>
                                             <td class="action"><a name="" id="" class="btn btn-primary ml-auto mr-2 " href="<?= WEB_ROUTE . '?controllers=responsable&view=updateClasse&id_classe='.$classe['id_classe'] ?>" role="button">modifier <i class="fa fa-edit"></i></a></td>
                                         <?php endif ?>
@@ -91,8 +72,7 @@ unset($_SESSION['message']);
             <div class="pagination mt-2 mb-5">    
             <?php  
                 
-/*                 $total_pages = $total_records / $per_page_record;   
-         
+                $total_pages = $total_records / $per_page_record;            
                 $pagLink = "";                                           
                 if($page>=2){   
                     echo "<a href='?controllers=responsable&view=liste.classe&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   
@@ -111,7 +91,7 @@ unset($_SESSION['message']);
                 if($page<$total_pages){   
                     echo "<a href='?controllers=responsable&view=liste.classe&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span>                    </a>";   
                 }   
-         */
+         
             ?>    
       </div> 
             
@@ -124,7 +104,7 @@ unset($_SESSION['message']);
         background-color: #152032;
         border: none;
         color: white;
-        padding: 10px 20px;
+        padding: 7px 9px;
         text-align: center;
         text-decoration: none;
         font-size: 13px;    

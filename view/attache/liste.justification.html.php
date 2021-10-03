@@ -63,27 +63,28 @@ if(est_responsable()){
                     </div>
                     <table class="table">
                                 <thead>
-                                    <tr>
+                                <tr class="text-center">
                                         <th scope="col">Prénom</th>
                                         <th scope="col">Nom</th>
-                                            <th scope="col">Détails</th>
-                                            <th scope="col">Etat</th>
-                                           
+                                        <th scope="col">Matricule</th>      
+                                        <th scope="col">Etat</th>
+                                        <th scope="col">Détails</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
 
-<?php foreach ($professeurs as $professeur):?>
-                                    <tr>
-                                        <td><?=$professeur['prenom']?></td>
-                                        <td><?=$professeur['nom']?></td>
-                                        <td><?=$professeur['grade']?></td>
-                                        <td><?=$professeur['specialite']?></td>
-                                        <td class="action">
-                                            <a name="" id="" class="" href="<?= WEB_ROUTE . '?controllers=responsable&view=updateUser&id_user='.$professeur['id_user'] ?>" role="button"><i class="fa fa-edit"></i></a>
-                                            <a name="" id="" class="text-danger" href="<?= WEB_ROUTE . '?controllers=responsable&view=deleteUser&id_user='.$professeur['id_user'] ?>" role="button"><i class="fa fa-trash-o"></i></a>
-                                        </td>
-                                        
+                                <?php foreach ($justifications as $justification):?>
+                                    <tr class="text-center">
+                                        <td><?=$justification['prenom']?></td>
+                                        <td><?=$justification['nom']?></td>
+                                        <td><?=$justification['matricule']?></td>
+                                        <td><?=$justification['etat']?></td>
+                                        <?php if ($justification['etat']=='non_traiter'):?>
+                                                <td><a name="" id="" class="btn btn-primary ml-auto " href="<?=WEB_ROUTE.'?controllers=attache&view=traitement.absence&id_absence='.$justification['id_absence']?>"ole="button"> Détails + </i></a></td>
+                                        <?php else: ?>
+                                                <td><a name="" id="" class="btn btn-primary ml-auto disabled" href="#"ole="button"> Déjà traitée</a></td>
+                                        <?php endif ?>
                                     </tr>
 <?php endforeach ?>
 
@@ -97,29 +98,26 @@ if(est_responsable()){
             </div>
             <div class="pagination mt-2 mb-5">    
             <?php  
-                $total_pages = $total_records / $per_page_record;     
+                $total_pages = $total_records / $per_page_record;       
                 $pagLink = ""; 
             
-                                                          
-            
-       
-    /*                 if($page>=2){   
-                        echo "<a href='?controllers=responsable&view=liste.etudiant.classe&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   
+              if($page>=2){   
+                        echo "<a href='?controllers=attache&view=liste.justification&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   
                     }       
                             
                     for ($i=1; $i<=$total_pages; $i++) {   
                     if ($i == $page) {   
-                        $pagLink .= "<a class = 'active' href='?controllers=responsable&view=liste.etudiant.classee="  
+                        $pagLink .= "<a class = 'active' href='?controllers=attache&view=liste.justificatione="  
                                                             .$i."'>".$i." </a>";   
                     }               
                     else  {   
-                        $pagLink .= "<a href='?controllers=responsable&view=liste.etudiant.classe&page=".$i."'>".$i." </a>";     
+                        $pagLink .= "<a href='?controllers=attache&view=liste.justification&page=".$i."'>".$i." </a>";     
                     }   
                     };     
                     echo $pagLink;   
                     if($page<$total_pages){   
-                        echo "<a href='?controllers=responsable&view=liste.etudiant.classe&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span>                    </a>";   
-                    }  */
+                        echo "<a href='?controllers=attache&view=liste.justification&page=".($page+1)."'><span aria-hidden='true'>&raquo;</span>                    </a>";   
+                    }  
                 
                  
         
@@ -135,7 +133,7 @@ if(est_responsable()){
         background-color: #152032;
         border: none;
         color: white;
-        padding: 10px 20px;
+        padding: 7px 9px;
         text-align: center;
         text-decoration: none;
         font-size: 13px;    

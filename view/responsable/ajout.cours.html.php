@@ -80,7 +80,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
                                     </div>
                                 <?php endif ?>
                                 <?php foreach ($classes as $classe):?>
-                                    <div class="row p-0 ml-2 ">
+                                    <div class="row p-0 ml-2 mt-2">
                                         <input type="checkbox" id="" name="classe[]" value="<?= $classe['id_classe']?>">
                                         <label for=""><?= $classe['nom_classe']?> </label>
                                     </div>

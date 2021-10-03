@@ -19,13 +19,13 @@ $classes = get_all_classe();
                 <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.professeur' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
             <?php endif?>
             <?php if(est_attache()):?>
-                <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=attache&view=liste.etudiant' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
+                <a name="" id="" class="mr-auto mr-2 float-left mt-2 " href="<?= WEB_ROUTE . '?controllers=attache&view=liste.etudiant' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
             <?php endif?>
             <div class="text-center mb-3"><h2 ><?=est_responsable()?'Ajouter un professeur':'Inscrire un étudiant'?></h2></div>
            
                 <form method="POST" action="<?=WEB_ROUTE?>"enctype="multipart/form-data" >
                     <div class="form-inline">
-                        <input type="hidden" name="controllers" value="security">
+                        <input type="hidden" name="controllers" value="<?=isset($users[0]['id_user']) ? 'responsable':'security'?>">
                         <input type="hidden" name="action" value="<?=isset($users[0]['id_user']) ? 'editProf':'ajoutProf'?>">
                         <input type="hidden" name="id_user"      value="<?=isset($users[0]['id_user']) ? $users[0]['id_user'] : ""; ?>">        
                       
@@ -107,7 +107,7 @@ $classes = get_all_classe();
 
                                 <div class=" mb-2 col-md-6">
                                     <label for="" class="ml-5">Adresse</label>
-                                    <input type="text" name="adresse" placeholder="" value="<?=isset($_SESSION['restor'])?$_SESSION['restor']['adresse']:''?>">
+                                    <input type="text" name="adresse" placeholder="" value="<?=$users[0]['adresse']?>">
                                     <small class = "ml-5 text-left form-text text-danger ">
                                         <?= isset($arrayError['adresse']) ? $arrayError['adresse'] : '' ;?>
                                     </small>
@@ -139,7 +139,7 @@ $classes = get_all_classe();
 
 
                     </div> 
-                        <input type="submit" class="fadeIn fourth ml-auto mr-auto mt-4" value="<?=isset($users[0]['id_user']) ? 'Modifier' : (est_attache()?'Inscrire':'Ajouter')?>">
+                        <input type="submit" class="fadeIn fourth ml-auto mr-auto mt-4" value="<?=isset($users[0]['id_user']) ? (est_attache()?'Réinscrire':'Modifier') : (est_attache()?'Inscrire':'Ajouter')?>">
                 </form>   
             </div>
         </div>

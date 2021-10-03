@@ -3,15 +3,19 @@
 if(est_connect()){
     if ( $_SERVER ['REQUEST_METHOD' ]== 'GET' ) {
         if ( isset ( $_GET [ 'view' ])) {
-            if ( $_GET [ 'view' ]== '' ) {
-
-        }
+            if ( $_GET [ 'view' ]== 'liste.cours.professeur' ) {
+                my_cours_professeur();
+            }elseif ( $_GET [ 'view' ]== 'mes.classes' ) {
+                my_classe_prof();
+            }
         }
         
     }elseif ( $_SERVER ['REQUEST_METHOD' ]== 'POST' ){
         if (isset($_POST[ 'action' ])){
-            if ($_POST[ 'action' ]==''){
-
+            if ($_POST[ 'action' ]=='marquerAbsent'){
+                unset($_POST['controllers']);
+                unset($_POST['action']);
+                insert_in_absence($_POST);
             }
         }
     }
@@ -20,6 +24,67 @@ if(est_connect()){
 }
 
 
+function my_cours_professeur(){
+    $id = $_SESSION['userConnect'][0]['id_user'];
+    if (isset($_POST['ok'])) {
+        $coursProfesseur = filter_my_cours_professeur($id , $_POST['annee']  ,$_POST['module']) ;
+    }else{
+        if (isset($_GET["page"])) {    
+            $page  = $_GET["page"];    
+        }    
+        else {    
+            $page=1;    
+        } 
+        $data = cours_professeur($id, $page);
+        $coursProfesseur = $data['data'];   
+        //var_dump($coursProfesseur);
+        $per_page_record = $data['per_page_record'] ;   
+        $total_records= $data['total_records'];
+    }
+    $classes = get_all_classe();
+    $annee_scolaire=find_annee_scolaire();
+require(ROUTE_DIR . 'view/professeur/liste.cours.professeur.html.php');
+
+ }
+ function insert_in_absence(array $datas):void{
+    $arrayError=array();
+    extract($datas);
+   /*      validation_champ($date,'date',$arrayError);  
+        validation_champ($debut,'debut',$arrayError);  
+        validation_champ($fin,'fin',$arrayError);  
+            $duree = $fin - $debut;
+            if($debut > $fin ){
+                $arrayError['debut'] = 'L\'heure de début doit être inférieur à l\'heure de fin';
+                $_SESSION['arrayError']=$arrayError;
+                header('location:'.WEB_ROUTE.'?controllers=responsable&view=planing.cours');
+            } */
+       if (form_valid($arrayError)) {
+                    ajout_absence( $datas);
+                    header('location:'.WEB_ROUTE.'?controllers=professeur&view=liste.cours.professeur');
+            }else{
+    
+               $_SESSION['arrayError']=$arrayError;
+               header('location:'.WEB_ROUTE.'?controllers=attache&view=liste.etudiant.classe&id_planing='.$_GET['id_planing']);
+           } 
+}
+
+
+function my_classe_prof() {
+    $id = $_SESSION['userConnect'][0]['id_user'];
+    if (isset($_GET["page"])) {    
+        $page  = $_GET["page"];    
+    }    
+    else {    
+      $page=1;    
+    } 
+    $data =my_classe_professeur($id , $page);
+    
+    $classesProfesseur = $data['data'];   
+    $per_page_record = $data['per_page_record'] ;   
+    $total_records= $data['total_records'];
+
+require ( ROUTE_DIR . 'view/responsable/liste.classe.html.php' );
+}
 
 
 ?>

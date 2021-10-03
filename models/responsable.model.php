@@ -40,7 +40,7 @@ function find_all_professeur($page=null):array{
   return  $datas ;
 }
 
-function get_user_by_id(int $id_user){
+function get_user_by_id( $id_user){
    $pdo = ouvrir_connexion_db();
    $sql = "select * from user 
    where id_user =  ? ";
@@ -71,6 +71,7 @@ return  $datas ;
 }
 function find_all_classe($page=null):array{
    $pdo = ouvrir_connexion_db();
+
    $start_from = ($page-1) * per_page_record;     
 
       $sql = "SELECT * FROM  classe LIMIT $start_from,".per_page_record;
@@ -168,11 +169,12 @@ function ajout_in_cours_classe(array $datas){
 function ajout_planing_cours( $datas):int{
    $pdo = ouvrir_connexion_db();
    extract($datas);
-   $sql ="INSERT INTO `planing_cours` (`date_cours`, `debut`, `fin`, `id_cours`) 
-      VALUES ( ? , ?, ?, ?)";
+   $sql ="INSERT INTO `planing_cours` (`date_cours`, `debut`, `fin`, `id_cours`,`duree`) 
+      VALUES ( ? , ?, ?, ?,?)";
       $id_cours =  $_GET['id_cours'];
+      $duree = ($_POST['fin']-$_POST['debut']);
    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-   $sth->execute(array($date, $debut , $fin , $id_cours));
+   $sth->execute(array($date, $debut , $fin , $id_cours,$duree));
    fermer_connexion_bd($pdo);
 
    return $sth->rowCount();
@@ -210,6 +212,23 @@ function find_cours_non_planifie($page=null){
    fermer_connexion_bd($pdo);
   return  $datas ;
 }
+function find_cours_by_id_cours( $id_cours){
+   $pdo = ouvrir_connexion_db();
+      $sql = "SELECT * FROM  cours c , user u , module m  , annee_scolaire an ,classe_cours cc,classe cl,planing_cours p
+      where c.id_user = u.id_user 
+      and c.id_cours=cc.id_cours 
+      and cl.id_classe = cc.id_classe 
+      and c.id_module = m.id_module
+      and c.id_annee_scolaire = an.id_annee_scolaire  
+      and c.id_cours = p.id_cours 
+      and c.id_cours = ?";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute(array($id_cours));
+      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+   fermer_connexion_bd($pdo);
+  return  $datas ;
+  
+}
 function get_cours_non_planifie(){
    $pdo = ouvrir_connexion_db();
       $sql =  "SELECT * FROM  cours c , user u , module m  , annee_scolaire an ,classe_cours cc,classe cl
@@ -240,6 +259,23 @@ function find_cours_non_planifie_by_id( $id_cours){
    fermer_connexion_bd($pdo);
   return  $datas ;
 }
+function find_cours_by_classe( $id_classe){
+   $pdo = ouvrir_connexion_db();
+      $sql = "SELECT * FROM  cours c , user u , module m  , annee_scolaire an ,classe_cours cc,classe cl,planing_cours p
+      where c.id_user = u.id_user 
+      and c.id_cours=cc.id_cours 
+      and cl.id_classe = cc.id_classe 
+      and c.id_module = m.id_module
+      and c.id_annee_scolaire = an.id_annee_scolaire  
+      and c.id_cours = p.id_cours 
+      and cl.id_classe = ?";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute(array($id_classe));
+      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+   fermer_connexion_bd($pdo);
+  return  $datas ;
+}
+
 function find_cours_by_id( $id_cours){
    $pdo = ouvrir_connexion_db();
       $sql = "SELECT * FROM  cours c , user u , module m  , annee_scolaire an ,classe_cours cc,classe cl,planing_cours p
@@ -249,14 +285,29 @@ function find_cours_by_id( $id_cours){
       and c.id_module = m.id_module
       and c.id_annee_scolaire = an.id_annee_scolaire  
       and c.id_cours = p.id_cours 
-      and c.id_cours = ?";
+      and cl.id_classe = ?";
       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
       $sth->execute(array($id_cours));
       $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
    fermer_connexion_bd($pdo);
   return  $datas ;
+  
 }
-
+function find_classe_suivant_mm_cours( $id_cours){
+   $pdo = ouvrir_connexion_db();
+      $sql = "SELECT * FROM  cours c ,classe_cours cc,classe cl ,module m ,user u 
+      where c.id_cours=cc.id_cours 
+      and cl.id_classe = cc.id_classe 
+      and m.id_module= c.id_module
+      and u.id_user= c.id_user
+		and c.id_cours = ?   ";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute(array($id_cours));
+      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+   fermer_connexion_bd($pdo);
+  return  $datas ;
+  
+}
 
 function filter_cours_non_planifie($etat_annee_scolaire = "en_cours" , $professeur ,$module, $classe){
    $pdo = ouvrir_connexion_db();
@@ -278,7 +329,35 @@ function filter_cours_non_planifie($etat_annee_scolaire = "en_cours" , $professe
   return  $datas ;
 }
 
+function filterCours($debut, $fin){
+   $pdo = ouvrir_connexion_db();
+   $cours = $_SESSION['id_classe'];
+      $sql = "SELECT * FROM  cours c , user u , module m  , annee_scolaire an ,classe_cours cc,classe cl, planing_cours p
+      where c.id_user = u.id_user 
+      and c.id_cours=cc.id_cours 
+      and cl.id_classe = cc.id_classe 
+      and c.id_module = m.id_module
+      and p.id_cours = c.id_cours
+      and c.id_annee_scolaire = an.id_annee_scolaire  
+      and p.debut  = ?
+      and p.fin = ?
+      and cl.id_classe = $cours ";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute(array( $debut, $fin));
+      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
 
+   fermer_connexion_bd($pdo);
+  return  $datas ;
+}
+function getplaning(){
+   $pdo = ouvrir_connexion_db();
+      $sql = "SELECT DISTINCT debut , fin FROM planing_cours ORDER BY debut ASC, fin ASC      ";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute();
+      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+   fermer_connexion_bd($pdo);
+  return  $datas ;
+}
 /* function delete_cours_planifie( $id_cours) {
    $pdo = ouvrir_connexion_db();
    $sql = " DELETE FROM `cours` 
@@ -356,6 +435,48 @@ $stmt->execute();
 fermer_connexion_bd($pdo);
    return $stmt->rowCount();
 }  
+function update_user_etudiant($id_user ,$nom ,$prenom,$login,$password,$adresse){
+   $pdo = ouvrir_connexion_db();
+  $sql = " UPDATE `user` 
+  SET  `nom` = :nom, 
+  `prenom` = :prenom,
+   `login` = :login, 
+   `password` = :password, 
+   `adresse` = :adresse
+   WHERE `id_user` = :id_user ";
+
+   $stmt = $pdo->prepare($sql);
+$stmt->bindParam(':nom', $nom,PDO::PARAM_STR);
+$stmt->bindParam(':prenom', $prenom,PDO::PARAM_STR);
+$stmt->bindParam(':login',$login,PDO::PARAM_STR);
+$stmt->bindParam(':password',$password,PDO::PARAM_STR);
+$stmt->bindParam(':adresse',$adresse,PDO::PARAM_STR);
+$stmt->bindParam(':id_user',$id_user,PDO::PARAM_STR);
+$stmt->execute();
+fermer_connexion_bd($pdo);
+   return $stmt->rowCount();
+}
+function update_classe_etudiant($id_inscription , $classe){
+   $pdo = ouvrir_connexion_db();
+   extract($datas);
+   $sql = "UPDATE inscription
+   SET id_classe=?
+   WHERE id_inscription=? ";
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute(array( $classe,$id_inscription));
+   fermer_connexion_bd($pdo);
+   return $sth->rowCount();
+ }
+function get_inscription_student($id_user){
+   $pdo = ouvrir_connexion_db();
+      $sql = "SELECT * FROM `inscription` WHERE id_user = ?";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute(array( $id_user));
+      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+
+   fermer_connexion_bd($pdo);
+  return  $datas ;
+}
 function update_classe($id_classe ,$nom_classe ,$filiere,$niveau){
    $pdo = ouvrir_connexion_db();
   $sql = " UPDATE `classe` 
@@ -381,9 +502,8 @@ function update_cours(int $id_cours ,  $semestre ,int  $id_user , int $id_module
   SET  `semestre` = :semestre, 
    `id_user` = :id_user,
    `id_module` = :id_module, 
-   `id_annee_scolaire` = :id_annee_scolaire, 
-   `id_annee_scolaire` = :id_annee_scolaire, 
-   WHERE `id_cours` = :id_cours ";
+   `id_annee_scolaire` = :id_annee_scolaire
+   WHERE `id_cours` = :id_cours " ;
 
    $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':semestre', $semestre,PDO::PARAM_STR);

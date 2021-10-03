@@ -33,6 +33,20 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
     <ul class="nav-list mt-2">
     <?php if (est_responsable()):?>
       <li>
+        <a href="<?= WEB_ROUTE . '?controllers=responsable&view=tableau.bord' ?>">
+        <i class='bx bx-grid-alt'></i>
+          <span class="links_name">Tableau de bord</span>
+        </a>
+        <span class="tooltip">Tableau de bord</span>
+     </li>
+     <li>
+        <a href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>">
+          <i class='bx bx-list-ul' ></i>
+          <span class="links_name">Liste des cours</span>
+        </a>
+        <span class="tooltip">Liste des cours</span>
+     </li>
+      <li>
           <a href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.professeur' ?>">
           <i class='bx bx-list-ul' ></i>
             <span class="links_name">Liste des professeur</span>
@@ -46,20 +60,8 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
           </a>
           <span class="tooltip">Liste des classes</span>
      </li>
-     <li>
-        <a href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>">
-          <i class='bx bx-list-ul' ></i>
-          <span class="links_name">Liste des cours</span>
-        </a>
-        <span class="tooltip">Liste des cours</span>
-     </li>
-     <li>
-        <a href="<?= WEB_ROUTE . '?controllers=responsable&view=tableau.bord' ?>">
-        <i class='bx bx-grid-alt'></i>
-          <span class="links_name">Tableau de bord</span>
-        </a>
-        <span class="tooltip">Tableau de bord</span>
-     </li>
+
+  
      <?php endif ?>
 
      <?php if (est_attache()):?>
@@ -108,30 +110,34 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
 <li>
    <a href="<?=WEB_ROUTE.'?controllers=attache&view=liste.absence.etudiant&id_user='.$_SESSION['userConnect'][0]['id_user']?>">
-     <i class='bx bx-list-ul' ></i>
+     <i class='bx bx-user-x ' ></i>
      <span class="links_name">Voir mes absences</span>
    </a>
    <span class="tooltip">Voir mes absences</span>
 </li>
 
 <li>
-   <a href="#">
+   <a href="<?=WEB_ROUTE.'?controllers=etudiant&view=liste.justification&id_user='.$_SESSION['userConnect'][0]['id_user']?>">
      <i class='bx bx-list-ul' ></i>
-     <span class="links_name">******</span>
+     <span class="links_name">Mes justifications</span>
      </a>
-   <span class="tooltip">********</span>
+   <span class="tooltip">Mes justifications</span>
 </li>
+
+<?php endif ?>
+<?php if (est_professeur()):?>
+
 <li>
-   <a href="#">
+     <a href="<?= WEB_ROUTE.'?controllers=professeur&view=liste.cours.professeur' ?>">
      <i class='bx bx-list-ul' ></i>
-     <span class="links_name">******</span>
-   </a>
-   <span class="tooltip">********</span>
+    <span class="links_name">Voir mes cours</span>
+     </a>
+     <span class="tooltip">Voir mes cours</span>
 </li>
 
 <?php endif ?>
 
-     <li class="profile">
+     <li class="mt-5">
        <a href="<?=WEB_ROUTE.'?controllers=security&view=deconnexion'?>">
        <i class='bx bx-log-out' id="log_out" ></i>
          <span class="links_name deconnect">Se deconnecter</span>

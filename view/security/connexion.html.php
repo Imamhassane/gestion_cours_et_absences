@@ -4,7 +4,6 @@ if (isset($_SESSION['arrayError'])){
     unset($_SESSION['arrayError']);
 }
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
-  require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
 ?>
 
@@ -40,3 +39,4 @@ html {
     background-color: #152032;
 }
 </style>
+<?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

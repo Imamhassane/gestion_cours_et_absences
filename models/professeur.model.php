@@ -134,6 +134,20 @@ function ajout_absence( $datas):int{
    return $sth->rowCount();
 } 
 
-
+function nombre_de_cours_par_prof($id_user){
+   $pdo = ouvrir_connexion_db();
+   $sql = "SELECT count(u.id_user)
+    FROM `cours`c , planing_cours p , user u 
+   where u.id_user = c.id_user 
+   and c.id_cours = p.id_cours
+    and u.id_user = ?   ";
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute([$id_user]);
+   $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+fermer_connexion_bd($pdo);
+return  $datas ;
+}
  
+
+
  ?>

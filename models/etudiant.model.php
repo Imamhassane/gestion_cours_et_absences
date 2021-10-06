@@ -1,47 +1,4 @@
 <?php
-// SELECT*FROM cours c ,user u ,classe cl,module m,annee_scolaire an,classe_cours cc, planing_cours p ,inscription i WHERE c.id_user = u.id_user and cl.id_classe = i.id_classe and c.id_cours=cc.id_cours and cl.id_classe = cc.id_classe and m.id_module = c.id_module and c.id_annee_scolaire = an.id_annee_scolaire and c.id_cours = p.id_cours and c.id_cours = 528
-
-/* function find_my_cours( int $id_user , $page=null){
-
-   $pdo = ouvrir_connexion_db();
-   //listing
-  $start_from = ($page-1) * per_page_record;     
-     $sql =  "SELECT  FROM `inscription` i , user u, classe cl, module m  , annee_scolaire an ,classe_cours cc,planing_cours p , cours c
-     WHERE u.id_user = i.id_user
-     and cl.id_classe = i.id_classe
-     and c.id_cours=cc.id_cours 
-     and cl.id_classe = cc.id_classe 
-     and m.id_module = c.id_module
-     and c.id_annee_scolaire = an.id_annee_scolaire  
-     and c.id_cours = p.id_cours 
-     and u.id_user = ?
-     ORDER by p.date_cours LIMIT $start_from,".per_page_record;
-     $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-     $sth->execute([$id_user]);
-     //listing
-     //pagination
-     $sql1 =  "SELECT p.date_cours , p.debut,p.fin,m.libelle_module,cl.nom_classe,c.semestre FROM `inscription` i , user u, classe cl, module m  , annee_scolaire an ,classe_cours cc,planing_cours p , cours c
-     WHERE u.id_user = i.id_user
-     and cl.id_classe = i.id_classe
-     and c.id_cours=cc.id_cours 
-     and cl.id_classe = cc.id_classe 
-     and m.id_module = c.id_module
-     and c.id_annee_scolaire = an.id_annee_scolaire  
-     and c.id_cours = p.id_cours 
-     and u.id_user = ?
-     ORDER by p.date_cours ";
-       $stm = $pdo->prepare($sql1, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-       $stm->execute([$id_user]);
-       //pagination
-     $datas['data'] = $sth->fetchAll((PDO::FETCH_ASSOC));
-     $datas['row'] =$sth->rowCount();
-     $datas['per_page_record'] =per_page_record;
-     $datas['total_records'] =$stm->rowCount();
-
-     //var_dump($stm->rowCount());
-  fermer_connexion_bd($pdo);
- return  $datas ;
-} */
 function find_my_cours( int $id_user , $page=null){
 
    $pdo = ouvrir_connexion_db();
@@ -77,8 +34,7 @@ function find_my_cours( int $id_user , $page=null){
      $datas['per_page_record'] =per_page_record;
      $datas['total_records'] =$stm->rowCount();
 
-     //var_dump($stm->rowCount());
-  fermer_connexion_bd($pdo);
+   fermer_connexion_bd($pdo);
  return  $datas ;
 }
 
@@ -175,12 +131,14 @@ function filiter_my_justification($date_justification  , $etat){
 function get_my_number_absence($id_user){
   
 $pdo = ouvrir_connexion_db();
-$sql = " SELECT SUM(p.duree) FROM `absence` a , planing_cours p , user u
+$sql = " SELECT SUM(p.duree) as duree ,u.nom ,u.prenom ,u.matricule FROM `absence` a , planing_cours p , user u 
 where p.id_planing = a.id_planing 
-and u.id_user = a.id_user
-and u.id_user = ?";
+and u.id_user = a.id_user 
+and NOT a.etat_absence like 'justifiee_acceptee' 
+and u.id_user = ? ";
+
 $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-$sth->execute(array($id_user ));
+$sth->execute(array($id_user));
 $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
 
 fermer_connexion_bd($pdo);

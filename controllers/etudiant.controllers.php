@@ -102,7 +102,7 @@ function insert_justification(array $datas):void{
                     upload_fiche($_FILES, $target_file);
                     insert_in_justification($datas);  
                     $id_absence =  $_SESSION['id_absence'];
-                    update_absence('justifiee',$id_absence);
+                    update_absence('justifiee_non_traitee',$id_absence);
                     $_SESSION['message']=1;
                     header('location:'.WEB_ROUTE.'?controllers=attache&view=liste.absence.etudiant&id_user='.$_SESSION['userConnect'][0]['id_user']);
             }

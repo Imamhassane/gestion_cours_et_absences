@@ -1,13 +1,12 @@
 <?php
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
-require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 $annee_scolaire = find_annee_scolaire();
 
 ?>
 
 <div class="container-fluid">
-    <div class="row">
+    <div class="row pr">
     <?php
 if ($_SESSION['message']==1) {
 
@@ -25,8 +24,7 @@ echo'
 }
 unset($_SESSION['message']);
 ?>
-        <div class="col-md-10 liste-cole">
-             
+        <div class="col-md-11 liste-cole">
             
                 <div class="column">
                 <div class="card">
@@ -168,3 +166,4 @@ $(document).ready(function(){
         $("#message").show().fadeIn(3000).css("color","blue")
     });
 </script>
+<?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

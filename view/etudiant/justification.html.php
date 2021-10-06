@@ -5,7 +5,6 @@ if (isset($_SESSION['arrayError'])){
 }
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
-require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 ?>
 
     <div class="container-fluid">
@@ -64,3 +63,4 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
         display: contents;
     }
 </style>
+<?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

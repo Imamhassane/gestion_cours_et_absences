@@ -1,12 +1,11 @@
 <?php
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
-require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
 ?>
 
 <div class="container-fluid">
-<div class="row">
+<div class="row pr">
     <?php
 if ($_SESSION['message']==1) {
 
@@ -43,9 +42,9 @@ if ($_SESSION['message']==1) {
         </div>';
     
 }
-    unset($_SESSION['message']);
+        unset($_SESSION['message']);
     ?>
-        <div class="col-md-10 liste-cole">
+        <div class="col-md-11  liste-cole ">
             <?php if(est_attache()):?>
                 <div class="row">
                     <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
@@ -72,12 +71,11 @@ if ($_SESSION['message']==1) {
                         <button type="submit" name="ok" class="btn  ml-4 ">OK</button>
                     </form>
                     <form method="POST" action="<?=WEB_ROUTE?>" class="d-flex mt-4 ml-5">
-
                         <input type="hidden" name="controllers" value="attache">
                         <input type="hidden" name="action" value="cherchematricule">
 
                         <input class="form-control me-2" type="search" name="matricule" placeholder="Saisir le matricule" aria-label="Search">
-                        <button class="btn  btnn " name="search" type="submit">Search</button>
+                            <button class="btn  btnn " name="search" type="submit">Search</button>
                     </form>
                 </div>    
             <?php endif ?>
@@ -226,6 +224,9 @@ if ($_SESSION['message']==1) {
     display: inline-block;
 
 }
+.liste-cole{
+    margin-left: 5%
+}
     .fa-edit{
         color:#152032;
         margin-top: 5px;
@@ -257,3 +258,6 @@ $(document).ready(function(){
         $("#message").show().fadeIn(3000).css("color","blue")
     });
 </script>
+<?php
+require ( ROUTE_DIR . 'view/inc/footerCharjs.html.php' );
+?>

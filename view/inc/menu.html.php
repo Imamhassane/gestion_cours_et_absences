@@ -1,7 +1,4 @@
-<?php
-require ( ROUTE_DIR . 'view/inc/header.html.php' );
-require ( ROUTE_DIR . 'view/inc/footer.html.php' );
-?>
+<?php require ( ROUTE_DIR . 'view/inc/header.html.php' )?>
 
 
 <!--  -->
@@ -61,7 +58,13 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
           <span class="tooltip">Liste des classes</span>
      </li>
 
-  
+     <li>
+          <a href="<?= WEB_ROUTE . '?controllers=responsable&view=definir.annee' ?>">
+          <i class='bx bx-edit-alt' ></i>         
+          <span class="links_name">Définir l'année scolaire</span>
+          </a>
+          <span class="tooltip">Définir une nouvelle année scolaire</span>
+     </li>
      <?php endif ?>
 
      <?php if (est_attache()):?>
@@ -137,7 +140,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
 <?php endif ?>
 
-     <li class="mt-5">
+     <li class="mt-3">
        <a href="<?=WEB_ROUTE.'?controllers=security&view=deconnexion'?>">
        <i class='bx bx-log-out' id="log_out" ></i>
          <span class="links_name deconnect">Se deconnecter</span>
@@ -172,3 +175,4 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
    }
   }
   </script>
+<?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

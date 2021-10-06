@@ -1,7 +1,6 @@
 <?php
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
-require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 ?>
 <div class="container-fluid">
 
@@ -16,7 +15,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
             <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-2">
                        <input type="hidden" name="controllers" value="attache">
-                        <input type="hidden" name="action" value="filterEtudiantclasse">
+                        <input type="hidden" name="action" value="<?=!est_professeur()?'filterEtudiantclasse':'filterstudentclasse'?>">
                         <div class="form-group ml-2">
                             <div class="form-group">
                                 <label for="">Année scolaire</label>
@@ -98,4 +97,4 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
         font-size: 13px;    
     }
 </style>
-    
+<?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

@@ -1,14 +1,13 @@
 <?php
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
-require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 $annee_scolaire = find_annee_scolaire();
 
 ?>
 
 <div class="container-fluid">
-    <div class="row cousplan">
-        <div class="col-md-11 liste-cole">
+    <div class="row cousplan ml-2">
+        <div class="col-md-11 liste-cole ">
         <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
                         <input type="hidden" name="controllers" value="etudiant">
                         <input type="hidden" name="action" value="filterjustification">
@@ -129,3 +128,4 @@ $annee_scolaire = find_annee_scolaire();
         </style>     
 
 
+<?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

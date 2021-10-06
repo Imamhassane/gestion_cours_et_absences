@@ -6,7 +6,6 @@ if (isset($_SESSION['arrayError'])){
 }
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
-require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 $modules = find_all_module();
 $classes = get_all_classe();
 
@@ -14,15 +13,19 @@ $classes = get_all_classe();
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-10 liste-col">
+            <div class="col-md-10  liste-col">
             <?php if(est_responsable()):?>
                 <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.professeur' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
             <?php endif?>
             <?php if(est_attache()):?>
                 <a name="" id="" class="mr-auto mr-2 float-left mt-2 " href="<?= WEB_ROUTE . '?controllers=attache&view=liste.etudiant' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
             <?php endif?>
-            <div class="text-center mb-3"><h2 ><?=est_responsable()?'Ajouter un professeur':'Inscrire un étudiant'?></h2></div>
-           
+            <?php if ($_GET['view'] != 'updateUser'):?>
+                <div class="text-center mb-3"><h2 ><?=est_responsable()?'Ajouter un professeur':'Inscrire un étudiant'?></h2></div>
+            <?php else:?>
+                <div class="text-center mb-3"><h2 >Modifier mon profil</h2></div>
+            <?php endif?>
+
                 <form method="POST" action="<?=WEB_ROUTE?>"enctype="multipart/form-data" >
                     <div class="form-inline">
                         <input type="hidden" name="controllers" value="<?=isset($users[0]['id_user']) ? 'responsable':'security'?>">
@@ -72,7 +75,7 @@ $classes = get_all_classe();
                                     <?= isset($arrayError['login']) ? $arrayError['login'] : '' ;?>
                                 </small>
                             </div> 
-                            <?php if(est_responsable()):?>
+                            <?php if(est_responsable() & $_GET['view']!='updateUser'):?>
 
                                 <div class="col-md-6 mb-3 mt-2">
                                     <label for="" class = "ml-5 ">spécialité</label>
@@ -171,3 +174,4 @@ unset($_SESSION['restor']);
 
 }
 </style>
+<?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

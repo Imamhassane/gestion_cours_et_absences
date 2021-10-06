@@ -1,7 +1,6 @@
 <?php
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
-require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
 ?>
 
@@ -9,7 +8,7 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-10 liste-cole">
+        <div class="col-md-11 liste-cole">
         <?php if (est_responsable()):?>
             <a name="" id="" class=" mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
         <?php endif ?>
@@ -137,3 +136,4 @@ require ( ROUTE_DIR . 'view/inc/footer.html.php' );
         color:#152032;
     }
 </style>
+<?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

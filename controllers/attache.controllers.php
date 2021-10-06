@@ -26,6 +26,7 @@ if(est_connect()){
                 get_absence_for_cours();
 
             }elseif ( $_GET [ 'view' ]== 'traitement.absence' ) {
+                $_SESSION['id_absence'] = $_GET['id_absence'];
                 justification_for_etudiant();
             }elseif ( $_GET [ 'view' ]== 'refuserJustification' ) {
                 change_etat_justification();
@@ -48,6 +49,10 @@ if(est_connect()){
                 unset($_POST['action']);
                 get_etudiant();
             }elseif ($_POST[ 'action' ]=='filterEtudiantclasse'){
+                unset($_POST['controllers']);
+                unset($_POST['action']);
+                get_etudiant_classroom();
+            }elseif ($_POST[ 'action' ]=='filterstudentclasse'){
                 unset($_POST['controllers']);
                 unset($_POST['action']);
                 get_etudiant_classe();
@@ -187,6 +192,7 @@ function get_etudiant_classroom() {
     $id_classe =  $_SESSION['id_classe'] ;
     if(isset($_POST['ok'])){
         $students = filter_all_etudiant_by_classe($_POST['annee']);
+
     }else{
         $students = get_all_etudiant_by_classe($id_classe);
     }
@@ -249,18 +255,19 @@ function liste_justification(){
 
 function change_etat_justification(){
     $id_justification = $_GET['id_justification'];
+    $id_absence =  $_SESSION['id_absence'];
     if ($_GET[ 'view']=='refuserJustification') {
         $etat = 'refusee';
+        update_absence('justifiee_refusee',$id_absence);
     }elseif($_GET[ 'view']=='accepterJustification'){
         $etat = 'acceptee';
-        $palning = get_the_planing_id($id_justification);
-        $id_planing = $palning[0]['id_planing'];
-        $duree = 0; 
-        //var_dump($nombreAbsence[0]["sum(p.duree)"]);
+        update_absence('justifiee_acceptee',$id_absence);
     }
     $change = update_justification($etat , $id_justification);
     header('location:'.WEB_ROUTE.'?controllers=attache&view=liste.justification');
 
 }
+
+
 
 ?>

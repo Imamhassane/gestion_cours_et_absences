@@ -12,7 +12,18 @@ function get_all_professeur():array{
     fermer_connexion_bd($pdo);
    return  $datas ;
 }
-
+function count_all_professeur():array{
+   $pdo = ouvrir_connexion_db();
+      $sql = "select count(id_user) from user u , role r 
+      where u.id_role = r.id_role 
+      and r.nom_role like ?
+      ";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute(['ROLE_PROFESSEUR']);
+      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+   fermer_connexion_bd($pdo);
+  return  $datas ;
+}
 function find_all_professeur($page=null):array{
    $pdo = ouvrir_connexion_db();
     //listing
@@ -63,6 +74,15 @@ return  $datas ;
 function get_all_classe(){
    $pdo = ouvrir_connexion_db();
    $sql = "select * from classe  ";
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute();
+   $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+fermer_connexion_bd($pdo);
+return  $datas ;
+}
+function count_all_classe(){
+   $pdo = ouvrir_connexion_db();
+   $sql = "select count(id_classe) from classe  ";
    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
    $sth->execute();
    $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
@@ -515,4 +535,78 @@ $stmt->execute();
 fermer_connexion_bd($pdo);
    return $stmt->rowCount();
 } 
+
+function nombre_de_cours(){
+   $pdo = ouvrir_connexion_db();
+   $sql = " SELECT count(p.id_planing)
+   FROM planing_cours p ";
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute();
+   $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+fermer_connexion_bd($pdo);
+return  $datas ;
+}
+
+/* function nombre_de_cours_par_classe($id_classe){
+   $pdo = ouvrir_connexion_db();
+   $sql = " SELECT count(cl.id_classe)
+   FROM `cours`c , planing_cours p , classe cl , classe_cours cc
+  where c.id_cours = cc.id_cours
+  and cl.id_classe = cc.id_classe
+  and c.id_cours = p.id_cours
+   and cl.id_classe = ?  ";
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute([$id_classe]);
+   $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+fermer_connexion_bd($pdo);
+return  $datas ;
+} */
+
+function update_annee_scolaire($etat){
+   $pdo = ouvrir_connexion_db();
+   extract($datas);
+   $sql = "UPDATE `annee_scolaire` 
+   SET `etat_annee_scolaire` = ?
+    WHERE `annee_scolaire`.`etat_annee_scolaire` = 'en_cours'   ";
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute(array($etat));
+   fermer_connexion_bd($pdo);
+   return $sth->rowCount();
+}
+
+
+function insert_in_annee_scolaire( $datas):int{
+   $pdo = ouvrir_connexion_db();
+   extract($datas);
+   $sql ="INSERT INTO `annee_scolaire` ( `annee_scolaire`, `etat_annee_scolaire`) 
+   VALUES ( ?, ?)";
+   $newannee = $_POST['annee'];
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute(array($newannee , 'en_cours'));
+   fermer_connexion_bd($pdo);
+
+   return $sth->rowCount();
+} 
+
+ function getCoursByProf(){
+   $pdo = ouvrir_connexion_db();
+   $sql = "SELECT count(c.id_cours) cours,u.prenom,u.nom FROM `cours`  c,`user`u ,`planing_cours`p WHERE u.id_user=c.id_user and c.id_cours = p.id_cours GROUP By u.id_user";
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute();
+   $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+fermer_connexion_bd($pdo);
+return  $datas ;
+}
+
+
+function getCoursByClasse(){
+   $pdo = ouvrir_connexion_db();
+   $sql = "SELECT count(cl.id_classe) classe,cl.nom_classe FROM `cours` c,`classe` cl,classe_cours cc,planing_cours p WHERE c.id_cours =cc.id_cours and cl.id_classe = cc.id_classe and p.id_cours=c.id_cours GROUP By cl.id_classe";
+   $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+   $sth->execute();
+   $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+fermer_connexion_bd($pdo);
+return  $datas ;
+}
+
 ?>

@@ -1,7 +1,6 @@
 <?php
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
-require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 ?>
 <?php if ($_SESSION['message']==4) {
 echo'
@@ -20,7 +19,7 @@ unset($_SESSION['message']);
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-md-10 mt-3 liste-cole">
+        <div class="col-md-11 mt-3 liste-cole">
         <div class="text-center mb-3"><h2 >LA LISTE DE mes cours</h2></div>
             <div class="column">
                 <div class="card">
@@ -92,4 +91,4 @@ unset($_SESSION['message']);
         font-size: 13px;    
     }
 </style>
-    
+<?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

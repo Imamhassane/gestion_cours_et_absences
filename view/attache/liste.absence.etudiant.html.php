@@ -1,7 +1,6 @@
 <?php
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
-require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 
 ?>
 <?php 
@@ -20,13 +19,13 @@ unset($_SESSION['message']);
 ?>
 <div class="container-fluid">
 <div class="row">
-        <div class="col-md-10 liste-cole">
+        <div class="col-md-11 liste-cole">
             <?php if(est_attache()):?>
                 <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=attache&view=liste.etudiant' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
             <?php endif ?>
            
                     
-                    <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-5">
+                    <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-2 ml-2">
                         <input type="hidden" name="controllers" value="attache">
                         <input type="hidden" name="action" value="filterAbsence">
                         <div class="form-group ml-1 row">
@@ -55,13 +54,15 @@ unset($_SESSION['message']);
                         <?php if (est_attache()):?>
                             <h2 class=" "> <?=isset($absences[0])?'LES ABSENCES DE '.$absences[0]['prenom'].' '.$absences[0]['nom']:'Cet étudiant n\'a pas d\'absence'?></h2>
                         <?php endif ?>
-
+                        <!-- Prénom : <?=$absences[0]['prenom']?>
+                            Nom : <?=$absences[0]['nom']?>
+                            Matricule : <?=$absences[0]['matricule']?> -->
                         <?php if (est_etudiant()):?>
-                            <h2 class=" "> <?=isset($absences[0])?'mes ABSENCES ':'Vous n\'avez pas d\'absence'?></h2>
+                            <h2 class="ml-5 "> <?=isset($absences[0])?'mes ABSENCES ':'Vous n\'avez pas d\'absence'?></h2>
                         <?php endif ?>
-                        <?php if ($nombreAbsence[0]["sum(p.duree)"]!=0):?>
+                        <?php if ($nombreAbsence[0]["duree"]!=0):?>
                             <div class="float-right mt-4 mr-3">
-                                <h6 class=" mt-3"><strong><?=est_etudiant()? 'Vous avez '.$nombreAbsence[0]["sum(p.duree)"]:'Cet étudiant a '.$nombreAbsence[0]["sum(p.duree)"]?> heures d'absences</strong> <h6>
+                                <h6 class=" mt-3"><strong><?=est_etudiant()? 'Vous avez '.$nombreAbsence[0]["duree"]:'Cet étudiant a '.$nombreAbsence[0]["duree"]?> heures d'absences</strong> <h6>
                             </div>
                         <?php endif ?>
 
@@ -73,8 +74,9 @@ unset($_SESSION['message']);
                                         <th >Nom</th>
                                         <th >Matricule</th>
                                         <th >Cours</th>
-                                        <th >Heure de début </th>
-                                        <th >Heure de fin </th>
+                                        <th >Date d'absence</th>
+                                        <th >Début </th>
+                                        <th >Fin </th>
                                         <th >Semestre</th>
                                         <?php if (est_etudiant()):?>
                                             <th >Action</th>
@@ -90,6 +92,7 @@ unset($_SESSION['message']);
                                         <td><?=$absence['nom']?></td>
                                         <td><?=$absence['matricule']?></td>
                                         <td><?=$absence['libelle_module']?></td>
+                                        <td><?=$absence['date_absence']?></td>
                                         <td><?=$absence['debut']?></td>
                                         <td><?=$absence['fin']?></td>
                                         <td><?=$absence['semestre']?></td>
@@ -175,4 +178,4 @@ unset($_SESSION['message']);
   
 </style>    
 
- 
+<?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

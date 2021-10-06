@@ -1,7 +1,6 @@
 <?php
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
-require ( ROUTE_DIR . 'view/inc/footer.html.php' );
 $annee_scolaire = find_annee_scolaire();
 
 ?>
@@ -176,3 +175,4 @@ $(document).ready(function(){
         $("#message").show().fadeIn(3000).css("color","blue")
     });
 </script>
+<?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

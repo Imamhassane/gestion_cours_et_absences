@@ -50,11 +50,16 @@ require(ROUTE_DIR . 'view/professeur/liste.cours.professeur.html.php');
     $arrayError=array();
     extract($datas);
      validation_champ($absent,'absent',$arrayError);  
-      
+        $id_planing = $_SESSION['id_planing'] ;
        if (form_valid($arrayError)) {
-                    ajout_absence( $datas);
-                    $_SESSION['message']=4; 
-                    header('location:'.WEB_ROUTE.'?controllers=professeur&view=liste.cours.professeur');
+                    if(etudiant_exist($id_planing)){
+                        $_SESSION['message']=7; 
+                        header('location:'.WEB_ROUTE.'?controllers=professeur&view=liste.cours.professeur');
+                    }else{
+                        ajout_absence( $datas);
+                        $_SESSION['message']=4;
+                        header('location:'.WEB_ROUTE.'?controllers=professeur&view=liste.cours.professeur');
+                    }
             }else{
                 $_SESSION['message']=5; 
                 $_SESSION['arrayError']=$arrayError;

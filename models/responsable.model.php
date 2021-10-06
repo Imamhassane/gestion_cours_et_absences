@@ -369,15 +369,25 @@ function filterCours($debut, $fin){
    fermer_connexion_bd($pdo);
   return  $datas ;
 }
-function getplaning(){
+function getplaningdebut(){
    $pdo = ouvrir_connexion_db();
-      $sql = "SELECT DISTINCT debut , fin FROM planing_cours ORDER BY debut ASC, fin ASC      ";
+      $sql = "SELECT DISTINCT debut  FROM planing_cours ORDER BY debut ASC ";
       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
       $sth->execute();
       $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
    fermer_connexion_bd($pdo);
   return  $datas ;
 }
+function getplaningfin(){
+   $pdo = ouvrir_connexion_db();
+      $sql = "SELECT DISTINCT fin FROM planing_cours ORDER BY  fin ASC";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute();
+      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+   fermer_connexion_bd($pdo);
+  return  $datas ;
+}
+
 /* function delete_cours_planifie( $id_cours) {
    $pdo = ouvrir_connexion_db();
    $sql = " DELETE FROM `cours` 

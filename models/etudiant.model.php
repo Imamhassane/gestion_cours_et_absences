@@ -131,8 +131,10 @@ function filiter_my_justification($date_justification  , $etat){
 function get_my_number_absence($id_user){
   
 $pdo = ouvrir_connexion_db();
-$sql = " SELECT SUM(p.duree) as duree ,u.nom ,u.prenom ,u.matricule FROM `absence` a , planing_cours p , user u 
+$sql = " SELECT SUM(p.duree) as duree ,u.nom ,u.prenom ,u.matricule, cl.nom_classe FROM `absence` a , planing_cours p , user u ,inscription i , classe cl
 where p.id_planing = a.id_planing 
+and u.id_user = i.id_user 
+and cl.id_classe = i.id_classe
 and u.id_user = a.id_user 
 and NOT a.etat_absence like 'justifiee_acceptee' 
 and u.id_user = ? ";

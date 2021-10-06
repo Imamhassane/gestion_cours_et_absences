@@ -60,22 +60,32 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-info">Les étudiants ayant dépassés 25H d'absences</h6>
+                                    <h6 class="m-0 font-weight-bold text-warning">Les étudiants ayant dépassés 25H d'absences</h6>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body pb-5">
                                     <?php foreach ($absentSup25h as $absent):?>
-                                        <div class="h5 mb-0 font text-gray-800">Nom : <strong><?=$absent['prenom']?></strong>  <strong><?=$absent['nom']?></strong> Mat : <strong><?=$absent['matricule']?></strong> Durée : <strong><?=$absent['duree']?></strong>   </div>
-
+                                        <div class="h5 mb-0 font text-gray-800"> <strong><?=$absent['prenom']?></strong>  <strong><?=$absent['nom']?></strong> / Mat : <strong><?=$absent['matricule']?></strong> / Durée : <strong><?=$absent['duree']?></strong> / Classe : <strong><?=$absent['nom_classe']?></strong></div>
                                     <?php endforeach?>
 
-                                        <div class="chart-pie pt-2 pb-5"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                                            <canvas id="" width="595" height="245" style="display: block; width: 595px; height: 245px;" class="chartjs-render-monitor"></canvas>
-                                        </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-xl-6 col-lg-6 ">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-danger">Les étudiants les plus absentéistes </h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body pb-5">
+                                    <!-- <?php foreach ($absentSup25h as $absent):?>
+                                        <div class="h5 mb-0 font text-gray-800"> <strong><?=$absent['prenom']?></strong>  <strong><?=$absent['nom']?></strong> Mat : <strong><?=$absent['matricule']?></strong> Durée : <strong><?=$absent['duree']?></strong> Classe : <strong><?=$absent['nom_classe']?></strong></div>
+                                    <?php endforeach?> -->
 
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Content Row -->

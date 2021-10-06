@@ -13,6 +13,12 @@ echo'
     <div class="container-fluid p-0">
         <div  id = "message"  class ="alert alert-danger text-center">Aucune absence n\'a été enregistré</div>
     </div>';
+}elseif($_SESSION['message']==7){
+
+    echo'
+    <div class="container-fluid p-0">
+        <div  id = "message"  class ="alert alert-danger text-center">Les absences pour ce cours ont déjà été enregistré </div>
+    </div>';
 }
 unset($_SESSION['message']);
 ?>

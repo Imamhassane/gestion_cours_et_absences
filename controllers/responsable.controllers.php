@@ -264,7 +264,9 @@ function liste_cours_by_id(){
     }
 
     $classes = get_all_classe();
-    $planings = getplaning();
+    $planings = getplaningdebut();
+    $planins = getplaningfin();
+
     require ( ROUTE_DIR . 'view/responsable/liste.cours.html.php' );
 }
 /* function delete_cours_nonplanifie(){
@@ -457,7 +459,9 @@ function tableau_bord(){
         foreach ($response as  $value) {
             if ($value["duree"]>25) {
                 $absentSup25h[]=$value;
-            }
+            }/* elseif ($value["duree"]>50) {
+                $plusAbsentéiste[]=$value;
+            } */
         }
     } 
     require ( ROUTE_DIR . 'view/responsable/tableau.bord.html.php' );

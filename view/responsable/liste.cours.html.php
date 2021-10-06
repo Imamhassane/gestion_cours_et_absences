@@ -29,8 +29,8 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
                          <div class="form-group ml-4">
                                 <label for="">Heure de fin</label>
                                 <select class="form-control ml-2" name="fin" id="" value="">
-                                <?php foreach ($planings as $planing):?>
-                                    <option><?=$planing['fin']?></option>;
+                                <?php foreach ($planins as $planin):?>
+                                    <option><?=$planin['fin']?></option>;
                                 <?php endforeach?>   
                                 </select>
                         </div>

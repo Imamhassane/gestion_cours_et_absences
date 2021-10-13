@@ -40,8 +40,8 @@ function ajout_user(array $user):int{
       $id_role = 3;
     }elseif(isset($_POST['adresse'])){
       $id_role = 4;
-      $matricule = '2021'.'-'.$_POST['nom'].'-'.generateRandomString()  ;
-
+      $date = date_format(date_create(), 'Y');
+      $matricule = $date.'-'.$_POST['nom'].'-'.generateRandomString()  ;
     }else{
       $id_role = 2;
     }

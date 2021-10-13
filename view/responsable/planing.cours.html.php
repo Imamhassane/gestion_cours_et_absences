@@ -6,6 +6,16 @@ if (isset($_SESSION['arrayError'])){
 require ( ROUTE_DIR . 'view/inc/header.html.php' );
 require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 ?>
+<?php if ($_SESSION['message']==12) {
+
+echo'
+<div class="container-fluid p-0">
+    <div  id = "message"  class ="alert alert-danger text-center text-danger">Erreur séance déjà été enregistré  dans cette classe ! Vérifiez la date , le début et la fin saisi </div>
+</div>';
+}
+unset($_SESSION['message']);
+?>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-10 mt-2 liste-col ">

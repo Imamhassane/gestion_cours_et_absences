@@ -18,7 +18,7 @@ echo'
 unset($_SESSION['message']);
 ?>
 <div class="container-fluid">
-<div class="row">
+<div class="row ml-2">
         <div class="col-md-11 liste-cole">
             <?php if(est_attache()):?>
                 <a name="" id="" class="mr-auto mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=attache&view=liste.etudiant' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
@@ -54,12 +54,11 @@ unset($_SESSION['message']);
                         <?php if (est_attache()):?>
                             <h2 class=" "> <?=isset($absences[0])?'LES ABSENCES DE '.$absences[0]['prenom'].' '.$absences[0]['nom']:'Cet étudiant n\'a pas d\'absence'?></h2>
                         <?php endif ?>
-                        <!-- Prénom : <?=$absences[0]['prenom']?>
-                            Nom : <?=$absences[0]['nom']?>
-                            Matricule : <?=$absences[0]['matricule']?> -->
+
                         <?php if (est_etudiant()):?>
-                            <h2 class="ml-5 "> <?=isset($absences[0])?'mes ABSENCES ':'Vous n\'avez pas d\'absence'?></h2>
+                            <h2 class="ml-5 "><?='Prénom & nom : '.$absences[0]['prenom'].' '.$absences[0]['nom'].' / Matricule : '.$absences[0]['matricule']?> </h2>
                         <?php endif ?>
+                        
                         <?php if ($nombreAbsence[0]["duree"]!=0):?>
                             <div class="float-right mt-4 mr-3">
                                 <h6 class=" mt-3"><strong><?=est_etudiant()? 'Vous avez '.$nombreAbsence[0]["duree"]:'Cet étudiant a '.$nombreAbsence[0]["duree"]?> heures d'absences</strong> <h6>
@@ -70,9 +69,7 @@ unset($_SESSION['message']);
                     <table class="table">
                                 <thead>
                                     <tr>
-                                        <th >Prénom</th>
-                                        <th >Nom</th>
-                                        <th >Matricule</th>
+                        
                                         <th >Cours</th>
                                         <th >Date d'absence</th>
                                         <th >Début </th>
@@ -88,9 +85,6 @@ unset($_SESSION['message']);
 
 <?php foreach ($absences as  $absence):?>
                                     <tr>
-                                        <td><?=$absence['prenom']?></td>
-                                        <td><?=$absence['nom']?></td>
-                                        <td><?=$absence['matricule']?></td>
                                         <td><?=$absence['libelle_module']?></td>
                                         <td><?=$absence['date_absence']?></td>
                                         <td><?=$absence['debut']?></td>
@@ -175,7 +169,8 @@ unset($_SESSION['message']);
     border: 0px solid rgba(0,0,0,.125);
     border-radius: .25rem;
 }
-  
+      
+
 </style>    
 
 <?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

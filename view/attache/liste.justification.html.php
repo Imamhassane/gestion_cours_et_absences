@@ -7,65 +7,47 @@ $annee_scolaire = find_annee_scolaire();
 
 <div class="container-fluid">
 <div class="row">
-    <?php
-if ($_SESSION['message']==1) {
+<?php
+   /*  if ($_SESSION['message']==0) {
+            echo'
+            <div class="container-fluid p-0">
+                <div  id = "message"  class ="alert alert-success text-center text-success">Justification acceptée avec succès</div>
+            </div>';
+    }elseif($_SESSION['message']==1){
+                echo'
+                <div class="container-fluid p-0">
+                    <div  id = "message"  class ="alert alert-danger text-center text-danger">Justification refusée </div>
+                </div>';
 
-if(est_responsable()){
-    echo'
-    <div class="container-fluid p-0">
-        <div  id = "message"  class ="alert alert-success text-center">Professeur créée avec succès</div>
-    </div>';
-}elseif(est_attache()){
-    echo'
-    <div class="container-fluid p-0">
-        <div  id = "message"  class ="alert alert-success text-center">Etudiant inscrit avec succès</div>
-    </div>';
-}
-    
-    }elseif($_SESSION['message']==2){
-    
-        if(est_responsable()){
-            echo'
-            <div class="container-fluid p-0">
-                <div  id = "message"  class ="alert alert-success text-center">Professeur modifié avec succès</div>
-            </div>';
-        }elseif(est_attache()){
-            echo'
-            <div class="container-fluid p-0">
-                <div  id = "message"  class ="alert alert-success text-center">Etudiant modifié avec succès</div>
-            </div>';
-        }
     }
-    unset($_SESSION['message']);
-    ?>
+ unset($_SESSION['message']) */
+
+?>
         <div class="col-md-10 liste-col">
                     <form method="POST" action="<?=WEB_ROUTE?>" class="form-inline  mt-4">
-                        <!-- <input type="hidden" name="" value="">
-                        <input type="hidden" name="" value="">
+                         <input type="hidden" name="controllers" value="attache">
+                        <input type="hidden" name="action" value="filtreJUST">
                         <div class="form-group ml-1">
-                            <div class="form-group">
-                                <label for="">Année scolaire</label>
-                                <select class="form-control ml-2" name="annee" id="">
-                                <?php foreach ($annee_scolaire as $annee):?>
-                                    <option><?= $annee['annee_scolaire']?></option>;
-                                <?php endforeach;?>
-                                </select>
+                        <div class="form-group">
+                                <label for="">Date de la justification </label>
+                                <input type="date" name="date" class="form-control ml-2" value="<?=date_format(date_create(),'Y-m-d');?>"  >
                             </div>
                         </div>
-                        <button type="submit" name="ok" class="btn  ml-3 ">OK</button> -->
+                        <button type="submit" name="ok" class="btn  ml-3 ">OK</button> 
 
                     </form>
                 <div class="column">
                 <div class="card">
                     <div class="d-inline">
-                            <h2 class=" ">LA LISTE DES JUSTIFICATIONS</h2>
+                    <div class="text-center mb-3"><h2 ><?=isset($justifications[0])?'LA LISTE DES JUSTIFICATIONS':'Aucune absence n\'a été justifié '?></h2></div>
                     </div>
                     <table class="table">
                                 <thead>
                                 <tr class="text-center">
                                         <th scope="col">Prénom</th>
                                         <th scope="col">Nom</th>
-                                        <th scope="col">Matricule</th>      
+                                        <th scope="col">Matricule</th> 
+                                        <th scope="col">Date justification</th>           
                                         <th scope="col">Etat</th>
                                         <th scope="col">Détails</th>
 
@@ -78,6 +60,7 @@ if(est_responsable()){
                                         <td><?=$justification['prenom']?></td>
                                         <td><?=$justification['nom']?></td>
                                         <td><?=$justification['matricule']?></td>
+                                        <td><?=date_format(date_create($justification['date_justification']), 'd-m-Y')?></td>
                                         <td><?=$justification['etat']?></td>
                                         <?php if ($justification['etat']=='non_traiter'):?>
                                                 <td><a name="" id="" class="btn btn-primary ml-auto " href="<?=WEB_ROUTE.'?controllers=attache&view=traitement.absence&id_absence='.$justification['id_absence']?>"ole="button"> Détails + </i></a></td>
@@ -97,7 +80,12 @@ if(est_responsable()){
             </div>
             <div class="pagination mt-2 mb-5">    
             <?php  
-                $total_pages = $total_records / $per_page_record;       
+            if($per_page_record==0){
+                            $total_pages = $total_records / 1;       
+            }else{
+                            $total_pages = $total_records / $per_page_record;       
+            }
+
                 $pagLink = ""; 
             
               if($page>=2){   

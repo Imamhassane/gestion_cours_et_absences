@@ -5,19 +5,19 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 ?>
 
 <div class="container-fluid">
-<div class="row pr">
+<div class="row cousplan">
     <?php
 if ($_SESSION['message']==1) {
 
             if(est_responsable()){
                 echo'
                 <div class="container-fluid p-0">
-                    <div  id = "message"  class ="alert alert-success text-center">Professeur créée avec succès</div>
+                    <div  id = "message"  class ="alert alert-success text-center  text-success">Professeur créée avec succès</div>
                 </div>';
             }elseif(est_attache()){
                 echo'
                 <div class="container-fluid p-0">
-                    <div  id = "message"  class ="alert alert-success text-center">Etudiant inscrit avec succès</div>
+                    <div  id = "message"  class ="alert alert-success text-center  text-success">Etudiant inscrit avec succès</div>
                 </div>';
             }
     
@@ -26,19 +26,19 @@ if ($_SESSION['message']==1) {
         if(est_responsable()){
             echo'
             <div class="container-fluid p-0">
-                <div  id = "message"  class ="alert alert-success text-center">Professeur modifié avec succès</div>
+                <div  id = "message"  class ="alert alert-success text-center text-success">Professeur modifié avec succès</div>
             </div>';
         }elseif(est_attache()){
             echo'
             <div class="container-fluid p-0">
-                <div  id = "message"  class ="alert alert-success text-center">Etudiant modifié avec succès</div>
+                <div  id = "message"  class ="alert alert-success text-center  text-success">Etudiant modifié avec succès</div>
             </div>';
         }
 }elseif($_SESSION['message']==3){
     
         echo'
         <div class="container-fluid p-0">
-            <div  id = "message"  class ="alert alert-success text-center">Etudiant réinscrit avec succès</div>
+            <div  id = "message"  class ="alert alert-success text-center text-success">Etudiant réinscrit avec succès</div>
         </div>';
     
 }
@@ -135,7 +135,7 @@ if ($_SESSION['message']==1) {
                                         <td><?=$etudiant['nom_classe']?></td>
                                         <?php if (isset($_POST['search'])):?>
                                             <td class="action">
-                                                <a name="" id="" class="btn btn-primary ml-auto " href="<?=WEB_ROUTE.'?controllers=responsable&view=updateUser&id_user='.$etudiant['id_user']?>"ole="button">Réinscrire </a>
+                                                <a name="" id="" class="btn btn-primary ml-auto " href="<?=WEB_ROUTE.'?controllers=responsable&view=reinscrire&id_user='.$etudiant['id_user']?>"ole="button">Réinscrire </a>
                                             </td>
                                         <?php endif ?>
                                         <td class="action">
@@ -155,7 +155,12 @@ if ($_SESSION['message']==1) {
             </div>
             <div class="pagination mt-2 mb-5">    
             <?php  
-                $total_pages = $total_records / $per_page_record;     
+            		if($per_page_record==0){
+                            $total_pages = $total_records / 1 ;
+            		}else{
+                            $total_pages = $total_records / $per_page_record;     
+                            }
+
                 $pagLink = ""; 
             if (est_responsable()) {
                                                           

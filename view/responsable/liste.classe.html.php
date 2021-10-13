@@ -13,13 +13,13 @@ if ($_SESSION['message']==1) {
 
 echo'
 <div class="container-fluid p-0">
-    <div  id = "message"  class ="alert alert-success text-center">Classe créée avec succès</div>
+    <div  id = "message"  class ="alert alert-success text-center text-success">Classe créée avec succès</div>
 </div>';
 }elseif($_SESSION['message']==2){
 
     echo'
     <div class="container-fluid p-0">
-        <div  id = "message"  class ="alert alert-success text-center">Classe modifié avec succès</div>
+        <div  id = "message"  class ="alert alert-success text-center text-success">Classe modifié avec succès</div>
     </div>';
 }
 unset($_SESSION['message']);

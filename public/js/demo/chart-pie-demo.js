@@ -1,22 +1,24 @@
-// Set new default font family and font color to mimic Bootstrap's default styling
+/* // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
 // Pie Chart Example
-var cours = [];
-var labell = [];
+var duree = [];
+var labes = [];
 $.ajax({
     type: "get",
     dataType: "json",
-    url: "http://localhost:8000/?controllers=responsable&view=getDatas",
+    url: "http://localhost:8000/?controllers=responsable&view=get.Datas",
+    // url: "http://niassimamhassane.alwaysdata.net/?controllers=responsable&view=getDatas",
+
     success: function(resp) {
         var json = resp; // create an object with the key of the array
 
         // console.log(data);
         for (let index = 0; index < json.length; index++) {
             const element = json[index];
-            cours.push(element.cours)
-            labell.push(element.nom_classe)
+            duree.push(element.duree)
+            labes.push(element.nom)
         }
 
     },
@@ -30,14 +32,14 @@ setTimeout(function() {
 
         var ctx = document.getElementById("myPieChart");
         var myPieChart = new Chart(ctx, {
-            type: 'doughnut',
+            type: 'pie',
             data: {
-                labels: labell,
+                labels: labes,
                 datasets: [{
-                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#FFFF00', '#FF0000', '#154360 '],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#FFFF00', '#FF0000', '#154360'],
                     hoverBorderColor: "rgba(234, 236, 244, 1)",
-                    data: cours,
+                    data: duree,
                 }],
             },
             options: {
@@ -61,4 +63,4 @@ setTimeout(function() {
             },
         });
     },
-    200);
+    3000); */

@@ -13,7 +13,7 @@ $annee_scolaire = find_annee_scolaire();
               <div class="row"><label class="float-left mt-3 ml-5 mb-1">Prenom : <?=$_SESSION['userConnect'][0]['prenom']?></label></div>
               <div class="row"><label class="float-left mt-3 ml-5 mb-1">Login : <?=$_SESSION['userConnect'][0]['login']?></label></div>
               <div class="row"><label class="float-left mt-3 ml-5 mb-1">Role : <?=$_SESSION['userConnect'][0]['nom_role']?></label></div>
-                <a name="" id="" class="btn btn-primary btn float-left mt-4 ml-5 mb-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=updateUser&id_user='.$_SESSION['userConnect'][0]['id_user'] ?>" role="button">Modifier <i class="fa fa-edit"></i></a>
+                <a name="" id="" class="btn btn-primary btn float-left mt-4 ml-5 mb-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=modifprofil&id_user='.$_SESSION['userConnect'][0]['id_user'] ?>" role="button">Modifier <i class="fa fa-edit"></i></a>
               
             
         </div>
@@ -34,6 +34,14 @@ img {
     text-decoration: none;
     border: none;
 }
-
+@media (max-width: 765px){
+.liste-col {
+    margin-left: 0px;
+    width: auto;
+    padding: 0px;
+    margin-left: 79px;
+    width: 100%;
+}
+}
 </style>
 <?php require ( ROUTE_DIR . 'view/inc/footer.html.php' )?>

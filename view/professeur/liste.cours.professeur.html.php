@@ -5,19 +5,19 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 <?php if ($_SESSION['message']==4) {
 echo'
 <div class="container-fluid p-0">
-    <div  id = "message"  class ="alert alert-success text-center">Absence(s) enregistrée(s) avec succès</div>
+    <div  id = "message"  class ="alert alert-success text-center text-success">Absence(s) enregistrée(s) avec succès</div>
 </div>';
 }elseif($_SESSION['message']==5){
 
     echo'
     <div class="container-fluid p-0">
-        <div  id = "message"  class ="alert alert-danger text-center">Aucune absence n\'a été enregistré</div>
+        <div  id = "message"  class ="alert alert-danger text-center text-danger">Aucune absence n\'a été enregistré</div>
     </div>';
 }elseif($_SESSION['message']==7){
 
     echo'
     <div class="container-fluid p-0">
-        <div  id = "message"  class ="alert alert-danger text-center">Les absences pour ce cours ont déjà été enregistré </div>
+        <div  id = "message"  class ="alert alert-danger text-center text-danger">Les absences pour ce cours ont déjà été enregistré </div>
     </div>';
 }
 unset($_SESSION['message']);

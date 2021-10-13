@@ -51,20 +51,22 @@ function insert_in_inscription($date, $annee_scolaire , $user , $classe){
     $pdo = ouvrir_connexion_db();
     $start_from = ($page-1) * per_page_record;     
 
-       $sql = "SELECT * from user u , role r , inscription i , classe c
+       $sql = "SELECT u.nom, u.prenom , u.matricule , c.nom_classe , r.nom_role,u.id_user from user u , role r , inscription i , classe c
        where u.id_role = r.id_role 
        and u.id_user = i.id_user
        and c.id_classe = i.id_classe
-       and r.nom_role like ? LIMIT $start_from,".per_page_record;
+       and r.nom_role like ? 
+       order by u.nom  asc LIMIT $start_from,".per_page_record;
        $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-
        $sth->execute(['ROLE_ETUDIANT']);
 
-       $sql1 = "select * from user u , role r , inscription i , classe c
+       $sql1 = "SELECT u.nom, u.prenom , u.matricule , c.nom_classe , r.nom_role,u.id_user from user u , role r , inscription i , classe c
        where u.id_role = r.id_role 
        and u.id_user = i.id_user
        and c.id_classe = i.id_classe
-       and r.nom_role like ? ";
+       and r.nom_role like ? 
+       order by u.nom  asc ";
+       
        $stm = $pdo->prepare($sql1, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
        $stm->execute(['ROLE_ETUDIANT']);
        
@@ -82,13 +84,14 @@ function insert_in_inscription($date, $annee_scolaire , $user , $classe){
 
 function filter_all_etudiant($etat_annee_scolaire = "en_cours" , $classe):array{
     $pdo = ouvrir_connexion_db();
-       $sql = "SELECT * from user u , role r , inscription i , classe c ,annee_scolaire an 
+       $sql = "SELECT u.nom, u.prenom , u.matricule , c.nom_classe ,u.id_user , r.nom_role , c.nom_classe , c.id_classe , an.id_annee_scolaire , 		an.annee_scolaire from user u , role r , inscription i , classe c ,annee_scolaire an 
        where u.id_role = r.id_role 
        and u.id_user = i.id_user
        and an.id_annee_scolaire = i.id_annee_scolaire
        and c.id_classe = i.id_classe
        and c.nom_classe like ?
-       and an.etat_annee_scolaire like ?";
+       and an.etat_annee_scolaire like ?
+       order by u.nom  asc ";
        $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
        $sth->execute([$etat_annee_scolaire,$classe]);
        $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
@@ -215,8 +218,7 @@ function filter_cours_for_attache($etat_annee_scolaire = "en_cours" ){
        and c.id_module = m.id_module
        and c.id_cours = p.id_cours
        and c.id_annee_scolaire = an.id_annee_scolaire  
-       and an.etat_annee_scolaire  like ? 
-       and c.id_classe = ";
+       and an.etat_annee_scolaire  like ? ";
        $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
        $sth->execute(array($etat_annee_scolaire));
        //var_dump($sth);
@@ -374,7 +376,19 @@ function all_justification(){
      fermer_connexion_bd($pdo);
      return  $datas ;
  }
+ function filter_all_justification($date_absence){
 
+    $pdo = ouvrir_connexion_db();
+         $sql = "SELECT * FROM justification j , user u , absence a 
+        where  u.id_user = j.id_user 
+        and a.id_absence = j.id_absence 
+        and j.date_justification  = ?";
+         $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+         $sth->execute([$date_absence]);
+         $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+     fermer_connexion_bd($pdo);
+     return  $datas ;
+ }
 
 function justification_by_etuiant($id_absence){
     $pdo = ouvrir_connexion_db();

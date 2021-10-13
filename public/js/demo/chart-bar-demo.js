@@ -1,4 +1,4 @@
-/* // Set new default font family and font color to mimic Bootstrap's default styling
+// Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
@@ -26,33 +26,32 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     }
     return s.join(dec);
 }
-
-var absences = [];
+var classe = [];
 var labs = [];
-//ajax function
 $.ajax({
     type: "get",
     dataType: "json",
-    url: "http://localhost:8000/?controllers=responsable&view=getDatasAbsent",
+    //   url: "http://localhost:8000/?controllers=responsable&view=getDatas",
+    url: "http://niassimamhassane.alwaysdata.net/?controllers=responsable&view=getDatas",
+
     success: function(resp) {
         var json = resp; // create an object with the key of the array
 
         // console.log(data);
         for (let index = 0; index < json.length; index++) {
             const element = json[index];
-            absences.push(element.absences)
-            labs.push(element.prenom + " " + element.nom)
+            classe.push(element.classe)
+            labs.push(element.nom_classe)
         }
 
     },
-
     error: function(error) {
         var json = error;
         console.log(json.error);
     }
 });
-//
-// Area Chart Example
+
+// Bar Chart Example
 setTimeout(function() {
         var ctx = document.getElementById("myBarChart");
         var myLineChart = new Chart(ctx, {
@@ -60,18 +59,27 @@ setTimeout(function() {
             data: {
                 labels: labs,
                 datasets: [{
-                    lineTension: 0.3,
-                    backgroundColor: "rgba(78, 115, 223, 0.05)",
-                    borderColor: "rgba(78, 115, 223, 1)",
-                    pointRadius: 3,
-                    pointBackgroundColor: "rgba(78, 115, 223, 1)",
-                    pointBorderColor: "rgba(78, 115, 223, 1)",
-                    pointHoverRadius: 3,
-                    pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-                    pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-                    pointHitRadius: 10,
-                    pointBorderWidth: 2,
-                    data: absences
+                    label: "Total cours",
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1,
+                    data: classe
                 }],
             },
             options: {
@@ -140,4 +148,4 @@ setTimeout(function() {
             }
         })
     },
-    200); */
+    3000);

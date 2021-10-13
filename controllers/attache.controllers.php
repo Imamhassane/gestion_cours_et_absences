@@ -60,6 +60,10 @@ if(est_connect()){
                 unset($_POST['controllers']);
                 unset($_POST['action']);
                 get_etudiant();
+            }elseif ($_POST[ 'action' ]=='filtreJUST'){
+                unset($_POST['controllers']);
+                unset($_POST['action']);
+                liste_justification();
             }
         }
    }  
@@ -229,18 +233,22 @@ function get_absence_for_cours() {
 
 function liste_justification(){
 
-
-    if (isset($_GET["page"])) {    
-        $page  = $_GET["page"];    
-    }    
-    else {    
-        $page=1;   
-        
-    } 
-    $data = get_all_justification($page);
-    $justifications = $data['data'];   
-    $per_page_record = $data['per_page_record'] ;   
-    $total_records= $data['total_records'];
+    if (isset($_POST['ok'])) {
+        $justifications = filter_all_justification($_POST['date']);
+    }else{
+        if (isset($_GET["page"])) {    
+            $page  = $_GET["page"];    
+        }    
+        else {    
+            $page=1;   
+            
+        } 
+        $data = get_all_justification($page);
+        $justifications = $data['data'];   
+        $per_page_record = $data['per_page_record'] ;   
+        $total_records= $data['total_records'];
+    }
+  
 
    require(ROUTE_DIR . 'view/attache/liste.justification.html.php');
 
@@ -257,9 +265,11 @@ function change_etat_justification(){
     $id_justification = $_GET['id_justification'];
     $id_absence =  $_SESSION['id_absence'];
     if ($_GET[ 'view']=='refuserJustification') {
+        $_SESSION['message'] =0;
         $etat = 'refusee';
         update_absence('justifiee_refusee',$id_absence);
     }elseif($_GET[ 'view']=='accepterJustification'){
+        $_SESSION['message'] = 1;
         $etat = 'acceptee';
         update_absence('justifiee_acceptee',$id_absence);
     }

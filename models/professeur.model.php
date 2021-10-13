@@ -121,7 +121,7 @@ function ajout_absence( $datas):int{
    $date=date_format(date_create(),'Y-m-d');
    $id_planing = $_SESSION['id_planing'] ;
    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-   foreach ($absent as  $value){
+   foreach ($absent as $value){
        $sth->execute(array($date, $id_planing , $value ));
    }
    fermer_connexion_bd($pdo);
@@ -143,12 +143,12 @@ return  $datas ;
 }
  
 
-function etudiant_exist($id_user):array {
+function planing_exist($id_planing):array {
    $pdo = ouvrir_connexion_db();
    $sql = "select * from absence a 
       where a.id_planing = ? ";
    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-   $sth->execute([$id_user]);
+   $sth->execute([$id_planing]);
    $user = $sth->fetchAll((PDO::FETCH_ASSOC));
    fermer_connexion_bd($pdo);
    return  $user ;

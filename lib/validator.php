@@ -50,7 +50,18 @@ function validation(  string  $key,  &$arrayError){
 }  
 }
 
-
+function invalid_planing(){
+    $id =  $_GET['id_cours'];
+    $classe = classe_cours($id);
+    $verfi_planing = verfi_planing($classe[0]['id_classe'] );
+        foreach ($verfi_planing as $value) {
+            $debute =substr($value['debut'], 0, 5) ;
+            $final =substr($value['fin'], 0, 5) ;
+            if ( $_POST['date'] == $value['date_cours'] && $_POST['debut'] >= $debute && $_POST['debut'] < $final ) {
+                return true;
+            }
+        }
+}
  
 
 

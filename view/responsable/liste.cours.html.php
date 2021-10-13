@@ -117,9 +117,14 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
             </div>
             <div class="pagination mt-2 mb-5">    
             <?php  
+            
                 if (est_attache()) {
                
-                    $total_pages = $total_records / $per_page_record;     
+  			if($per_page_record==0){
+                            $total_pages = $total_records / 1;       
+            		}else{
+                            $total_pages = $total_records / $per_page_record;       
+            		}
                     $pagLink = "";                                                           
                     if($page>=2){   
                         echo "<a href='?controllers=attache&view=liste.cours&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   

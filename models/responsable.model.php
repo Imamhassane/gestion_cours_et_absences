@@ -61,6 +61,20 @@ function get_user_by_id( $id_user){
 fermer_connexion_bd($pdo);
 return  $datas ;
 }
+function get_all_etudiant_by_id($id_user):array{
+   $pdo = ouvrir_connexion_db();
+       $sql = "SELECT * from user u , role r , inscription i , classe c ,annee_scolaire an 
+       where u.id_role = r.id_role 
+       and u.id_user = i.id_user
+       and an.id_annee_scolaire = i.id_annee_scolaire
+       and c.id_classe = i.id_classe
+       and u.id_user = ? ";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute([$id_user]);
+      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+   fermer_connexion_bd($pdo);
+  return  $datas ;
+}
 function get_classe_by_id(int $id_classe){
    $pdo = ouvrir_connexion_db();
    $sql = "select * from classe 
@@ -387,6 +401,26 @@ function getplaningfin(){
    fermer_connexion_bd($pdo);
   return  $datas ;
 }
+function classe_cours($id_cours){
+   $pdo = ouvrir_connexion_db();
+      $sql = "SELECT * FROM classe_cours cc , classe cl 
+      where cl.id_classe  = cc.id_classe
+      and id_cours = ? ";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute([$id_cours]);
+      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+   fermer_connexion_bd($pdo);
+  return  $datas ;
+}
+function verfi_planing($id){
+   $pdo = ouvrir_connexion_db();
+      $sql = "SELECT * from cours c , planing_cours p , classe cl , classe_cours cc where c.id_cours = p.id_cours and cl.id_classe = cc.id_classe and c.id_cours = cc.id_cours and cl.id_classe = ? ";
+      $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+      $sth->execute([$id ]);
+      $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
+   fermer_connexion_bd($pdo);
+  return  $datas ;
+}
 
 /* function delete_cours_planifie( $id_cours) {
    $pdo = ouvrir_connexion_db();
@@ -442,15 +476,17 @@ function update_heure_restante(  $id_cours ,  $heure_restante ){
    fermer_connexion_bd($pdo);
    return $sth->rowCount();
 }  
-function update_user_prof($id_user ,$nom ,$prenom,$login,$password,$grade,$specialite){
+function update_user_prof($datas){
    $pdo = ouvrir_connexion_db();
+   extract($datas);
   $sql = " UPDATE `user` 
   SET  `nom` = :nom, 
   `prenom` = :prenom,
    `login` = :login, 
    `password` = :password, 
    `grade` = :grade,
-   `specialite` = :specialite
+   `specialite` = :specialite,
+   `avatar` = :avatar
    WHERE `id_user` = :id_user ";
 
    $stmt = $pdo->prepare($sql);
@@ -460,6 +496,7 @@ $stmt->bindParam(':login',$login,PDO::PARAM_STR);
 $stmt->bindParam(':password',$password,PDO::PARAM_STR);
 $stmt->bindParam(':grade',$grade,PDO::PARAM_STR);
 $stmt->bindParam(':specialite',$specialite,PDO::PARAM_STR);
+$stmt->bindParam(':avatar',$avatar,PDO::PARAM_STR);
 $stmt->bindParam(':id_user',$id_user,PDO::PARAM_STR);
 $stmt->execute();
 fermer_connexion_bd($pdo);
@@ -545,6 +582,7 @@ $stmt->execute();
 fermer_connexion_bd($pdo);
    return $stmt->rowCount();
 } 
+
 
 function nombre_de_cours(){
    $pdo = ouvrir_connexion_db();

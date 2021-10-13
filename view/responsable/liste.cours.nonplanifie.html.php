@@ -8,13 +8,19 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 
     echo'
     <div class="container-fluid p-0">
-        <div  id = "message"  class ="alert alert-success text-center">Cours créée avec succès</div>
+        <div  id = "message"  class ="alert alert-success text-center text-success">Cours créée avec succès</div>
     </div>';
     }elseif($_SESSION['message']==2){
     
         echo'
         <div class="container-fluid p-0">
-            <div  id = "message"  class ="alert alert-success text-center">Cours modifié avec succès</div>
+            <div  id = "message"  class ="alert alert-success text-center text-success">Cours modifié avec succès</div>
+        </div>';
+    }elseif($_SESSION['message']==10){
+    
+        echo'
+        <div class="container-fluid p-0">
+            <div  id = "message"  class ="alert alert-success text-center text-success">Séance ajouté avec succès</div>
         </div>';
     }
     unset($_SESSION['message']);
@@ -117,8 +123,13 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
                         </table>
                         <div class="pagination mt-2 mb-5">    
                             <?php  
-                                
-                                $total_pages = $total_records / $per_page_record;     
+                                if($per_page_record == 0){
+                                    $total_pages = $total_records / 1;     
+
+                                }else{
+                                    $total_pages = $total_records / $per_page_record;     
+
+                                }
                                 $pagLink = "";                                           
                                 if($page>=2){   
                                     echo "<a href='?controllers=responsable&view=liste.cours.nonplanifie&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span></a>";   

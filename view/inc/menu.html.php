@@ -6,11 +6,7 @@
   <div class="sidebar">
 
     <div class="logo">   
-      <li>
-          <a href="<?= WEB_ROUTE . '?controllers=responsable&view=user.page' ?>" class="name">
-          <span class="links_name"><strong><p><?=$_SESSION['userConnect'][0]['prenom'].' '.$_SESSION['userConnect'][0]['nom']?></p></strong></span>
-          </a>
-      </li> 
+
       <li>
           <a href="<?= WEB_ROUTE . '?controllers=responsable&view=user.page' ?>" class="img">
           
@@ -18,12 +14,17 @@
           </a>
           <span class="tooltip"><strong><p><?=$_SESSION['userConnect'][0]['prenom'].' '.$_SESSION['userConnect'][0]['nom']?></p></strong></span>
       </li>
+            <li>
+          <a href="<?= WEB_ROUTE . '?controllers=responsable&view=user.page' ?>" class="name">
+          <span class="links_name"><strong><p><?=$_SESSION['userConnect'][0]['prenom'].' '.$_SESSION['userConnect'][0]['nom']?></p></strong></span>
+          </a>
+      </li> 
      <li>
      <li>
           <a href="#">
-            <i class='bx bx-menu' id="btn" ></i>
+            <i class='bx bx-menu' id="btn"style="margin-top: -30px;" ></i>
           </a>
-          <span class="tooltip">Menus</strong></span>
+          <span class="tooltip">Menu</strong></span>
       </li>
      <li>
     </div>
@@ -68,7 +69,13 @@
      <?php endif ?>
 
      <?php if (est_attache()):?>
-
+      <li>
+        <a href="<?= WEB_ROUTE . '?controllers=responsable&view=tableau.bord' ?>">
+        <i class='bx bx-grid-alt'></i>
+          <span class="links_name">Tableau de bord</span>
+        </a>
+        <span class="tooltip">Tableau de bord</span>
+     </li>
      <li>
           <a href="<?= WEB_ROUTE.'?controllers=attache&view=liste.etudiant' ?>">
           <i class='bx bx-list-ul' ></i>
@@ -145,6 +152,8 @@
        <i class='bx bx-log-out' id="log_out" ></i>
          <span class="links_name deconnect">Se deconnecter</span>
        </a>
+       <span class="tooltip">Se deconnecter</span>
+
      </li>
 
 

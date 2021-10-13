@@ -11,7 +11,7 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 
 echo'
 <div class="container-fluid p-0">
-    <div  id = "message"  class ="alert alert-success text-center">Cours créée avec succès</div>
+    <div  id = "message"  class ="alert alert-success text-center text-success">Cours créée avec succès</div>
 </div>';
 }
 unset($_SESSION['message']);

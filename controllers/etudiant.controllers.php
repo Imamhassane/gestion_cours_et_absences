@@ -44,13 +44,13 @@ function get_my_cours(){
     $id_classe = $classe[0]['id_classe'];
 
     if (isset($_POST['ok'])) {
-        $mycours = filter_my_cours( $id , $_POST['annee']  ,$_POST['module']) ;
+        $mycours = filter_my_cours( $id_classe , $_POST['annee']  ,$_POST['module']) ;
     }else{
         if (isset($_GET["page"])) {    
             $page  = $_GET["page"];    
         }    
         else {    
-          $page=1;    
+            $page=1;    
         } 
         $data = find_my_cours($id_classe, $page);
         $mycours = $data['data'];   

@@ -8,7 +8,8 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-11 liste-cole">
+        <div class="col-md-11 liste-cole " style="margin-left:7%">
+
         <?php if (est_responsable()):?>
             <a name="" id="" class=" mr-2 float-left mt-4 " href="<?= WEB_ROUTE . '?controllers=responsable&view=liste.cours.nonplanifie' ?>" role=""><i class="fa fa-arrow-circle-left"></i></a>
         <?php endif ?>
@@ -81,7 +82,12 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
             </div>
             <div class="pagination mt-2 mb-5">    
             <?php  
-               $total_pages = $total_records / $per_page_record;     
+            	if ($per_page_record == 0){
+            	               $total_pages = $total_records / 1;     
+            	}else{
+            	               $total_pages = $total_records / $per_page_record;   
+            	                 }
+
                 $pagLink = ""; 
                                                           
                 if($page>=2){   
@@ -130,7 +136,12 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
         color:#152032;
         margin-top: 5px;
     }
-
+    @media (max-width:1050px){
+    
+	.row{
+	       margin-left: 2%
+	    }
+    }
    .liste-col .fa-arrow-circle-left{
         font-size:32px;
         color:#152032;

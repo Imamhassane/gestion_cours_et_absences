@@ -106,8 +106,12 @@ function insert_prof(array $datas, array $files):void{
                 header('location:'.WEB_ROUTE.'?controllers=attache&view=liste.etudiant');
             }
        }else{
-               $_SESSION['arrayError']=$arrayError;
-               header('location:'.WEB_ROUTE.'?controllers=attache&view=inscrire.etudiant');
+                if(est_responsable()){
+                    $_SESSION['arrayError']=$arrayError;
+                    header('location:'.WEB_ROUTE.'?controllers=responsable&view=ajout.professeur');
+                }elseif (est_attache()) {
+                    $_SESSION['arrayError']=$arrayError;
+                    header('location:'.WEB_ROUTE.'?controllers=attache&view=inscrire.etudiant');                }
            }      
 }
 function deconnexion():void{

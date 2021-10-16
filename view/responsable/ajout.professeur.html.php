@@ -74,7 +74,7 @@
                                         <?= isset($arrayError['login']) ? $arrayError['login'] : '' ;?>
                                     </small>
                                 </div> 
-                                <?php if(est_responsable() && $_GET['view']=='ajout.professeur'):?>
+                                <?php if(est_responsable() && $_GET['view']=='ajout.professeur' || $_GET['view']=='updateUser'):?>
                                     <div class="col-md-6 mb-3 mt-2">
                                         <label for="" class = "ml-5 ">spécialité</label>
                                         <select class=" select" name="specialite" id="" >

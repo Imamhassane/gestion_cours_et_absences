@@ -91,7 +91,7 @@ unset($_SESSION['message']);
                                         <td><?=$absence['fin']?></td>
                                         <td><?=$absence['semestre']?></td>
                                         <?php if (est_etudiant()):?>
-                                            <?php if ($absence['etat_absence']=='justifiee'):?>
+                                            <?php if ($absence['etat_absence']!='non_justifiee'):?>
                                                 <td><a name="" id="" class="btn btn-primary ml-auto disabled" href="<?=WEB_ROUTE.'?controllers=etudiant&view=justification&id_absence='.$absence['id_absence']?>"ole="button"> Justifier <i class='bx bx-edit-alt ' ></i></a></td>
                                             <?php else: ?>
                                                 <td><a name="" id="" class="btn btn-primary ml-auto " href="<?=WEB_ROUTE.'?controllers=etudiant&view=justification&id_absence='.$absence['id_absence']?>"ole="button"> Justifier <i class='bx bx-edit-alt ' ></i></a></td>

@@ -31,8 +31,8 @@ var labs = [];
 $.ajax({
     type: "get",
     dataType: "json",
-    //   url: "http://localhost:8000/?controllers=responsable&view=getDatas",
-    url: "http://niassimamhassane.alwaysdata.net/?controllers=responsable&view=getDatas",
+    url: "http://localhost:8000/?controllers=responsable&view=getDatas",
+    //   url: "http://niassimamhassane.alwaysdata.net/?controllers=responsable&view=getDatas",
 
     success: function(resp) {
         var json = resp; // create an object with the key of the array

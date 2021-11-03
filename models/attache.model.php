@@ -1,18 +1,21 @@
 <?php
 function get_all_student():array{
     $pdo = ouvrir_connexion_db();
-       $sql = "select count(id_user) as users from user u , role r 
+       $sql = "SELECT count(u.id_user) as users from user u , role r , inscription i , annee_scolaire an
        where u.id_role = r.id_role 
+       and i.id_user= u.id_user
+       and i.id_annee_scolaire = an.id_annee_scolaire
+       and an.etat_annee_scolaire  like ?
        and r.nom_role like ?";
        $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-       $sth->execute(['ROLE_ETUDIANT']);
+       $sth->execute(['en_cours','ROLE_ETUDIANT']);
        $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
     fermer_connexion_bd($pdo);
    return  $datas ;
 }
 function get_all_students():array{
     $pdo = ouvrir_connexion_db();
-       $sql = "select * from user u , role r 
+       $sql = "SELECT * from user u , role r 
        where u.id_role = r.id_role 
        and r.nom_role like ?";
        $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
@@ -34,7 +37,7 @@ function insert_in_inscription($date, $annee_scolaire , $user , $classe){
 }
  /* function get_all_etudiant():array{
     $pdo = ouvrir_connexion_db();
-       $sql = "select * from user u , role r , inscription i , classe c
+       $sql = "SELECT * from user u , role r , inscription i , classe c
        where u.id_role = r.id_role 
        and u.id_user = i.id_user
        and c.id_classe = i.id_classe
@@ -137,7 +140,7 @@ function find_all_cours_for_attache($page = null){
 
  function get_all_etudiant_by_classe($id_classe):array{
     $pdo = ouvrir_connexion_db();
-       $sql = "select * from  inscription i , classe cl ,user u 
+       $sql = "SELECT * from  inscription i , classe cl ,user u 
        where i.id_user = u.id_user
        and cl.id_classe = i.id_classe
        and cl.id_classe = ? ";
@@ -149,7 +152,7 @@ function find_all_cours_for_attache($page = null){
 }
 function get_all_etudiant_by_planing($id_planing):array{
     $pdo = ouvrir_connexion_db();
-       $sql = "select * from  inscription i , classe cl , cours c , classe_cours cc , planing_cours p ,user u 
+       $sql = "SELECT * from  inscription i , classe cl , cours c , classe_cours cc , planing_cours p ,user u 
        where i.id_user = u.id_user
        and cl.id_classe = cc.id_classe
        and c.id_cours =cc.id_cours 

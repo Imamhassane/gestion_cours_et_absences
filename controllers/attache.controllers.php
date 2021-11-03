@@ -76,34 +76,6 @@ if(est_connect()){
     
 
 
-/* function liste_cours_no_planified(){
-    
-    if (isset($_POST['ok'])) {
-        $etat_annee_scolaire = $_POST['annee'];
-        $prof = $_POST['professeur'];
-        $module = $_POST['module'];
-        $classe = $_POST['classe'];
-        $cours = filter_cours_non_planifie($etat_annee_scolaire , $prof,$module ,$classe) ;
-
-    }else{
-        if (isset($_GET["page"])) {    
-            $page  = $_GET["page"];    
-        }    
-        else {    
-          $page=1;    
-        } 
-        $data =find_cours_non_planifie($page);
-        $cours = $data['data'];   
-        $per_page_record = $data['per_page_record'] ;   
-        $total_records= $data['total_records'];
-
-    }
-    $classes = get_all_classe();
-    $modules = find_all_module();
-    $professeurs = get_all_professeur();
-    $annee_scolaires=find_annee_scolaire();
-    require ( ROUTE_DIR . 'view/responsable/liste.cours.nonplanifie.html.php' );
-} */
 
 
 function liste_all_classe() {

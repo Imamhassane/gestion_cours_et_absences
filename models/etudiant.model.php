@@ -41,7 +41,7 @@ function find_my_cours( int $id_user , $page=null){
 
 function get_classe_student($id_user){
    $pdo = ouvrir_connexion_db();
-   $sql = "select * from user u , inscription i ,classe cl 
+   $sql = "SELECT * from user u , inscription i ,classe cl 
    where u.id_user = i.id_user 
    and cl.id_classe = i.id_classe 
    and u.id_user = ?   ";

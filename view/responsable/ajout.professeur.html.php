@@ -9,7 +9,16 @@
     $modules = find_all_module();
     $classes = get_all_classe();
     ?>
+    <?php
+if($_SESSION['message']==01){
 
+    echo'
+    <div class="container-fluid p-0">
+        <div  id = "message"  class ="alert alert-danger text-center text-danger">Erreur! Étudiant déjà inscrit pour cette anneee, Voulez-vous changer sa classe ?</div>
+    </div>';
+}
+unset($_SESSION['message']);
+?>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-10  liste-col">
@@ -30,7 +39,6 @@
                             <input type="hidden" name="controllers" value="<?=isset($users[0]['id_user']) ? 'responsable':'security'?>">
                             <input type="hidden" name="action" value="<?=isset($users[0]['id_user']) ? 'editProf':'ajoutProf'?>">
                             <input type="hidden" name="id_user"      value="<?=isset($users[0]['id_user']) ? $users[0]['id_user'] : ""; ?>">        
-                        
                                 <div class=" mb-2 col-md-6">
                                     <label for="" class = "ml-5">nom</label>  
                                     <input type="text" name="nom" placeholder="" value="<?=$users[0]['nom']?>">

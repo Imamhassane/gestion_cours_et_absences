@@ -234,8 +234,6 @@ function liste_all_classe() {
     $classes = $data['data'];   
     $per_page_record = $data['per_page_record'] ;   
     $total_records= $data['total_records'];
-   // var_dump($total_records);
-
 require ( ROUTE_DIR . 'view/responsable/liste.classe.html.php' );
 }
 
@@ -289,19 +287,7 @@ function liste_cours_by_id(){
 
     require ( ROUTE_DIR . 'view/responsable/liste.cours.html.php' );
 }
-/* function delete_cours_nonplanifie(){
-    $data = get_cours_non_planifie();
-    //var_dump($data[0]['id_classe']);
-    foreach ($data as $value) {
-        if ($value['id_cours'] == $_GET ['id_cours'] ) {
-            $_SESSION['erreurSuppression']= 'Ce cours est lié à un cours déjà planifé , Pour le supprimer veuillez supprimer la planificcation compléte dans la liste des cours';
-            header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');        
-        }
-    }
-    $id = $_GET ['id_cours'];
-    $delete =  delete_cours_planifie($id);
-    header('location:'.WEB_ROUTE.'?controllers=responsable&view=liste.cours.nonplanifie');        
-} */
+
 function delete_a_user(){
     $data = get_cours_non_planifie();
     foreach ($data as  $value) {
@@ -378,14 +364,18 @@ function modif_prof(array $datas, array $files):void{
        validation_champ($prenom,'prenom',$arrayError);
        validation_champ($nom,'nom',$arrayError);    
        $annee_scolaires=find_annee_scolaire();
+   
        if (form_valid($arrayError)) {
-        //    var_dump($_POST);
-            $id = $_SESSION['id_user'];
-
+                foreach ($annee_scolaires as $annee){
+                    if ($annee['etat_annee_scolaire'] == 'en_cours') {
+                        $annee_en_ecours = $annee;  
+                    }
+                } 
+                $id = $_SESSION['id_user'];
                 $target_dir = "upload/";
                 $target_file = $target_dir . basename($_FILES['avatar']['name']);
                 $datas['avatar'] = $target_file;
-                     upload_image($_FILES, $target_file);
+                upload_image($_FILES, $target_file);
                 update_user_prof($datas);  
                 $_SESSION['message'] = 2;                  
  		if(est_responsable()){   
@@ -395,12 +385,24 @@ function modif_prof(array $datas, array $files):void{
                 }
             if(est_attache()){               
                 $inscription = get_inscription_student($id_user);
-                $id_inscription = $inscription[0]['id_inscription'];
-                update_classe_etudiant($id_inscription , $classe); 
-                update_user_etudiant($id_user ,$nom ,$prenom,$login,$password,$adresse); 
-                $_SESSION['message']=3;                  
-                header('location:'.WEB_ROUTE.'?controllers=attache&view=liste.etudiant');
-            }
+                foreach($inscription as $inscript){
+                    if ($inscript['id_classe'] == $_POST['classe'] && $_SESSION['annee_en_ecours']['annee_scolaire'] == $annee_en_ecours['annee_scolaire']) {
+                            $_SESSION['message']=01;
+                            header('location:'.WEB_ROUTE.'?controllers=responsable&view=reinscrire&id_user='.$id);
+                    }else{
+                        $id_inscription = $inscription[0]['id_inscription'];
+                        update_classe_etudiant($id_inscription , $classe); 
+                        update_user_etudiant($id_user ,$nom ,$prenom,$login,$password,$adresse); 
+                        foreach ($annee_scolaires as $annee){
+                            if ($annee['etat_annee_scolaire'] == 'en_cours') {
+                                $_SESSION['annee_en_ecours'] = $annee;  
+                            }
+                        } 
+                        $_SESSION['message']=3;                  
+                        header('location:'.WEB_ROUTE.'?controllers=attache&view=liste.etudiant');
+                    }
+                }
+          }
        }else{
                $_SESSION['arrayError']=$arrayError;
                header('location:'.WEB_ROUTE.'?controllers=responsable&view=updateUser&id_user='.$id_user);
@@ -473,7 +475,7 @@ function ajout_annee_scolaire(array $datas):void{
     validation_champ($annee,'annee',$arrayError);  
 
        if (form_valid($arrayError)) {
-                    update_annee_scolaire('passee');   
+                    update_annee_scolaire('terminee');   
                     insert_in_annee_scolaire($datas);
                     $_SESSION['message']=1;
                     header('location:'.WEB_ROUTE.'?controllers=responsable&view=definir.annee');

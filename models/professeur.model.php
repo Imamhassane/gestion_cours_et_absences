@@ -145,7 +145,7 @@ return  $datas ;
 
 function planing_exist($id_planing):array {
    $pdo = ouvrir_connexion_db();
-   $sql = "select * from absence a 
+   $sql = "SELECT * from absence a 
       where a.id_planing = ? ";
    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
    $sth->execute([$id_planing]);

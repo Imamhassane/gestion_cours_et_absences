@@ -2,7 +2,7 @@
 
 function get_all_professeur():array{
     $pdo = ouvrir_connexion_db();
-       $sql = "select * from user u , role r 
+       $sql = "SELECT * from user u , role r 
        where u.id_role = r.id_role 
        and r.nom_role like ?
        ";
@@ -14,7 +14,7 @@ function get_all_professeur():array{
 }
 function count_all_professeur():array{
    $pdo = ouvrir_connexion_db();
-      $sql = "select count(id_user) from user u , role r 
+      $sql = "SELECT count(id_user) from user u , role r 
       where u.id_role = r.id_role 
       and r.nom_role like ?
       ";
@@ -53,7 +53,7 @@ function find_all_professeur($page=null):array{
 
 function get_user_by_id( $id_user){
    $pdo = ouvrir_connexion_db();
-   $sql = "select * from user 
+   $sql = "SELECT * from user 
    where id_user =  ? ";
    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
    $sth->execute(array($id_user));
@@ -77,7 +77,7 @@ function get_all_etudiant_by_id($id_user):array{
 }
 function get_classe_by_id(int $id_classe){
    $pdo = ouvrir_connexion_db();
-   $sql = "select * from classe 
+   $sql = "SELECT * from classe 
    where id_classe =  ? ";
    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
    $sth->execute(array($id_classe));
@@ -87,7 +87,7 @@ return  $datas ;
 }
 function get_all_classe(){
    $pdo = ouvrir_connexion_db();
-   $sql = "select * from classe  ";
+   $sql = "SELECT * from classe  ";
    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
    $sth->execute();
    $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
@@ -96,7 +96,7 @@ return  $datas ;
 }
 function count_all_classe(){
    $pdo = ouvrir_connexion_db();
-   $sql = "select count(id_classe) from classe  ";
+   $sql = "SELECT count(id_classe) from classe  ";
    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
    $sth->execute();
    $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
@@ -127,7 +127,7 @@ function find_all_classe($page=null):array{
 
 function find_all_module():array{
     $pdo = ouvrir_connexion_db();
-       $sql = "select * from module";
+       $sql = "SELECT * from module";
        $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
        $sth->execute();
        $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
@@ -136,7 +136,7 @@ function find_all_module():array{
 }
 function find_annee_scolaire():array{
    $pdo = ouvrir_connexion_db();
-      $sql = "select * from annee_scolaire";
+      $sql = "SELECT id_annee_scolaire, etat_annee_scolaire, annee_scolaire from annee_scolaire ORDER BY annee_scolaire  DESC ";
       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
       $sth->execute();
       $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
@@ -145,7 +145,7 @@ function find_annee_scolaire():array{
 }
 function find_annee_scolaire_en_cours():array{
    $pdo = ouvrir_connexion_db();
-   $sql = "select * from annee_scolaire
+   $sql = "SELECT * from annee_scolaire
    where  etat_annee_scolaire like ?  ";
    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
    $sth->execute(['en_cours']);
@@ -536,7 +536,10 @@ function update_classe_etudiant($id_inscription , $classe){
  }
 function get_inscription_student($id_user){
    $pdo = ouvrir_connexion_db();
-      $sql = "SELECT * FROM `inscription` WHERE id_user = ?";
+      $sql = "SELECT * FROM `inscription` i, classe cl , annee_scolaire an
+       WHERE i.id_classe= cl.id_classe
+       and an.id_annee_scolaire=i.id_annee_scolaire
+       and i.id_user = ?";
       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
       $sth->execute(array( $id_user));
       $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
@@ -638,9 +641,9 @@ function insert_in_annee_scolaire( $datas):int{
 
  function getCoursByProf(){
    $pdo = ouvrir_connexion_db();
-   $sql = "SELECT count(c.id_cours) cours,u.prenom,u.nom FROM `cours`  c,`user`u ,`planing_cours`p WHERE u.id_user=c.id_user and c.id_cours = p.id_cours GROUP By u.id_user";
+   $sql = "SELECT count(c.id_cours) cours,u.prenom,u.nom FROM `cours`  c,`user`u ,`planing_cours`p , annee_scolaire an WHERE u.id_user=c.id_user and c.id_cours = p.id_cours and c.id_annee_scolaire=an.id_annee_scolaire and an.etat_annee_scolaire like ? GROUP By u.id_user";
    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-   $sth->execute();
+   $sth->execute(['en_cours']);
    $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
 fermer_connexion_bd($pdo);
 return  $datas ;
@@ -649,9 +652,9 @@ return  $datas ;
 
 function getCoursByClasse(){
    $pdo = ouvrir_connexion_db();
-   $sql = "SELECT count(cl.id_classe) classe,cl.nom_classe FROM `cours` c,`classe` cl,classe_cours cc,planing_cours p WHERE c.id_cours =cc.id_cours and cl.id_classe = cc.id_classe and p.id_cours=c.id_cours GROUP By cl.id_classe";
+   $sql = "SELECT count(cl.id_classe) classe,cl.nom_classe FROM `cours` c,`classe` cl,classe_cours cc,planing_cours p ,annee_scolaire an WHERE c.id_cours =cc.id_cours and cl.id_classe = cc.id_classe and p.id_cours=c.id_cours and c.id_annee_scolaire=an.id_annee_scolaire and an.etat_annee_scolaire like ? GROUP By cl.id_classe";
    $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-   $sth->execute();
+   $sth->execute(['en_cours']);
    $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
 fermer_connexion_bd($pdo);
 return  $datas ;

@@ -108,7 +108,7 @@ function get_my_justification($id_user){
    fermer_connexion_bd($pdo);
    return  $datas ;
 }
-function filiter_my_justification($date_justification  , $etat){
+function filiter_my_justification($id,$date_justification  , $etat){
    $pdo = ouvrir_connexion_db();
        $sql = "SELECT * FROM justification j , user u , absence a ,planing_cours p , cours c ,module m,annee_scolaire an 
                where  u.id_user = j.id_user 
@@ -117,10 +117,11 @@ function filiter_my_justification($date_justification  , $etat){
               and c.id_cours =p.id_cours
               and m.id_module = c.id_module
               and c.id_annee_scolaire = an.id_annee_scolaire
+              and u.id_user = ?
               and j.date_justification like ?
               and j.etat  like ? ";
       $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-      $sth->execute(array($date_justification ,$etat));
+      $sth->execute(array($id,$date_justification ,$etat));
       $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
 
    fermer_connexion_bd($pdo);

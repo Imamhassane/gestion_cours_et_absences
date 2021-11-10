@@ -121,7 +121,7 @@ function insert_justification(array $datas):void{
     function get_justification_for_etudiant(){
         $id_user = $_SESSION['userConnect'][0]['id_user'];
         if (isset($_POST['ok'])){  
-             $justifications = filiter_my_justification( $_POST['date'], $_POST['etat']);
+             $justifications = filiter_my_justification($id_user, $_POST['date'], $_POST['etat']);
         }else{
             $justifications = get_my_justification($id_user);
         }

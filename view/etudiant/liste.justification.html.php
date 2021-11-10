@@ -12,10 +12,10 @@ $annee_scolaire = find_annee_scolaire();
                         <input type="hidden" name="controllers" value="etudiant">
                         <input type="hidden" name="action" value="filterjustification">
                     
-                        <div class="form-group ml-1 row">
+                        <div class="form-group ml-3 row">
                             <div class="form-group">
                                 <label for="">Date de la justification </label>
-                                <input type="date" name="date" class="form-control" value="<?=date_format(date_create(),'Y-m-d');?>"  >
+                                <input type="date" name="date" class="form-control ml-2" value="<?=date_format(date_create(),'Y-m-d');?>"  >
                             </div>
                             <div class="form-group ml-3 mr-2">
                                 <label class="ml-3 ">Etat de la justification</label>
@@ -34,9 +34,6 @@ $annee_scolaire = find_annee_scolaire();
                     <table class="table" id="classe">
                                 <thead>
                                     <tr class="text-center">
-                                      <!--   <th scope="col">Prénom</th>
-                                        <th scope="col">Nom</th>
-                                        <th scope="col">Matricule</th>    -->   
                                         <th scope="col">Date d'absence</th>
                                         <th scope="col">Date de justification</th>
                                         <th scope="col">Module</th>
@@ -46,14 +43,10 @@ $annee_scolaire = find_annee_scolaire();
                                 <tbody>
 <?php foreach ($justifications as $justification):?>
                                     <tr class="text-center">
-                                       <!--  <td><?=$justification['prenom']?></td>
-                                        <td><?=$justification['nom']?></td>
-                                        <td><?=$justification['matricule']?></td> -->
                                         <th><?=date_format(date_create($justification['date_absence']), 'd-m-Y')?></th>
                                         <th><?=date_format(date_create($justification['date_justification']), 'd-m-Y')?></th>
                                         <td><?=$justification['libelle_module']?></td>
                                         <td><?=$justification['etat']?></td>
-
                                     </tr>
 <?php endforeach ?>
                             </tbody>

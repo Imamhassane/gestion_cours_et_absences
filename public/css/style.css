@@ -377,6 +377,10 @@
         color: #fff;
     }
     
+    .border-none {
+        border-top: 0px solid #fff
+    }
+    
     .sidebar {
         position: fixed;
         left: 0;

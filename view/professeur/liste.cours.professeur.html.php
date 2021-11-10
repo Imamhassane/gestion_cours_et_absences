@@ -26,7 +26,11 @@ unset($_SESSION['message']);
 
     <div class="row">
         <div class="col-md-11 mt-3 liste-cole">
-        <div class="text-center mb-3"><h2 >LA LISTE DE mes cours</h2></div>
+        <div class="text-center mb-3">
+            <h2 class=""> mes cours</h2>
+            <span class="float-right mt-5 mr-3">Module : <?=$coursProfesseur[0]['libelle_module']?></span>
+
+        </div>
             <div class="column">
                 <div class="card">
                     <table class="table">
@@ -35,7 +39,6 @@ unset($_SESSION['message']);
                                     <th scope="col">Date</th>
                                     <th scope="col">Début</th>
                                     <th scope="col">Fin</th>
-                                    <th scope="col">Module</th>
                                     <th scope="col">Classe</th>
                                     <th scope="col">Semestre</th>
                                     <th scope="col">Etudiants de la classe</th>
@@ -47,7 +50,6 @@ unset($_SESSION['message']);
                                         <th><?=date_format(date_create($professeur['date_cours']), 'd-m-Y')?></th>
                                         <td><?=$professeur['debut']?></td>
                                         <td><?=$professeur['fin']?></td>    
-                                        <td><?=$professeur['libelle_module']?></td>
                                         <td><?=$professeur['nom_classe']?></td>
                                         <td><?=$professeur['semestre']?></td>
                                         <td><a name="" id="" class="btn btn-primary" href="<?= WEB_ROUTE.'?controllers=attache&view=liste.etudiant.classe&id_planing='.$professeur['id_planing'] ?>" role="button">liste des étudiants</a></td>

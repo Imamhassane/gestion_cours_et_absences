@@ -56,7 +56,6 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
                                         <th scope="col">Fin</th>
                                         <th scope="col">Professeur</th>
                                         <th scope="col">Module</th>
-                                        <th scope="col">Classe</th>
                                         <th scope="col">Semestre</th>
 
                                     </tr>
@@ -70,7 +69,6 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
                                         <td><?=$mycour['fin']?></td>    
                                         <th><?=$mycour['prenom'].' '.$mycour['nom']?></th>
                                         <td><?=$mycour['libelle_module']?></td>
-                                        <td><?=$mycour['nom_classe']?></td>
                                         <td><?=$mycour['semestre']?></td>
 
                                     </tr>    
@@ -86,10 +84,9 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
             	               $total_pages = $total_records / 1;     
             	}else{
             	               $total_pages = $total_records / $per_page_record;   
-            	                 }
+            	    }
 
                 $pagLink = ""; 
-                                                          
                 if($page>=2){   
                     echo "<a href='?controllers=etudiant&view=liste.etudiant.cours&page=".($page-1)."'> <span aria-hidden='true'>&laquo;</span>                    </a>";   
                 }       

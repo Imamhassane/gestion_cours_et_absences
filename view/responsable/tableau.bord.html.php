@@ -64,11 +64,28 @@ require ( ROUTE_DIR . 'view/inc/menu.html.php' );
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body pb-5">
-                                <?php if($absentSup25h!=0):?>
-                                    <?php foreach ($absentSup25h as $absent):?>
-                                        <div class="h5 mb-0 font text-gray-800"> <strong><?=$absent['prenom']?></strong>  <strong><?=$absent['nom']?></strong> / Mat : <strong><?=$absent['matricule']?></strong> / Durée : <strong><?=$absent['duree']?></strong> / Classe : <strong><?=$absent['nom_classe']?></strong></div>
-                                    <?php endforeach?>
-<?php endif ?>
+                                    <table class="table">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>Prénom et nom</th>
+                                                <th>Matricule</th>
+                                                <th>Durée</th>
+                                                <th>Classe</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php if($absentSup25h!=0):?>
+                                            <tr class="text-center">
+                                                <?php foreach ($absentSup25h as $absent):?>
+                                                    <td ><?=$absent['prenom'].' '.$absent['nom']?></td>
+                                                    <td><?=$absent['matricule']?></td>
+                                                    <td ><?=$absent['duree']?></td>
+                                                    <td><?=$absent['nom_classe']?></td>
+                                                <?php endforeach?>
+                                            </tr>
+                                        <?php endif ?>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

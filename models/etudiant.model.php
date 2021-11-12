@@ -130,19 +130,23 @@ function filiter_my_justification($id,$date_justification  , $etat){
 
 
 
-function get_my_number_absence($id_user){
+function get_my_number_absence($id_user,$etat_annee_scolaire='en_cours',$semestre='semestre 1'){
   
 $pdo = ouvrir_connexion_db();
-$sql = " SELECT SUM(p.duree) as duree ,u.nom ,u.prenom ,u.matricule, cl.nom_classe FROM `absence` a , planing_cours p , user u ,inscription i , classe cl
+$sql = " SELECT SUM(p.duree) as duree ,u.nom ,u.prenom ,u.matricule, cl.nom_classe FROM `absence` a , planing_cours p , user u ,inscription i , classe cl, annee_scolaire an, cours c 
 where p.id_planing = a.id_planing 
 and u.id_user = i.id_user 
 and cl.id_classe = i.id_classe
+and i.id_annee_scolaire = an.id_annee_scolaire
 and u.id_user = a.id_user 
+and c.id_cours = p.id_cours
 and NOT a.etat_absence like 'justifiee_acceptee' 
-and u.id_user = ? ";
+and u.id_user = ? 
+and an.etat_annee_scolaire like ? 
+and c.semestre like ? ";
 
 $sth = $pdo->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-$sth->execute(array($id_user));
+$sth->execute(array($id_user, $etat_annee_scolaire ,$semestre));
 $datas = $sth->fetchAll((PDO::FETCH_ASSOC));
 
 fermer_connexion_bd($pdo);
